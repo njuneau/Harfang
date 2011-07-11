@@ -88,11 +88,14 @@ class URLDispatcher {
 
             // Make the call with the correct parameters
             if(Reflect.isFunction(controllerFunction)) {
-                Reflect.callMethod(
-                        controller,
-                        controllerFunction,
-                        this.extractParameters(currentMapping)
-                );
+                // Handle request
+                if(controller.handleRequest()) {
+	                Reflect.callMethod(
+	                        controller,
+	                        controllerFunction,
+	                        this.extractParameters(currentMapping)
+	                );
+                }
             } else {
                 // Controller function was not found - error!
                 throw new FOFServerErrorException();
