@@ -1,4 +1,4 @@
-package framework.mvc;
+package framework.server;
 
 /**
  * A controller handles requests from the client

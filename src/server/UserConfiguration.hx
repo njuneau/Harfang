@@ -1,14 +1,11 @@
 package server;
 
-import framework.ServerConfiguration;
-import framework.Module;
+import framework.server.ServerConfiguration;
+import framework.server.Module;
 import framework.url.URLMapping;
 import framework.exceptions.Exception;
 
 import server.blog.Blog;
-
-import php.db.Connection;
-import php.db.Mysql;
 
 /**
  * This contains the user's configuration - do it the way you want,
@@ -20,8 +17,6 @@ class UserConfiguration implements ServerConfiguration {
     /*           PRIVATE FIELDS          */
     /*************************************/
 
-    //The database connection
-    private var myConnection:Connection;
     //The list of modules of the server side of your application
     private var myModules:List<Module>;
 
@@ -29,7 +24,6 @@ class UserConfiguration implements ServerConfiguration {
      * Constructor (initialize your parameters here)
      */
     public function new() {
-        this.myConnection = null;
         this.myModules = new List<Module>();
         this.myModules.add(new Blog());
     }

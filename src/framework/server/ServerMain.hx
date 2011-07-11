@@ -1,8 +1,8 @@
-package framework;
+package framework.server;
 
 import php.Web;
 import php.Lib;
-import framework.ServerConfiguration;
+import framework.server.ServerConfiguration;
 import framework.url.URLDispatcher;
 import framework.exceptions.Exception;
 import server.UserConfiguration;

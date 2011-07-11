@@ -3,7 +3,7 @@
 #--------------------------------------------------------------#
 -php out/
 -cp src/
--main framework.ServerMain
+-main framework.server.ServerMain
 -xml hawk.xml
 -resource src/framework/templates/http_error.ntt@framework_http_error_template
 

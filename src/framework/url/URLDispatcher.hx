@@ -1,10 +1,10 @@
 package framework.url;
 
-import framework.Module;
-import framework.mvc.Controller;
+import framework.server.Module;
+import framework.server.Controller;
+import framework.server.ServerConfiguration;
 import framework.exceptions.FOFNotFoundException;
 import framework.exceptions.FOFServerErrorException;
-import framework.ServerConfiguration;
 
 /**
  * This class handles the request made to your application

@@ -1,6 +1,6 @@
 package server.blog.controllers;
 
-import framework.mvc.Controller;
+import framework.server.Controller;
 import haxe.Template;
 import haxe.Resource;
 import php.Lib;

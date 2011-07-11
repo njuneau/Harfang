@@ -1,6 +1,6 @@
 package server.blog;
 
-import framework.Module;
+import framework.server.Module;
 import framework.url.URLMapping;
 import server.blog.controllers.IndexController;
 import server.blog.controllers.ParameterController;

@@ -1,7 +1,7 @@
-package framework;
+package framework.server;
 
 import php.db.Connection;
-import framework.Module;
+import framework.server.Module;
 import framework.url.URLMapping;
 import framework.exceptions.Exception;
 
