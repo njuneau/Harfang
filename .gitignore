@@ -1,3 +1,6 @@
 doc/*
 out/*
 hawk.xml
+.project
+.paths
+.settings
