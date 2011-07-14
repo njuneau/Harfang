@@ -83,7 +83,7 @@ class URLDispatcher {
             // Call the dispatch event
             this.serverConfiguration.onDispatch(currentMapping);
 
-            controller = Type.createInstance(currentMapping.getControllerClass(), []);
+            controller = Type.createInstance(currentMapping.getControllerClass(), [this.serverConfiguration]);
             controllerFunction = Reflect.field(controller, currentMapping.getControllerFunctionName());
 
             // Make the call with the correct parameters
