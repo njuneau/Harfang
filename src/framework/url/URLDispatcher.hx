@@ -3,8 +3,8 @@ package framework.url;
 import framework.server.Module;
 import framework.server.Controller;
 import framework.server.ServerConfiguration;
-import framework.exceptions.FOFNotFoundException;
-import framework.exceptions.FOFServerErrorException;
+import framework.exceptions.NotFoundException;
+import framework.exceptions.ServerErrorException;
 
 /**
  * This class handles the request made to your application
@@ -51,7 +51,7 @@ class URLDispatcher {
 
         //If the URL could not have been dispatched, throw some kind of 404
         if(!dispatched) {
-            throw new FOFNotFoundException();
+            throw new NotFoundException();
         }
     }
 
@@ -98,7 +98,7 @@ class URLDispatcher {
                 }
             } else {
                 // Controller function was not found - error!
-                throw new FOFServerErrorException();
+                throw new ServerErrorException();
             }
 
         }

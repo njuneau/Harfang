@@ -1,10 +1,15 @@
 package framework.server;
 
+import haxe.Resource;
+import haxe.Template;
 import php.Web;
 import php.Lib;
+
 import framework.server.ServerConfiguration;
 import framework.url.URLDispatcher;
 import framework.exceptions.Exception;
+import framework.exceptions.HTTPException;
+
 import server.UserConfiguration;
 
 /**
@@ -34,7 +39,14 @@ class ServerMain {
         // Check for errors
         try {
             urlDispatcher.dispatch(url);
-        } catch(e:Exception) {
+        } catch(he : HTTPException) {
+            // Print the HTTP error using an HTML page
+            var template : Template = new Template(Resource.getString(he.getTemplate()));
+            userConfiguration.onError(he);
+            Web.setReturnCode(he.getErrorCode());
+            Lib.print(template.execute({errorCode:he.getErrorCode(), message:he.getMessage()}));
+        } catch(e : Exception) {
+            // This is not an HTTP exception - print it straight
             userConfiguration.onError(e);
             Lib.print(e.getMessage());
         }
