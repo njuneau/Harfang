@@ -1,7 +1,5 @@
 package framework.server;
 
-import haxe.Resource;
-import haxe.Template;
 import php.Web;
 import php.Lib;
 
@@ -9,6 +7,7 @@ import framework.server.ServerConfiguration;
 import framework.url.URLDispatcher;
 import framework.exceptions.Exception;
 import framework.exceptions.HTTPException;
+import framework.views.ViewComposite;
 
 import server.UserConfiguration;
 
@@ -41,10 +40,10 @@ class ServerMain {
             urlDispatcher.dispatch(url);
         } catch(he : HTTPException) {
             // Print the HTTP error using an HTML page
-            var template : Template = new Template(Resource.getString(he.getTemplate()));
+            var errorView : ViewComposite = new ViewComposite(he.getTemplate());
             userConfiguration.onError(he);
             Web.setReturnCode(he.getErrorCode());
-            Lib.print(template.execute({errorCode:he.getErrorCode(), message:he.getMessage()}));
+            Lib.print(errorView.render({errorCode:he.getErrorCode(), message:he.getMessage()}));
         } catch(e : Exception) {
             // This is not an HTTP exception - print it straight
             userConfiguration.onError(e);

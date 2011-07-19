@@ -1,27 +1,23 @@
 package server.blog.controllers;
 
-import framework.server.Controller;
-import haxe.Template;
-import haxe.Resource;
 import php.Lib;
+
+import framework.server.Controller;
+import framework.views.ViewComposite;
 
 class ParameterController extends Controller {
 
     public function handleARequest(parameter:String):Void {
         //Just the test
-        var sampleTemplate:String = Resource.getString("blog_view_index");
+        var indexView : ViewComposite = new ViewComposite("blog_view_index");
 
-        var template = new Template(sampleTemplate);
-        var output:String = template.execute({param:parameter});
-        Lib.print(output);
+        Lib.print(indexView.render({param:parameter}));
     }
 
     public function handleAnotherRequest(parameter1:String, parameter2:String):Void {
         //Another test
-        var sampleTemplate:String = Resource.getString("blog_view_index");
+        var indexView : ViewComposite = new ViewComposite("blog_view_index");
 
-        var template = new Template(sampleTemplate);
-        var output:String = template.execute({param:parameter1 + " and " + parameter2});
-        Lib.print(output);
+        Lib.print(indexView.render({param:parameter1 + " and " + parameter2}));
     }
 }
