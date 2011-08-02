@@ -57,8 +57,8 @@ class URLMapping {
     }
 
     /**
-     * Returns the regex groups contained in the mapping
-     * @return The regex groups contained in the mapping
+     * Returns the controller's function to call's name
+     * @return The controller's function to call's name
      */
     public function getControllerFunctionName() : String {
         return this.controllerFunctionName;
