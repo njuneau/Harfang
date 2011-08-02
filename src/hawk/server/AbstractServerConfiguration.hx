@@ -10,12 +10,16 @@ import hawk.exceptions.Exception;
  */
 class AbstractServerConfiguration implements ServerConfiguration {
 
-    /*************************************/
-    /*           PRIVATE FIELDS          */
-    /*************************************/
+    /**************************************************************************/
+    /*                             PRIVATE FIELDS                             */
+    /**************************************************************************/
 
-    //The list of modules of the server side of your application
-    private var modules:List<Module>;
+    // The list of modules of the server side of your application
+    private var modules : List<Module>;
+
+    /**************************************************************************/
+    /*                            PUBLIC METHODS                              */
+    /**************************************************************************/
 
     /**
      * Constructs a default implementation of the server configuration
@@ -23,10 +27,6 @@ class AbstractServerConfiguration implements ServerConfiguration {
     public function new() {
         this.modules = new List<Module>();
     }
-
-    /*************************************/
-    /*            PUBLIC METHODS         */
-    /*************************************/
 
     /**
      * Dispatch event - called when the queried URL corresponds to a controller
@@ -49,9 +49,9 @@ class AbstractServerConfiguration implements ServerConfiguration {
      */
     public function onClose() : Void {}
 
-    /*************************************/
-    /*              GETTERS              */
-    /*************************************/
+    /**************************************************************************/
+    /*                                GETTERS                                 */
+    /**************************************************************************/
 
     /**
      * Returns the modules contained in the application
@@ -61,9 +61,9 @@ class AbstractServerConfiguration implements ServerConfiguration {
         return this.modules;
     }
 
-    /*************************************/
-    /*            PRIVATE METHODS        */
-    /*************************************/
+    /**************************************************************************/
+    /*                            PRIVATE METHODS                             */
+    /**************************************************************************/
 
     /**
      * Adds a server module in the configuration's list of modules

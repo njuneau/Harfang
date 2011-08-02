@@ -13,6 +13,6 @@
 
 #---------------------      Templates     ---------------------#
 
--resource src/server/blog/templates/index.ntt@blog_view_index
+-resource src/server/test/templates/index.ntt@blog_view_index
 
 #---------------------     Javascript     ---------------------#

@@ -1,10 +1,13 @@
-package server.blog.controllers;
+package server.test.controllers;
 
 import php.Lib;
 
 import hawk.server.Controller;
 import hawk.views.ViewComposite;
 
+/**
+ * Test controller that receives parameters from the request
+ */
 class ParameterController extends Controller {
 
     public function handleARequest(parameter:String):Void {

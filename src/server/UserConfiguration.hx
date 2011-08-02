@@ -2,11 +2,11 @@ package server;
 
 import hawk.server.AbstractServerConfiguration;
 
-import server.blog.Blog;
+import server.test.Test;
 
 /**
- * This contains the user's configuration - do it the way you want,
- * as long as you implement de needed methods, described in the interface.
+ * This contains the user's configuration. Refer to the ServerConfiguration
+ * interface to see the available methods
  */
 class UserConfiguration extends AbstractServerConfiguration {
 
@@ -15,7 +15,7 @@ class UserConfiguration extends AbstractServerConfiguration {
      */
     public function new() {
         super();
-        this.addModule(new Blog());
+        this.addModule(new Test());
     }
 
 }

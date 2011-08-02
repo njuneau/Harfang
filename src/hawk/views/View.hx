@@ -29,7 +29,7 @@ class View extends ViewComposite {
      * @param macros Template macros
      * @return The rendered template
      */
-    public override function render(context : Dynamic, macros : Dynamic = null) {
+    public override function render(context : Dynamic, macros : Dynamic = null) : String {
         var subResult : String = this.renderTemplate(context, macros);
 
         // Set child view in the template context

@@ -6,7 +6,7 @@ package hawk.exceptions;
  */
 class Exception {
 
-    private var message:String;
+    private var message : String;
 
     /**
      * Creates a new exception
@@ -28,7 +28,7 @@ class Exception {
      * Returns the Exception's message
      * @return the Exception's message
      */
-    public function getMessage():String {
+    public function getMessage() : String {
         return this.message;
     }
 }

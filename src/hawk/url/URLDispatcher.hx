@@ -11,16 +11,16 @@ import hawk.exceptions.ServerErrorException;
  */
 class URLDispatcher {
 
-    /*************************************/
-    /*           PRIVATE FIELDS          */
-    /*************************************/
+    /**************************************************************************/
+    /*                             PRIVATE FIELDS                             */
+    /**************************************************************************/
 
     // The server's configuration
-    private var serverConfiguration:ServerConfiguration;
+    private var serverConfiguration : ServerConfiguration;
     //The modules that this dispatcher handles
-    private var modules:Iterable<Module>;
+    private var modules : Iterable<Module>;
     //The URL that is currently being processed
-    private var currentURL:String;
+    private var currentURL : String;
 
     /**
      * Constructor
@@ -31,45 +31,45 @@ class URLDispatcher {
         this.serverConfiguration = serverConfiguration;
     }
 
-    /*************************************/
-    /*              BEHAVIOR             */
-    /*************************************/
+    /**************************************************************************/
+    /*                            PUBLIC METHODS                              */
+    /**************************************************************************/
 
     /**
      * Dipatches the URL to the correct view
      * @param url The URL to process
      */
-    public function dispatch(url:String):Void {
+    public function dispatch(url:String) : Void {
         this.currentURL = url;
         var dispatched:Bool = false;
         var moduleIterator:Iterator<Module> = this.serverConfiguration.getModules().iterator();
 
-        //Scan all the URLS
+        // Scan all the URLS
         while(!dispatched && moduleIterator.hasNext()) {
             dispatched = this.scanURLs(moduleIterator.next());
         }
 
-        //If the URL could not have been dispatched, throw some kind of 404
+        // If the URL could not have been dispatched, throw a 404 error
         if(!dispatched) {
             throw new NotFoundException();
         }
     }
 
-    /*************************************/
-    /*           PRIVATE METHODS         */
-    /*************************************/
+    /**************************************************************************/
+    /*                            PRIVATE METHODS                             */
+    /**************************************************************************/
 
     /**
      * Try matching the URLS with one of the module's regexes.
      * @return Scan status (true if URL has been found, false otherwize)
      */
-    private function scanURLs(module:Module):Bool {
+    private function scanURLs(module : Module) : Bool {
         var foundURL = false;
         var mappingIterator : Iterator<URLMapping> = module.getURLMappings().iterator();
         var currentMapping : URLMapping = null;
         var controller : Controller = null;
-        var controllerFunction:Dynamic = null;
-        var controllerFunctionParams:Array<String> = null;
+        var controllerFunction : Dynamic = null;
+        var controllerFunctionParams : Array<String> = null;
 
         // Try matching a pattern
         while(!foundURL && mappingIterator.hasNext()) {
@@ -83,6 +83,7 @@ class URLDispatcher {
             // Call the dispatch event
             this.serverConfiguration.onDispatch(currentMapping);
 
+            // Create the controller instance and find its function
             controller = Type.createInstance(currentMapping.getControllerClass(), [this.serverConfiguration]);
             controllerFunction = Reflect.field(controller, currentMapping.getControllerFunctionName());
 
@@ -90,11 +91,11 @@ class URLDispatcher {
             if(Reflect.isFunction(controllerFunction)) {
                 // Handle request
                 if(controller.handleRequest()) {
-	                Reflect.callMethod(
-	                        controller,
-	                        controllerFunction,
-	                        this.extractParameters(currentMapping)
-	                );
+                    Reflect.callMethod(
+                            controller,
+                            controllerFunction,
+                            this.extractParameters(currentMapping)
+                    );
                 }
             } else {
                 // Controller function was not found - error!
@@ -111,18 +112,18 @@ class URLDispatcher {
      * Extract the parameters tha the controller needs from the URL
      * @param urlMapping The URLMapping in which to extract the parameters
      */
-    private function extractParameters(urlMapping:URLMapping):Array<String> {
-        var parameters:Array<String> = new Array();
-        var regEx:EReg = urlMapping.getURLReg();
-        var counter:Int = 0;
-        var parameter:String = regEx.matched(counter + 1);
+    private function extractParameters(urlMapping:URLMapping) : Array<String> {
+        var parameters : Array<String> = new Array();
+        var regEx : EReg = urlMapping.getURLReg();
+        var counter : Int = 1;
+        var parameter : String = null;
 
         // Get trough all the groups and fill the needed parameters
-        while(parameter != null) {
+        do {
+            parameter = regEx.matched(counter);
             parameters.push(parameter);
             counter++;
-            parameter = regEx.matched(counter + 1);
-        }
+        } while(parameter != null);
 
         return parameters;
     }

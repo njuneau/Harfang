@@ -22,7 +22,7 @@ class AbstractModule implements Module {
      * Returns all the URLs mapping that belongs to this module
      * @return A list of all the URL mappings contained in the module
      */
-    public function getURLMappings():Iterable<URLMapping> {
+    public function getURLMappings() : Iterable<URLMapping> {
         return this.urlMappings;
     }
 
@@ -32,7 +32,7 @@ class AbstractModule implements Module {
      * @param controller The controller to call
      * @param controllerFunctionName The controller's function to call
      */
-    private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) {
+    private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) : Void {
         this.urlMappings.add(new URLMapping(urlReg, controllerClass, controllerFunctionName));
     }
 

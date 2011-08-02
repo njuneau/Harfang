@@ -18,16 +18,16 @@ import server.UserConfiguration;
  */
 class ServerMain {
 
-    //This contains the user's server-side configuration
-    private static var userConfiguration:ServerConfiguration;
-    //Our URL dispatcher
-    private static var urlDispatcher:URLDispatcher;
+    // This contains the user's server-side configuration
+    private static var userConfiguration : ServerConfiguration;
+    // Our URL dispatcher
+    private static var urlDispatcher : URLDispatcher;
 
     /**
      * Program's entry point, starts up pretty much everything and handles
      * the recieved request.
      */
-    public static function main() {
+    public static function main() : Void {
         // Load the configuration
         userConfiguration = new UserConfiguration();
 
@@ -62,7 +62,7 @@ class ServerMain {
      * @param url The url in which to append the slash
      * @return The url, with the trailing slash
      */
-    private static function appendSlash(url:String):String {
+    private static function appendSlash(url : String) : String {
 
         if(url.charAt(url.length - 1) != "/") {
             url += "/";

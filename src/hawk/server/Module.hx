@@ -12,5 +12,5 @@ interface Module {
      * Returns all the URLs mapping that belongs to this module
      * @return A list of all the URL mappings contained in the module
      */
-    public function getURLMappings():Iterable<URLMapping>;
+    public function getURLMappings() : Iterable<URLMapping>;
 }
