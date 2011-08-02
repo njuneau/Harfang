@@ -1,4 +1,4 @@
-package framework.exceptions;
+package hawk.exceptions;
 
 /**
  * An HTTP exception represents an error that must be communicated down to the

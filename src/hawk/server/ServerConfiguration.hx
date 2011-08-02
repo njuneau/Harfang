@@ -1,9 +1,10 @@
-package framework.server;
+package hawk.server;
 
 import php.db.Connection;
-import framework.server.Module;
-import framework.url.URLMapping;
-import framework.exceptions.Exception;
+
+import hawk.server.Module;
+import hawk.url.URLMapping;
+import hawk.exceptions.Exception;
 
 /**
  * The configuration specifies pretty much everything that the framework needs
@@ -15,7 +16,7 @@ interface ServerConfiguration {
      * Returns the modules contained in the application
      * @return The modules contained in the application
      */
-    public function getModules() : List<Module>;
+    public function getModules() : Iterable<Module>;
 
     /**
      * Dispatch event - called when the queried URL corresponds to a controller

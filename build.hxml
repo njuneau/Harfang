@@ -3,9 +3,9 @@
 #--------------------------------------------------------------#
 -php out/
 -cp src/
--main framework.server.ServerMain
+-main hawk.server.ServerMain
 -xml hawk.xml
--resource src/framework/templates/http_error.ntt@framework_http_error_template
+-resource src/hawk/templates/http_error.ntt@framework_http_error_template
 
 #--------------------------------------------------------------#
 #                         Your stuff here                      #

@@ -1,4 +1,4 @@
-package framework.server;
+package hawk.server;
 
 /**
  * A controller handles requests from the client

@@ -2,8 +2,8 @@ package server.blog.controllers;
 
 import php.Lib;
 
-import framework.server.Controller;
-import framework.views.ViewComposite;
+import hawk.server.Controller;
+import hawk.views.ViewComposite;
 
 class IndexController extends Controller {
 

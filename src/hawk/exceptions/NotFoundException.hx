@@ -1,6 +1,6 @@
-package framework.exceptions;
+package hawk.exceptions;
 
-import framework.exceptions.HTTPException;
+import hawk.exceptions.HTTPException;
 
 /**
  * The 404 exception is thrown whenever something is not found, server-side.

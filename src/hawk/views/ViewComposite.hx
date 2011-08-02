@@ -1,4 +1,4 @@
-package framework.views;
+package hawk.views;
 
 import haxe.Template;
 import haxe.Resource;

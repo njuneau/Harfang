@@ -1,6 +1,6 @@
-package framework.url;
+package hawk.url;
 
-import framework.server.Controller;
+import hawk.server.Controller;
 
 /**
  * A URL mapping consists of a binding between a controller and a URL. Whenever

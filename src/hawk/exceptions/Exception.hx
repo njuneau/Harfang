@@ -1,4 +1,4 @@
-package framework.exceptions;
+package hawk.exceptions;
 
 /**
  * An exception is thrown when an error occurs somewhere in the application and

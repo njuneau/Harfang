@@ -1,10 +1,10 @@
-package framework.url;
+package hawk.url;
 
-import framework.server.Module;
-import framework.server.Controller;
-import framework.server.ServerConfiguration;
-import framework.exceptions.NotFoundException;
-import framework.exceptions.ServerErrorException;
+import hawk.server.Module;
+import hawk.server.Controller;
+import hawk.server.ServerConfiguration;
+import hawk.exceptions.NotFoundException;
+import hawk.exceptions.ServerErrorException;
 
 /**
  * This class handles the request made to your application
@@ -18,7 +18,7 @@ class URLDispatcher {
     // The server's configuration
     private var serverConfiguration:ServerConfiguration;
     //The modules that this dispatcher handles
-    private var modules:List<Module>;
+    private var modules:Iterable<Module>;
     //The URL that is currently being processed
     private var currentURL:String;
 

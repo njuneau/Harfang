@@ -1,6 +1,6 @@
-package framework.exceptions;
+package hawk.exceptions;
 
-import framework.exceptions.HTTPException;
+import hawk.exceptions.HTTPException;
 
 /**
  * The 505 exception is called whenever something went wrong server-side.

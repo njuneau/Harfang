@@ -1,13 +1,13 @@
-package framework.server;
+package hawk.server;
 
 import php.Web;
 import php.Lib;
 
-import framework.server.ServerConfiguration;
-import framework.url.URLDispatcher;
-import framework.exceptions.Exception;
-import framework.exceptions.HTTPException;
-import framework.views.ViewComposite;
+import hawk.server.ServerConfiguration;
+import hawk.url.URLDispatcher;
+import hawk.exceptions.Exception;
+import hawk.exceptions.HTTPException;
+import hawk.views.ViewComposite;
 
 import server.UserConfiguration;
 

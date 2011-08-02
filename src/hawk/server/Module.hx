@@ -1,6 +1,6 @@
-package framework.server;
+package hawk.server;
 
-import framework.url.URLMapping;
+import hawk.url.URLMapping;
 
 /**
  * A module consist af a set of models, views and controllers. Modules are the
@@ -12,5 +12,5 @@ interface Module {
      * Returns all the URLs mapping that belongs to this module
      * @return A list of all the URL mappings contained in the module
      */
-    public function getURLMappings():List<URLMapping>;
+    public function getURLMappings():Iterable<URLMapping>;
 }
