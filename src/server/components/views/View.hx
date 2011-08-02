@@ -1,4 +1,4 @@
-package hawk.views;
+package server.components.views;
 
 /**
  * A View object is part of a composite. You can combine as many as you want,

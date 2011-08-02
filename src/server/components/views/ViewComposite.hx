@@ -1,4 +1,4 @@
-package hawk.views;
+package server.components.views;
 
 import haxe.Template;
 import haxe.Resource;

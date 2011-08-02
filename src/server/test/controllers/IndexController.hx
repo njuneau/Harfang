@@ -3,7 +3,8 @@ package server.test.controllers;
 import php.Lib;
 
 import hawk.server.Controller;
-import hawk.views.ViewComposite;
+
+import server.components.views.ViewComposite;
 
 /**
  * Index controller of the application

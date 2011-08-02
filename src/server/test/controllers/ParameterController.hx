@@ -3,7 +3,8 @@ package server.test.controllers;
 import php.Lib;
 
 import hawk.server.Controller;
-import hawk.views.ViewComposite;
+
+import server.components.views.ViewComposite;
 
 /**
  * Test controller that receives parameters from the request

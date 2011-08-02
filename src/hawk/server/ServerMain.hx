@@ -3,11 +3,13 @@ package hawk.server;
 import php.Web;
 import php.Lib;
 
+import haxe.Template;
+import haxe.Resource;
+
 import hawk.server.ServerConfiguration;
 import hawk.url.URLDispatcher;
 import hawk.exceptions.Exception;
 import hawk.exceptions.HTTPException;
-import hawk.views.ViewComposite;
 
 import server.UserConfiguration;
 
@@ -31,19 +33,19 @@ class ServerMain {
         // Load the configuration
         userConfiguration = new UserConfiguration();
 
-        // Dispatch the URL
         var url:String = appendSlash(Web.getURI());
         urlDispatcher = new URLDispatcher(userConfiguration);
 
-        // Check for errors
         try {
+            // Dispatch the URL
             urlDispatcher.dispatch(url);
         } catch(he : HTTPException) {
-            // Print the HTTP error using an HTML page
-            var errorView : ViewComposite = new ViewComposite(he.getTemplate());
+            // Send error event
             userConfiguration.onError(he);
+            // Print the HTTP error using an HTML page
             Web.setReturnCode(he.getErrorCode());
-            Lib.print(errorView.render({errorCode:he.getErrorCode(), message:he.getMessage()}));
+            var template : Template = new Template(Resource.getString(he.getTemplate()));
+            Lib.print(template.execute({errorCode:he.getErrorCode(), message:he.getMessage()}));
         } catch(e : Exception) {
             // This is not an HTTP exception - print it straight
             userConfiguration.onError(e);
