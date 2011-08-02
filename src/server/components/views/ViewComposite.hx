@@ -28,7 +28,7 @@ class ViewComposite {
      * @param macros Template macros
      * @return The rendered template
      */
-    private function renderTemplate(context : Dynamic, macros : Dynamic = null) : String {
+    private function renderTemplate(context : Dynamic, ? macros : Dynamic) : String {
         var template : Template = new Template(Resource.getString(this.resourceName));
         return template.execute(context, macros);
     }
@@ -40,7 +40,7 @@ class ViewComposite {
      * @param macros Template macros
      * @return The rendered template
      */
-    public function render(context : Dynamic, macros : Dynamic = null) : String {
+    public function render(context : Dynamic, ? macros : Dynamic) : String {
         return this.renderTemplate(context, macros);
     }
 }
