@@ -1,0 +1,14 @@
+Harfang is a lightweight Web development framework written in the haXe language (http://haxe.org), currently aimed at the PHP target.
+
+There is no official documentation for the framework yet (other than the class documentation).
+
+There is, however, a very very simple demo showing basic configuration and URL dispatching in "src/server".
+
+Here is how to run it :
+ - Compile the demo by running haxe on the "build.xml" file.
+ - Put every file in the "out" directory in a folder named "harfang" on your Web server.
+ - Move the "htaccess" file into the "harfang" folder and rename it ".htaccess"
+
+In order for the demo to work, you will need to have PHP enabled, with support for URL rewriting.
+
+Enjoy!
