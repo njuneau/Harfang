@@ -20,24 +20,23 @@
 package harfang.server;
 
 /**
- * A controller handles requests from the client. 2 methods are mandatory :
- * the init method, which is called by the URL dispatcher to give the server
- * configuration, should you need it and handleRequest, which is called before
- * any subsequent call to a mapped controller method.
- *
- * You can use the handleRequest method to do any pre-request processing, but
- * in the end, you must always indicate if the URL dispatcher must call the
- * controller method specified in the URL Mapping by returning true or false.
- * This can be used, for example, to deny access to certain parts of a
- * controller depending on a user's permissions.
+ * Provides a default implementation for the Controller interface. In this
+ * implementation, the init method memorises the configuration and handleRequest
+ * always return true, always providing access to the controller functions.
  */
-interface Controller {
+class AbstractController implements Controller {
+
+    private var configuration : ServerConfiguration;
 
     /**
      * Called by the URL dispatcher, just after constructing the controller.
+     * In this implementation, we memorise the server configuration in an attribute.
+     *
      * @param configuration The server configuration
      */
-    public function init(configuration : ServerConfiguration) : Void;
+    public function init(configuration : ServerConfiguration) : Void {
+        this.configuration = configuration;
+    }
 
     /**
      * Handles the HTTP request - called when the URL dispatcher calls the
@@ -45,8 +44,18 @@ interface Controller {
      *
      * @return True if you want the dispatcher to call the controller function
      * associated with it in the URL mapping. False if you want to prevent it
-     * from calling the controller function.
+     * from calling the controller function. By default, it returns true.
      */
-    public function handleRequest() : Bool;
+    public function handleRequest() : Bool {
+        return true;
+    }
+
+    /**
+     * Returns the server configuration
+     * @return The server configuration
+     */
+    private function getConfiguration() : ServerConfiguration {
+        return this.configuration;
+    }
 
 }

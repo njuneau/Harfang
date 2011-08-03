@@ -25,9 +25,39 @@ import harfang.server.Controller;
  * A URL mapping consists of a binding between a controller and a URL. Whenever
  * the user enters a URL, the dispatcher must know where to forward the request.
  * This is the job of the URL mapping: binding an URL pattern with a handler.
+ *
+ * This is the framework's default URL mapping implementation. It resolves a URL
+ * using a regular expression and extracts the parameters from the URL using
+ * the pattern's groups.
  */
-interface URLMapping {
+class ERegURLMapping implements URLMapping {
 
+    /**************************************************************************/
+    /*                             PRIVATE FIELDS                             */
+    /**************************************************************************/
+
+    // The regular expression that corresponds to the URL
+    private var urlReg : EReg;
+    // The controller class to instanciate if the URL is matched
+    private var controllerClass : Class<Controller>;
+    // The controller's function to call
+    private var controllerFunctionName : String;
+
+    /**************************************************************************/
+    /*                            PUBLIC METHODS                              */
+    /**************************************************************************/
+
+    /**
+     * Construct a new URL Mapping
+     * @param urlReg The expression that matches the sent URL
+     * @param controller The controller to call
+     * @param controllerFunctionName The controller's function to call
+     */
+    public function new(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) {
+        this.urlReg = urlReg;
+        this.controllerClass = controllerClass;
+        this.controllerFunctionName = controllerFunctionName;
+    }
 
     /**************************************************************************/
     /*                                GETTERS                                 */
@@ -38,7 +68,9 @@ interface URLMapping {
      * @param url The URL to resolve
      * @return True if the URL can be resolved with this mapping, false otherwize
      */
-    public function resolve(url : String) : Bool;
+    public function resolve(url : String) : Bool {
+        return this.urlReg.match(url);
+    }
 
     /**
      * Extracts the parameters that would be sent to this mapping's
@@ -49,17 +81,34 @@ interface URLMapping {
      * @param url The URL on which we extract the parameters
      * @return An array containing all the extracted parameters
      */
-    public function extractParameters(url : String) : Array<String>;
+    public function extractParameters(url : String) : Array<String> {
+        var parameters : Array<String> = new Array();
+        var counter : Int = 1;
+        var parameter : String = null;
+
+        // Get trough all the groups and fill the needed parameters
+        do {
+            parameter = this.urlReg.matched(counter);
+            parameters.push(parameter);
+            counter++;
+        } while(parameter != null);
+
+        return parameters;
+    }
 
     /**
      * Returns the controller contained in the mapping
      * @return The controller contained in the mapping
      */
-    public function getControllerClass() : Class<Controller>;
+    public function getControllerClass() : Class<Controller> {
+        return this.controllerClass;
+    }
 
     /**
      * Returns the controller's method to call name
      * @return The controller's method to call name
      */
-    public function getControllerMethodName() : String;
+    public function getControllerMethodName() : String {
+        return this.controllerFunctionName;
+    }
 }

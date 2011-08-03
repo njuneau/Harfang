@@ -21,14 +21,14 @@ package server.demo.controllers;
 
 import php.Lib;
 
-import harfang.server.Controller;
+import harfang.server.AbstractController;
 
 import server.components.views.ViewComposite;
 
 /**
  * Index controller of the application - show the demo's index
  */
-class IndexController extends Controller {
+class IndexController extends AbstractController {
 
     /**
      * Handler for the index page, renders the index view

@@ -21,7 +21,7 @@ package server.demo.controllers;
 
 import php.Lib;
 
-import harfang.server.Controller;
+import harfang.server.AbstractController;
 
 import server.components.views.ViewComposite;
 
@@ -29,7 +29,7 @@ import server.components.views.ViewComposite;
  * Very similar to the IndexController class, but this one shows how parameters
  * are received
  */
-class ParameterController extends Controller {
+class ParameterController extends AbstractController {
 
     /**
      * Same as in the index, with one parameter

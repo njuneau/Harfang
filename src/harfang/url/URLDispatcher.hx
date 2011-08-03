@@ -36,9 +36,9 @@ class URLDispatcher {
 
     // The server's configuration
     private var serverConfiguration : ServerConfiguration;
-    //The modules that this dispatcher handles
+    // The modules that this dispatcher handles
     private var modules : Iterable<Module>;
-    //The URL that is currently being processed
+    // The URL that is currently being processed
     private var currentURL : String;
 
     /**
@@ -87,14 +87,14 @@ class URLDispatcher {
         var mappingIterator : Iterator<URLMapping> = module.getURLMappings().iterator();
         var currentMapping : URLMapping = null;
         var controller : Controller = null;
-        var controllerFunction : Dynamic = null;
-        var controllerFunctionParams : Array<String> = null;
+        var controllerMethod : Dynamic = null;
+        var controllerMethodParams : Array<String> = null;
 
         // Try matching a pattern
         while(!foundURL && mappingIterator.hasNext()) {
             currentMapping = mappingIterator.next();
             // Try matching the URL
-            foundURL = currentMapping.getURLReg().match(this.currentURL);
+            foundURL = currentMapping.resolve(this.currentURL);
         }
 
         // Call the controller
@@ -103,17 +103,18 @@ class URLDispatcher {
             this.serverConfiguration.onDispatch(currentMapping);
 
             // Create the controller instance and find its function
-            controller = Type.createInstance(currentMapping.getControllerClass(), [this.serverConfiguration]);
-            controllerFunction = Reflect.field(controller, currentMapping.getControllerFunctionName());
+            controller = Type.createEmptyInstance(currentMapping.getControllerClass());
+            controller.init(this.serverConfiguration);
+            controllerMethod = Reflect.field(controller, currentMapping.getControllerMethodName());
 
             // Make the call with the correct parameters
-            if(Reflect.isFunction(controllerFunction)) {
+            if(Reflect.isFunction(controllerMethod)) {
                 // Handle request
                 if(controller.handleRequest()) {
                     Reflect.callMethod(
                             controller,
-                            controllerFunction,
-                            this.extractParameters(currentMapping)
+                            controllerMethod,
+                            currentMapping.extractParameters(this.currentURL)
                     );
                 }
             } else {
@@ -125,25 +126,5 @@ class URLDispatcher {
 
         // Return the status of the search
         return foundURL;
-    }
-
-    /**
-     * Extract the parameters tha the controller needs from the URL
-     * @param urlMapping The URLMapping in which to extract the parameters
-     */
-    private function extractParameters(urlMapping:URLMapping) : Array<String> {
-        var parameters : Array<String> = new Array();
-        var regEx : EReg = urlMapping.getURLReg();
-        var counter : Int = 1;
-        var parameter : String = null;
-
-        // Get trough all the groups and fill the needed parameters
-        do {
-            parameter = regEx.matched(counter);
-            parameters.push(parameter);
-            counter++;
-        } while(parameter != null);
-
-        return parameters;
     }
 }

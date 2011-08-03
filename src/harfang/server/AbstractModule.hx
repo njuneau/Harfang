@@ -20,6 +20,7 @@
 package harfang.server;
 
 import harfang.url.URLMapping;
+import harfang.url.ERegURLMapping;
 
 /**
  * Provides a default implementation for the Module interface - it provides
@@ -52,7 +53,7 @@ class AbstractModule implements Module {
      * @param controllerFunctionName The controller's function to call
      */
     private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) : Void {
-        this.urlMappings.add(new URLMapping(urlReg, controllerClass, controllerFunctionName));
+        this.urlMappings.add(new ERegURLMapping(urlReg, controllerClass, controllerFunctionName));
     }
 
 }
