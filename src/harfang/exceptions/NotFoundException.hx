@@ -17,24 +17,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package harfang.exceptions;
 
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+import harfang.exceptions.HTTPException;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * The 404 exception is thrown whenever something is not found, server-side.
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class NotFoundException extends HTTPException {
 
     /**
-     * Constructor (initialize your parameters here)
+     * Creates a new 404 not found HTTP error
+     * @param message The message you want to show to the user (optional)
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
-    }
+    public function new(message:String = null) {
+        super("You requested something that doesn't exists", 404, "framework_http_error_template");
 
+        // If no default message is sent, put a default one
+        if(message != null) {
+            this.setMessage(message);
+        }
+    }
 }

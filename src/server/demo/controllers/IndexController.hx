@@ -17,24 +17,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package server.demo.controllers;
 
-import harfang.server.AbstractServerConfiguration;
+import php.Lib;
 
-import server.demo.Demo;
+import harfang.server.Controller;
+
+import server.components.views.ViewComposite;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * Index controller of the application - show the demo's index
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class IndexController extends Controller {
 
     /**
-     * Constructor (initialize your parameters here)
+     * Handler for the index page, renders the index view
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
+    public function handleARequest() : Void {
+        // Output the result
+        var indexView : ViewComposite = new ViewComposite("blog_view_index");
+        Lib.print(indexView.render({param:""}));
     }
-
 }

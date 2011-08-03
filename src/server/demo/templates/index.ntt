@@ -2,12 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Hawk</title>
-        <link rel="stylesheet" title="styles" href="/hawk/medias/css/styles.css" media="screen" />
+        <title>Harfang</title>
     </head>
     <body>
-        <h1>Hawk</h1>
-        <p>This is Hawk.</p>
+        <h1>Harfang</h1>
+        <p>This is Harfang. Here are the received parameters :</p>
         <p>::if (param != null):: ::param:: ::end::</p>
     </body>
 </html>

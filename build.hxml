@@ -3,9 +3,9 @@
 #--------------------------------------------------------------#
 -php out/
 -cp src/
--main hawk.server.ServerMain
--xml hawk.xml
--resource src/hawk/templates/http_error.ntt@framework_http_error_template
+-main harfang.server.ServerMain
+-xml harfang.xml
+-resource src/harfang/templates/http_error.ntt@framework_http_error_template
 
 #--------------------------------------------------------------#
 #                         Your stuff here                      #
@@ -13,6 +13,4 @@
 
 #---------------------      Templates     ---------------------#
 
--resource src/server/test/templates/index.ntt@blog_view_index
-
-#---------------------     Javascript     ---------------------#
+-resource src/server/demo/templates/index.ntt@blog_view_index

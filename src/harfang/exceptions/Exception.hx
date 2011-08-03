@@ -17,24 +17,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
-
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+package harfang.exceptions;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * An exception is thrown when an error occurs somewhere in the application and
+ * the message is displayed.
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class Exception {
+
+    private var message : String;
 
     /**
-     * Constructor (initialize your parameters here)
+     * Creates a new exception
+     * @param message The error message
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
+    public function new(message : String) {
+        this.message = message;
     }
 
+    /**
+     * Sets the error message
+     * @param message The error message
+     */
+    private function setMessage(message : String) : Void {
+        this.message = message;
+    }
+
+    /**
+     * Returns the Exception's message
+     * @return the Exception's message
+     */
+    public function getMessage() : String {
+        return this.message;
+    }
 }

@@ -17,24 +17,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package server.demo.controllers;
 
-import harfang.server.AbstractServerConfiguration;
+import php.Lib;
 
-import server.demo.Demo;
+import harfang.server.Controller;
+
+import server.components.views.ViewComposite;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * Very similar to the IndexController class, but this one shows how parameters
+ * are received
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class ParameterController extends Controller {
 
     /**
-     * Constructor (initialize your parameters here)
+     * Same as in the index, with one parameter
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
+    public function handleARequest(parameter:String):Void {
+        var indexView : ViewComposite = new ViewComposite("blog_view_index");
+        Lib.print(indexView.render({param:parameter}));
     }
 
+    /**
+     * Same as in the index, with two parameters
+     */
+    public function handleAnotherRequest(parameter1:String, parameter2:String):Void {
+        var indexView : ViewComposite = new ViewComposite("blog_view_index");
+        Lib.print(indexView.render({param:parameter1 + " and " + parameter2}));
+    }
 }

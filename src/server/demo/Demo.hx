@@ -17,24 +17,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package server.demo;
 
-import harfang.server.AbstractServerConfiguration;
+import harfang.server.AbstractModule;
 
-import server.demo.Demo;
+import server.demo.controllers.IndexController;
+import server.demo.controllers.ParameterController;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * Test demo application
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class Demo extends AbstractModule {
 
-    /**
-     * Constructor (initialize your parameters here)
-     */
     public function new() {
         super();
-        this.addModule(new Demo());
-    }
 
+        this.addURLMapping(~/^\/harfang\/$/, IndexController, "handleARequest");
+        this.addURLMapping(~/^\/harfang\/([a-zA-Z]+)\/$/, ParameterController, "handleARequest");
+        this.addURLMapping(~/^\/harfang\/([a-zA-Z]+)\/([0-9]+)\/$/, ParameterController, "handleAnotherRequest");
+    }
 }

@@ -17,24 +17,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
-
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+package harfang.server;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * A controller handles requests from the client
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class Controller {
+
+    private var configuration : ServerConfiguration;
 
     /**
-     * Constructor (initialize your parameters here)
+     * Constructs a new controller
+     * @param configuration The server configuration
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
+    public function new(configuration : ServerConfiguration) {
+        this.configuration = configuration;
+    }
+
+    /**
+     * Returns the server configuration
+     * @return The server configuration
+     */
+    private function getConfiguration() : ServerConfiguration {
+        return this.configuration;
+    }
+
+    /**
+     * Handles the HTTP request - called when the URL dispatcher calls the
+     * controller
+     */
+    public function handleRequest() : Bool {
+        return true;
     }
 
 }

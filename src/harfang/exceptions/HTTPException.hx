@@ -17,24 +17,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
-
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+package harfang.exceptions;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * An HTTP exception represents an error that must be communicated down to the
+ * browser (400 error, 500 error etc.)
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class HTTPException extends Exception {
+
+    private var template : String;
+    private var errorCode : Int;
 
     /**
-     * Constructor (initialize your parameters here)
+     * Construcs a new HTTP exception
+     * @param message The error message
+     * @param errorCode The HTTP error code
+     * @param template The HTML template to render the error
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
+    public function new(message : String, errorCode : Int, template : String) {
+        super(message);
+        this.template = template;
+        this.errorCode = errorCode;
     }
 
+    public function getTemplate() : String {
+        return this.template;
+    }
+
+    public function getErrorCode() : Int {
+        return this.errorCode;
+    }
 }

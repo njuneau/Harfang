@@ -17,24 +17,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package harfang.server;
 
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+import harfang.url.URLMapping;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * A module consist af a set of models, views and controllers. Modules are the
+ * core of your Web site.
  */
-class UserConfiguration extends AbstractServerConfiguration {
+interface Module {
 
     /**
-     * Constructor (initialize your parameters here)
+     * Returns all the URLs mapping that belongs to this module
+     * @return A list of all the URL mappings contained in the module
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
-    }
-
+    public function getURLMappings() : Iterable<URLMapping>;
 }

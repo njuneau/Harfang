@@ -17,24 +17,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server;
+package harfang.exceptions;
 
-import harfang.server.AbstractServerConfiguration;
-
-import server.demo.Demo;
+import harfang.exceptions.HTTPException;
 
 /**
- * This contains the user's configuration. Refer to the ServerConfiguration
- * interface to see the available methods
+ * The 505 exception is called whenever something went wrong server-side.
  */
-class UserConfiguration extends AbstractServerConfiguration {
+class ServerErrorException extends HTTPException {
 
     /**
-     * Constructor (initialize your parameters here)
+     * Creates a new 500 HTTP error
+     * @param message The message you want to show to the user (optional)
      */
-    public function new() {
-        super();
-        this.addModule(new Demo());
-    }
+    public function new(message:String = null) {
+        super("Internal server error - something went wrong", 500, "framework_http_error_template");
 
+        if(message != null) {
+            this.setMessage(message);
+        }
+    }
 }
