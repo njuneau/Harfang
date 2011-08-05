@@ -19,7 +19,7 @@
 
 package server;
 
-import harfang.server.AbstractServerConfiguration;
+import harfang.configuration.AbstractServerConfiguration;
 
 import server.demo.Demo;
 

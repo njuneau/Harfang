@@ -17,11 +17,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.server;
+package harfang.configuration;
 
 import php.db.Connection;
 
-import harfang.server.Module;
+import harfang.module.Module;
 import harfang.url.URLMapping;
 import harfang.exceptions.Exception;
 

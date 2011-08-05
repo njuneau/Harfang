@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package server.components.views;
+package server.component.view;
 
 /**
  * A View object is part of a composite. You can combine as many as you want,

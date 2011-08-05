@@ -19,10 +19,10 @@
 
 package server.demo;
 
-import harfang.server.AbstractModule;
+import harfang.module.AbstractModule;
 
-import server.demo.controllers.IndexController;
-import server.demo.controllers.ParameterController;
+import server.demo.controller.IndexController;
+import server.demo.controller.ParameterController;
 
 /**
  * Test demo application

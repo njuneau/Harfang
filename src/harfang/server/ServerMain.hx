@@ -25,7 +25,7 @@ import php.Lib;
 import haxe.Template;
 import haxe.Resource;
 
-import harfang.server.ServerConfiguration;
+import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
 import harfang.exceptions.Exception;
 import harfang.exceptions.HTTPException;

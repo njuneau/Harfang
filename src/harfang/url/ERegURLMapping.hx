@@ -19,7 +19,7 @@
 
 package harfang.url;
 
-import harfang.server.Controller;
+import harfang.controller.Controller;
 
 /**
  * A URL mapping consists of a binding between a controller and a URL. Whenever
