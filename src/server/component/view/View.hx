@@ -29,7 +29,7 @@ package server.component.view;
  */
 class View extends ViewComposite {
 
-    private var parentView : View;
+    private var parentView : ViewComposite;
 
     /**
      * Constructs a new view
@@ -48,7 +48,7 @@ class View extends ViewComposite {
      * @param macros Template macros
      * @return The rendered template
      */
-    public override function render(context : Dynamic, macros : Dynamic = null) : String {
+    public override function render(context : Dynamic, ? macros : Dynamic) : String {
         var subResult : String = this.renderTemplate(context, macros);
 
         // Set child view in the template context
