@@ -30,8 +30,8 @@ class NotFoundException extends HTTPException {
      * Creates a new 404 not found HTTP error
      * @param message The message you want to show to the user (optional)
      */
-    public function new(message:String = null) {
-        super("You requested something that doesn't exists", 404, "framework_http_error_template");
+    public function new(? message : String) {
+        super("The requested resource could not be found", 404);
 
         // If no default message is sent, put a default one
         if(message != null) {

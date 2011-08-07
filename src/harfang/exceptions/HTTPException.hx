@@ -25,7 +25,6 @@ package harfang.exceptions;
  */
 class HTTPException extends Exception {
 
-    private var template : String;
     private var errorCode : Int;
 
     /**
@@ -34,14 +33,9 @@ class HTTPException extends Exception {
      * @param errorCode The HTTP error code
      * @param template The HTML template to render the error
      */
-    public function new(message : String, errorCode : Int, template : String) {
+    public function new(message : String, errorCode : Int) {
         super(message);
-        this.template = template;
         this.errorCode = errorCode;
-    }
-
-    public function getTemplate() : String {
-        return this.template;
     }
 
     public function getErrorCode() : Int {

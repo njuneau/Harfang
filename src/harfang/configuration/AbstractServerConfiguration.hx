@@ -19,8 +19,16 @@
 
 package harfang.configuration;
 
+
+import haxe.Template;
+import haxe.Resource;
+
+import php.Web;
+import php.Lib;
+
 import harfang.url.URLMapping;
 import harfang.exceptions.Exception;
+import harfang.exceptions.HTTPException;
 import harfang.module.Module;
 
 /**
@@ -57,8 +65,27 @@ class AbstractServerConfiguration implements ServerConfiguration {
     public function onDispatch(urlMapping : URLMapping) : Void {}
 
     /**
+     * HTTP Error event - called when the server encounters a HTTP error
+     * during URL dispatching or controller operations. Usually, these are
+     * 404 or 500 errors.
+     *
+     * @param exception The exception that was thrown
+     */
+    public function onHTTPError(error : HTTPException) : Void {
+        // Print the HTTP error using an HTML page
+        Web.setReturnCode(error.getErrorCode());
+
+        var template : Template = new Template(Resource.getString("framework_http_error_template"));
+        Lib.print(template.execute({errorCode : error.getErrorCode(),
+                                    message:error.getMessage()}));
+    }
+
+    /**
      * Error event - called when the server encounters an error during URL
-     * dispatching or controller operations
+     * dispatching or controller operations that are not covered by the 404
+     * and 500 errors. Although the 500 error is pretty broad, the user could
+     * throw other types of exceptions that would lead to this event. Maybe
+     * the error needs further processing before returning a 404 or 500 message.
      *
      * @param exception The exception that was thrown
      */

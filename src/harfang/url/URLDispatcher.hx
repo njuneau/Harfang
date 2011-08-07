@@ -121,7 +121,6 @@ class URLDispatcher {
                 // Controller function was not found - error!
                 throw new ServerErrorException();
             }
-
         }
 
         // Return the status of the search

@@ -20,10 +20,6 @@
 package harfang.server;
 
 import php.Web;
-import php.Lib;
-
-import haxe.Template;
-import haxe.Resource;
 
 import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
@@ -35,14 +31,9 @@ import server.UserConfiguration;
 /**
  * Program entry point
  * The configuration is loaded here
- * The request is recieved here
+ * The request is processed here
  */
 class ServerMain {
-
-    // This contains the user's server-side configuration
-    private static var userConfiguration : ServerConfiguration;
-    // Our URL dispatcher
-    private static var urlDispatcher : URLDispatcher;
 
     /**
      * Program's entry point, starts up pretty much everything and handles
@@ -50,25 +41,21 @@ class ServerMain {
      */
     public static function main() : Void {
         // Load the configuration
-        userConfiguration = new UserConfiguration();
+        var userConfiguration : UserConfiguration = new UserConfiguration();
 
+        var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
         var url:String = appendSlash(Web.getURI());
-        urlDispatcher = new URLDispatcher(userConfiguration);
 
         try {
             // Dispatch the URL
             urlDispatcher.dispatch(url);
         } catch(he : HTTPException) {
-            // Send error event
-            userConfiguration.onError(he);
-            // Print the HTTP error using an HTML page
-            Web.setReturnCode(he.getErrorCode());
-            var template : Template = new Template(Resource.getString(he.getTemplate()));
-            Lib.print(template.execute({errorCode:he.getErrorCode(), message:he.getMessage()}));
+            // Send HTTP error event
+            userConfiguration.onHTTPError(he);
         } catch(e : Exception) {
-            // This is not an HTTP exception - print it straight
+            // Error does not lead to a 404 or 500 error and may need further
+            // processing
             userConfiguration.onError(e);
-            Lib.print(e.getMessage());
         }
 
         // Close the application

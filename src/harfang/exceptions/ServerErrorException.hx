@@ -30,8 +30,8 @@ class ServerErrorException extends HTTPException {
      * Creates a new 500 HTTP error
      * @param message The message you want to show to the user (optional)
      */
-    public function new(message:String = null) {
-        super("Internal server error - something went wrong", 500, "framework_http_error_template");
+    public function new(? message : String) {
+        super("Internal server error", 500);
 
         if(message != null) {
             this.setMessage(message);
