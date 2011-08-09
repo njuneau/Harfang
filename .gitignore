@@ -1,6 +1,9 @@
 doc/*
 out/*
+content/*
+index.html
 harfang.xml
+haxedoc.xml
 .project
 .paths
 .settings

@@ -19,7 +19,7 @@
 
 package harfang.controller;
 
-import harfang.configuration.ServerConfiguration;
+import harfang.module.Module;
 
 /**
  * Provides a default implementation for the Controller interface. In this
@@ -28,16 +28,17 @@ import harfang.configuration.ServerConfiguration;
  */
 class AbstractController implements Controller {
 
-    private var configuration : ServerConfiguration;
+    private var module : Module;
 
     /**
      * Called by the URL dispatcher, just after constructing the controller.
-     * In this implementation, we memorise the server configuration in an attribute.
+     * In this implementation, we memorise the module in an attribute, later
+     * accessible with the getModule method.
      *
-     * @param configuration The server configuration
+     * @param module The module that owns that controller
      */
-    public function init(configuration : ServerConfiguration) : Void {
-        this.configuration = configuration;
+    public function init(module : Module) : Void {
+        this.module = module;
     }
 
     /**
@@ -53,11 +54,11 @@ class AbstractController implements Controller {
     }
 
     /**
-     * Returns the server configuration
-     * @return The server configuration
+     * Returns the module that owns this controller
+     * @return The module that owns this controller
      */
-    private function getConfiguration() : ServerConfiguration {
-        return this.configuration;
+    private function getModule() : Module {
+        return this.module;
     }
 
 }
