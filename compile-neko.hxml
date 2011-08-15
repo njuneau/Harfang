@@ -1,0 +1,16 @@
+#--------------------------------------------------------------#
+#                      Framework stuff here                    #
+#--------------------------------------------------------------#
+-neko out/harfang.n
+-cp src/
+-main harfang.server.ServerMain
+-xml harfang.xml
+-resource src/harfang/templates/http_error.ntt@framework_http_error_template
+
+#--------------------------------------------------------------#
+#                         Your stuff here                      #
+#--------------------------------------------------------------#
+
+#---------------------      Templates     ---------------------#
+
+-resource src/server/demo/templates/index.ntt@blog_view_index
