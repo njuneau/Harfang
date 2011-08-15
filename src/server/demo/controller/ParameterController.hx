@@ -19,7 +19,13 @@
 
 package server.demo.controller;
 
+#if php
 import php.Lib;
+#elseif neko
+import neko.Lib;
+#else
+#error "Unsupported platform"
+#end
 
 import harfang.controller.AbstractController;
 

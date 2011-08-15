@@ -23,8 +23,15 @@ package harfang.configuration;
 import haxe.Template;
 import haxe.Resource;
 
+#if php
 import php.Web;
 import php.Lib;
+#elseif neko
+import neko.Web;
+import neko.Lib;
+#else
+#error "Unsupported platform"
+#end
 
 import harfang.url.URLMapping;
 import harfang.exceptions.Exception;

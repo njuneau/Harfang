@@ -19,7 +19,13 @@
 
 package harfang.server;
 
+#if php
 import php.Web;
+#elseif neko
+import neko.Web;
+#else
+#error "Unsupported platform"
+#end
 
 import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;

@@ -1,7 +1,7 @@
 #--------------------------------------------------------------#
 #                      Framework stuff here                    #
 #--------------------------------------------------------------#
--php out/
+-php out/php
 -cp src/
 -main harfang.server.ServerMain
 -xml harfang.xml

@@ -19,8 +19,6 @@
 
 package harfang.configuration;
 
-import php.db.Connection;
-
 import harfang.module.Module;
 import harfang.url.URLMapping;
 import harfang.exceptions.Exception;
