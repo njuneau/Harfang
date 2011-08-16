@@ -1,6 +1,7 @@
 doc/*
 out/*
 content/*
+src/server/*
 index.html
 harfang.xml
 haxedoc.xml
