@@ -5,6 +5,8 @@ src/server/*
 index.html
 harfang.xml
 haxedoc.xml
+compile-php.hxml
+compile-neko.hxml
 .project
 .paths
 .settings
