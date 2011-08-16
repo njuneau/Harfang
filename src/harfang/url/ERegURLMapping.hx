@@ -88,8 +88,13 @@ class ERegURLMapping implements URLMapping {
 
         // Get trough all the groups and fill the needed parameters
         do {
-            parameter = this.urlReg.matched(counter);
-            parameters.push(parameter);
+            // On neko, an exception is thrown when a group is not found
+            try {
+                parameter = this.urlReg.matched(counter);
+	            parameters.push(parameter);
+            } catch (error : Dynamic) {
+                parameter = null;
+            }
             counter++;
         } while(parameter != null);
 

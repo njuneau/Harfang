@@ -1,7 +1,7 @@
 #--------------------------------------------------------------#
 #                      Framework stuff here                    #
 #--------------------------------------------------------------#
--neko out/harfang.n
+-neko out/index.n
 -cp src/
 -main harfang.server.ServerMain
 -xml harfang.xml

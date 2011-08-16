@@ -50,7 +50,7 @@ class ServerMain {
         var userConfiguration : UserConfiguration = new UserConfiguration();
 
         var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
-        var url:String = appendSlash(Web.getURI());
+        var url : String = appendSlash(Web.getURI());
 
         try {
             // Dispatch the URL
