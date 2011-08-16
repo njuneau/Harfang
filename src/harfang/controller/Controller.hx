@@ -19,7 +19,7 @@
 
 package harfang.controller;
 
-import harfang.configuration.ServerConfiguration;
+import harfang.module.Module;
 
 /**
  * A controller handles requests from the client. 2 methods are mandatory :
@@ -37,9 +37,9 @@ interface Controller {
 
     /**
      * Called by the URL dispatcher, just after constructing the controller.
-     * @param configuration The server configuration
+     * @param module The module that owns that controller
      */
-    public function init(configuration : ServerConfiguration) : Void;
+    public function init(module : Module) : Void;
 
     /**
      * Handles the HTTP request - called when the URL dispatcher calls the

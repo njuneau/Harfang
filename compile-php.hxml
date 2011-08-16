@@ -4,7 +4,7 @@
 -php out/php
 -cp src/
 -main harfang.server.ServerMain
--xml harfang.xml
+-xml haxedoc.xml
 -resource src/harfang/templates/http_error.ntt@framework_http_error_template
 
 #--------------------------------------------------------------#

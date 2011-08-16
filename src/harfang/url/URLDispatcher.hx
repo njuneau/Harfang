@@ -104,7 +104,7 @@ class URLDispatcher {
 
             // Create the controller instance and find its function
             controller = Type.createEmptyInstance(currentMapping.getControllerClass());
-            controller.init(this.serverConfiguration);
+            controller.init(module);
             controllerMethod = Reflect.field(controller, currentMapping.getControllerMethodName());
 
             // Make the call with the correct parameters
