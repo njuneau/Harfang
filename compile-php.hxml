@@ -5,7 +5,6 @@
 -cp src/
 -main harfang.server.ServerMain
 -xml haxedoc.xml
--resource src/harfang/templates/http_error.ntt@framework_http_error_template
 
 #--------------------------------------------------------------#
 #                         Your stuff here                      #

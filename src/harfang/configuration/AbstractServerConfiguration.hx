@@ -19,10 +19,6 @@
 
 package harfang.configuration;
 
-
-import haxe.Template;
-import haxe.Resource;
-
 #if php
 import php.Web;
 import php.Lib;
@@ -78,14 +74,7 @@ class AbstractServerConfiguration implements ServerConfiguration {
      *
      * @param exception The exception that was thrown
      */
-    public function onHTTPError(error : HTTPException) : Void {
-        // Print the HTTP error using an HTML page
-        Web.setReturnCode(error.getErrorCode());
-
-        var template : Template = new Template(Resource.getString("framework_http_error_template"));
-        Lib.print(template.execute({errorCode : error.getErrorCode(),
-                                    message:error.getMessage()}));
-    }
+    public function onHTTPError(error : HTTPException) : Void {}
 
     /**
      * Error event - called when the server encounters an error during URL
