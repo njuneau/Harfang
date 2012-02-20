@@ -33,8 +33,9 @@ class MacroConfigurator {
      * This will map a controller's methods to URLs using the given meta tag
      * name. Use this macro inside an AbstractModule instance.
      *
-     * @param eThis The module instance
-     * @param controller The controller's class
+     * @param eThis The module instance (must be a subclass of AbstractModule)
+     * @param clExpr The controller's class (must be an implementation of the
+     * Controller interface)
      * @param metaTag The metadata tag that will be used to extract the URL
      * regular expression.
      * @return The addURLMapping expressions that will map the controllers to
@@ -75,6 +76,7 @@ class MacroConfigurator {
      * @param cl The class to process
      * @param metaTag The metadata tag's name that contains the URL
      * @param pos Current context position
+     * @return A list of addURLMapping call expressions for the given class
      */
     private static function processClassMeta(eThis : Expr, cl : ClassType, metaTag : String, pos : Position) : Array<Expr> {
         var calls : Array<Expr> = new Array<Expr>();
@@ -121,11 +123,12 @@ class MacroConfigurator {
     }
 
     /**
-     * Creates the "addURLMapping" method call
-     * @param cl The class on which we map an URL
+     * Creates the "addURLMapping" method call expression
+     * @param cl The controller class on which we map an URL
      * @param controllerMethod The controller method to map
      * @param url The URL mapping
      * @pos The context position
+     * @return A single addURLMapping call expression
      */
     private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, url : String, pos : Position) : Expr {
         var params : Array<Expr> = new Array<Expr>();
