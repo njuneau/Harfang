@@ -8,8 +8,6 @@ harfang.xml
 haxedoc.xml
 compile-php.hxml
 compile-neko.hxml
-test-php.hxml
-test-neko.hxml
 .project
 .paths
 .settings
