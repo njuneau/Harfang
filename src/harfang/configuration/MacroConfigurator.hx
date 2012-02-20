@@ -33,29 +33,52 @@ class MacroConfigurator {
      * This will map a controller's methods to URLs using the given meta tag
      * name. Use this macro inside an AbstractModule instance.
      *
-     * @param controllerName The name of the controller
+     * @param eThis The module instance
+     * @param controller The controller's class
      * @param metaTag The metadata tag that will be used to extract the URL
      * regular expression.
      * @return The addURLMapping expressions that will map the controllers to
      * URLs.
      */
-    @:macro public static function mapController(controllerName : String, metaTag : String) : Expr {
+    @:macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String) : Expr {
         var pos : Position = Context.currentPos();
-        var type : haxe.macro.Type = Context.getType(controllerName);
+        var block : Array<Expr> = new Array<Expr>();
 
-        switch(type) {
-            case TInst(t, params):
-                processClassMeta(t.get(), metaTag);
+        switch(clExpr.expr) {
+            case EConst(c):
+                switch(c) {
+                    case CType(s):
+                        // A type has been sent. Extract Class.
+                        var type = Context.getType(s);
+                        switch(type) {
+                            case TInst(t, params):
+                                var calls : Array<Expr> = processClassMeta(eThis, t.get(), metaTag, pos);
+                                for(call in calls) {
+                                    block.push(call);
+                                }
+                            default:
+                                // Not a class instance
+                        }
+                    default:
+                        // Not a type constant
+                }
             default:
+                // Not a constant
         }
 
-        return {pos : pos, expr : EConst(CString("Not implemented yet"))};
+        return {pos : pos, expr : EBlock(block)};
     }
 
     /**
      * Processes a class' macros
+     * @param eThis The module instance
+     * @param cl The class to process
+     * @param metaTag The metadata tag's name that contains the URL
+     * @param pos Current context position
      */
-    private static function processClassMeta(cl : ClassType, metaTag : String) {
+    private static function processClassMeta(eThis : Expr, cl : ClassType, metaTag : String, pos : Position) : Array<Expr> {
+        var calls : Array<Expr> = new Array<Expr>();
+
         // Scan for all the class' methods
         for(field in cl.fields.get()) {
             switch(field.kind) {
@@ -65,11 +88,26 @@ class MacroConfigurator {
                         var found : Bool = false;
                         var i : Int = 0;
                         var fieldMeta : Array<{pos : Position, params : Array<Expr>, name : String}> = field.meta.get();
+                        var urlEReg : String;
                         while(!found && i < fieldMeta.length) {
+
                             if(fieldMeta[i].name == metaTag) {
                                 found = true;
 
                                 // Process method URL metadata
+                                if(fieldMeta[i].params.length == 1) {
+                                    switch(fieldMeta[i].params[0].expr) {
+                                        case EConst(c):
+                                            switch(c) {
+                                                case CString(s):
+                                                    // Got an URL regex, create call
+                                                    var call : Expr = createAddExpr(eThis, cl, field, s, pos);
+                                                    calls.push(call);
+                                                default:
+                                            }
+                                        default:
+                                    }
+                                }
                             }
                             i++;
                         }
@@ -79,6 +117,31 @@ class MacroConfigurator {
         }
 
         // Return some useful expression
+        return calls;
+    }
+
+    /**
+     * Creates the "addURLMapping" method call
+     * @param cl The class on which we map an URL
+     * @param controllerMethod The controller method to map
+     * @param url The URL mapping
+     * @pos The context position
+     */
+    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, url : String, pos : Position) : Expr {
+        var params : Array<Expr> = new Array<Expr>();
+        params.push({pos : pos, expr : EConst(CRegexp(url, ""))});
+        params.push({pos : pos, expr : EConst(CType(cl.name))});
+        params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
+
+        var addMethod : Expr = {
+            pos : pos,
+            expr : ECall({
+                pos : pos,
+                expr : EField(eThis, "addURLMapping")
+            }, params)
+        }
+
+        return addMethod;
     }
 
 }

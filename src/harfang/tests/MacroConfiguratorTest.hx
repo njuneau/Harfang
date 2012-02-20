@@ -22,6 +22,7 @@ package harfang.tests;
 import haxe.unit2.TestCase;
 
 import harfang.tests.mocks.MockMacroModule;
+import harfang.tests.mocks.MockMacroController;
 
 /**
  * This is the MacroConfigurator test case
@@ -41,6 +42,31 @@ class MacroConfiguratorTest extends TestCase {
     @Test
     public function testMapController() : Void {
         var module : MockMacroModule = new MockMacroModule();
+
+        var foundHandleRequestA : Bool = false;
+        var foundHandleRequestB : Bool = false;
+        var doNotHandle : Bool = false;
+
+        for(urlMapping in module.getURLMappings()) {
+            assertEquals(urlMapping.getControllerClass(), MockMacroController);
+            switch(urlMapping.getControllerMethodName()) {
+                case "handleRequestA":
+                    foundHandleRequestA = true;
+                case "handleRequestB":
+                    foundHandleRequestB = true;
+                case "doNotHandleA":
+                    doNotHandle = true;
+                case "doNotHandleB":
+                    doNotHandle = true;
+                default:
+            }
+        }
+
+        assertTrue(foundHandleRequestA);
+        assertTrue(foundHandleRequestB);
+        assertFalse(doNotHandle);
+
+        module.getURLMappings();
     }
 
 }
