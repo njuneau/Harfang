@@ -38,10 +38,16 @@ class MacroConfigurator {
      * Controller interface)
      * @param metaTag The metadata tag that will be used to extract the URL
      * regular expression.
+     * @param prefix Optional parameter that defines a string to prefix all of
+     * the controller's URL. In order for this to work, you URL meta tag must
+     * have 3 parameters : the URL regular expression, the regular expression's
+     * options and the string in your regular expression that will be replaced
+     * with the given prefix.
+     *
      * @return The addURLMapping expressions that will map the controllers to
      * URLs.
      */
-    @:macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String) : Expr {
+    @:macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
         var block : Array<Expr> = new Array<Expr>();
 
@@ -53,7 +59,7 @@ class MacroConfigurator {
                         var type = Context.getType(s);
                         switch(type) {
                             case TInst(t, params):
-                                var calls : Array<Expr> = processClassMeta(eThis, t.get(), metaTag, pos);
+                                var calls : Array<Expr> = processClassMeta(eThis, t.get(), metaTag, pos, prefix);
                                 for(call in calls) {
                                     block.push(call);
                                 }
@@ -76,9 +82,10 @@ class MacroConfigurator {
      * @param cl The class to process
      * @param metaTag The metadata tag's name that contains the URL
      * @param pos Current context position
+     * @param prefix The URL prefix
      * @return A list of addURLMapping call expressions for the given class
      */
-    private static function processClassMeta(eThis : Expr, cl : ClassType, metaTag : String, pos : Position) : Array<Expr> {
+    private static function processClassMeta(eThis : Expr, cl : ClassType, metaTag : String, pos : Position, ? prefix : String) : Array<Expr> {
         var calls : Array<Expr> = new Array<Expr>();
 
         // Scan for all the class' methods
@@ -90,25 +97,63 @@ class MacroConfigurator {
                         var found : Bool = false;
                         var i : Int = 0;
                         var fieldMeta : Array<{pos : Position, params : Array<Expr>, name : String}> = field.meta.get();
-                        var urlEReg : String;
                         while(!found && i < fieldMeta.length) {
 
                             if(fieldMeta[i].name == metaTag) {
                                 found = true;
 
+                                var urlEReg : String = null;
+                                var eregOpts : String = "";
+                                var urlPrefixVar : String = null;
+
                                 // Process method URL metadata
-                                if(fieldMeta[i].params.length == 1) {
+                                if(fieldMeta[i].params.length >= 1) {
                                     switch(fieldMeta[i].params[0].expr) {
                                         case EConst(c):
                                             switch(c) {
                                                 case CString(s):
                                                     // Got an URL regex, create call
-                                                    var call : Expr = createAddExpr(eThis, cl, field, s, pos);
-                                                    calls.push(call);
+                                                    urlEReg = s;
                                                 default:
                                             }
                                         default:
                                     }
+
+                                    // Process ereg optional argument
+                                    if(fieldMeta[i].params.length >= 2) {
+                                        switch(fieldMeta[i].params[1].expr) {
+                                            case EConst(c):
+                                                switch(c) {
+                                                    case CString(s):
+                                                        // Got an URL regex opt
+                                                        eregOpts = s;
+                                                    default:
+                                                }
+                                            default:
+                                        }
+
+                                        // Process url prefix argument
+                                        if(fieldMeta[i].params.length == 3) {
+                                            switch(fieldMeta[i].params[2].expr) {
+                                                case EConst(c):
+                                                    switch(c) {
+                                                        case CString(s):
+                                                            // Got the URL prefix variable
+                                                            urlPrefixVar = s;
+                                                        default:
+                                                    }
+                                                default:
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                // If we have at least the URL regex, do the
+                                // mapping.
+                                if(urlEReg != null) {
+                                    var call : Expr = createAddExpr(eThis, cl, field, urlEReg, pos, eregOpts, prefix, urlPrefixVar);
+                                    calls.push(call);
                                 }
                             }
                             i++;
@@ -126,13 +171,23 @@ class MacroConfigurator {
      * Creates the "addURLMapping" method call expression
      * @param cl The controller class on which we map an URL
      * @param controllerMethod The controller method to map
-     * @param url The URL mapping
+     * @param url The URL regular expression mapping
      * @pos The context position
+     * @param eregOptions The regular expression's options
+     * @param prefix the URL prefix
+     * @param prefixVar The part of the regular expression to replace with the
+     * prefix
      * @return A single addURLMapping call expression
      */
-    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, url : String, pos : Position) : Expr {
+    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, url : String, pos : Position, eregOptions : String, ? prefix : String, ? prefixVar : String) : Expr {
         var params : Array<Expr> = new Array<Expr>();
-        params.push({pos : pos, expr : EConst(CRegexp(url, ""))});
+
+        // Process prefix
+        if(prefix != null && prefixVar != null) {
+            url = StringTools.replace(url, prefixVar, prefix);
+        }
+
+        params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
         params.push({pos : pos, expr : EConst(CType(cl.name))});
         params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 

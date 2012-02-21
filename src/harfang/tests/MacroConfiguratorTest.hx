@@ -21,6 +21,7 @@ package harfang.tests;
 
 import haxe.unit2.TestCase;
 
+import harfang.url.ERegURLMapping;
 import harfang.tests.mocks.MockMacroModule;
 import harfang.tests.mocks.MockMacroController;
 
@@ -44,16 +45,25 @@ class MacroConfiguratorTest extends TestCase {
         var module : MockMacroModule = new MockMacroModule();
 
         var foundHandleRequestA : Bool = false;
-        var foundHandleRequestB : Bool = false;
+        var handleRequestEregOptions : Bool = false;
+        var handleRequestPrefix : Bool = false;
+        var handleRequestNoPrefix : Bool = false;
         var doNotHandle : Bool = false;
 
         for(urlMapping in module.getURLMappings()) {
             assertEquals(urlMapping.getControllerClass(), MockMacroController);
-            switch(urlMapping.getControllerMethodName()) {
+            var eregMapping : ERegURLMapping = cast(urlMapping, ERegURLMapping);
+            switch(eregMapping.getControllerMethodName()) {
                 case "handleRequestA":
                     foundHandleRequestA = true;
-                case "handleRequestB":
-                    foundHandleRequestB = true;
+                case "handleRequestEregOptions":
+                    handleRequestEregOptions = true;
+                case "handleRequestPrefix":
+                    handleRequestPrefix = true;
+                    // TODO Find a way to detect if pattern was correctly
+                    // prefixed
+                case "handleRequestNoPrefix":
+                    handleRequestNoPrefix = true;
                 case "doNotHandleA":
                     doNotHandle = true;
                 case "doNotHandleB":
@@ -62,8 +72,11 @@ class MacroConfiguratorTest extends TestCase {
             }
         }
 
+        // Make sure all the controllers were mapped
         assertTrue(foundHandleRequestA);
-        assertTrue(foundHandleRequestB);
+        assertTrue(handleRequestEregOptions);
+        assertTrue(handleRequestPrefix);
+        assertTrue(handleRequestNoPrefix);
         assertFalse(doNotHandle);
 
         module.getURLMappings();

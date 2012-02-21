@@ -38,10 +38,25 @@ class MockMacroController extends AbstractController {
     public function handleRequestA() : Void {}
 
     /**
-     * Macro configurator shoul also map this method
+     * Macro configurator shoul also map this method and map the correct regex
+     * option "g"
      */
-    @URL("^/b/([a-zA-Z]+)/$")
-    public function handleRequestB(param : String) : Void {}
+    @URL("^/b/([a-zA-Z]+)/$", "g")
+    public function handleRequestEregOptions(param : String) : Void {}
+
+    /**
+     * Macro configurator shoul also map this method, also mapping regex option
+     * "g" and prefixing the URL in the correct place.
+     */
+    @URL("^/$prefix/b/([a-zA-Z]+)/$", "g", "$prefix")
+    public function handleRequestPrefix(param : String) : Void {}
+
+    /**
+     * Macro configurator shoul also map this method, also mapping regex option
+     * "g" and try to map the prefix without failing.
+     */
+    @URL("^/b/([a-zA-Z]+)/$", "", "$prefix")
+    public function handleRequestNoPrefix(param : String) : Void {}
 
     /**
      * Macro configurator shouldn't map this method
@@ -49,7 +64,8 @@ class MockMacroController extends AbstractController {
     public function doNotHandleA() : Void {}
 
     /**
-     * Macro configurator shouldn't map this method either
+     * Macro configurator shouldn't map this method either - make sure case
+     * sensitivity is respected
      */
     @url("asdasoid")
     public function doNotHandleB() : Void {}
