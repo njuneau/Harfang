@@ -21,7 +21,6 @@ package harfang.tests;
 
 import haxe.unit2.TestCase;
 
-import harfang.url.ERegURLMapping;
 import harfang.tests.mocks.MockMacroModule;
 import harfang.tests.mocks.MockMacroController;
 
@@ -50,20 +49,30 @@ class MacroConfiguratorTest extends TestCase {
         var handleRequestNoPrefix : Bool = false;
         var doNotHandle : Bool = false;
 
+        var testURL : String;
+
         for(urlMapping in module.getURLMappings()) {
             assertEquals(urlMapping.getControllerClass(), MockMacroController);
-            var eregMapping : ERegURLMapping = cast(urlMapping, ERegURLMapping);
-            switch(eregMapping.getControllerMethodName()) {
+            // On each mapping, make sure the URL can be correctly resolved
+            switch(urlMapping.getControllerMethodName()) {
                 case "handleRequestA":
                     foundHandleRequestA = true;
+                    testURL = "/a/";
+                    assertTrue(urlMapping.resolve(testURL));
                 case "handleRequestEregOptions":
                     handleRequestEregOptions = true;
+                    testURL = "/b/aoisuasinoi/";
+                    assertTrue(urlMapping.resolve(testURL));
                 case "handleRequestPrefix":
                     handleRequestPrefix = true;
-                    // TODO Find a way to detect if pattern was correctly
-                    // prefixed
+                    testURL = "/MYPREFIX/b/asodhuiahiuh/";
+                    assertTrue(urlMapping.resolve(testURL));
+                    testURL = "/$prefix/b/asodhuiahiuh/";
+                    assertFalse(urlMapping.resolve(testURL));
                 case "handleRequestNoPrefix":
                     handleRequestNoPrefix = true;
+                    testURL = "/b/jkandahjsbh/";
+                    assertTrue(urlMapping.resolve(testURL));
                 case "doNotHandleA":
                     doNotHandle = true;
                 case "doNotHandleB":

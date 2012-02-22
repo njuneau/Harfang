@@ -45,10 +45,12 @@ interface Controller {
      * Handles the HTTP request - called when the URL dispatcher calls the
      * controller, just before dispatching the call to the controller function
      *
+     * @param controllerMethodName The name of the method that will be called
+     * in the controller
      * @return True if you want the dispatcher to call the controller function
      * associated with it in the URL mapping. False if you want to prevent it
      * from calling the controller function.
      */
-    public function handleRequest() : Bool;
+    public function handleRequest(controllerMethodName : String) : Bool;
 
 }

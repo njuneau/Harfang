@@ -17,39 +17,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.tests.mocks;
 
-#if php
-import php.Lib;
-#elseif neko
-import neko.Lib;
-#else
-#error "Unsupported platform"
-#end
+import harfang.configuration.AbstractServerConfiguration;
 
-import haxe.unit2.TestRunner;
-import haxe.unit2.TestCase;
-import haxe.unit2.output.TextOutputWriter;
+import harfang.tests.mocks.MockURLDispatcherModule;
 
 /**
- * This is Harfang's main test launcher. It will launch the unit tests.
+ * This is a mock server configuration to test the various functionnalities of
+ * the framework. It is used in the URL dispatcher test.
  */
-class TestMain {
+class MockURLDispatcherUserConfiguration extends AbstractServerConfiguration {
 
     /**
-     * Launch the tests
+     * Create the new mock
      */
-    public static function main() : Void {
-        var testRunner : TestRunner = new TestRunner();
-
-        testRunner.add(new MacroConfiguratorTest());
-        testRunner.add(new URLDispatcherTest());
-        testRunner.run();
-
-        var testOutput : TextOutputWriter = new TextOutputWriter();
-
-        Lib.print(testOutput.writeResults(testRunner));
-
+    public function new() {
+        super();
+        this.addModule(new MockURLDispatcherModule());
     }
 
 }

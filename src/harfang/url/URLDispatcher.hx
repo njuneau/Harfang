@@ -110,7 +110,7 @@ class URLDispatcher {
             // Make the call with the correct parameters
             if(Reflect.isFunction(controllerMethod)) {
                 // Handle request
-                if(controller.handleRequest()) {
+                if(controller.handleRequest(currentMapping.getControllerMethodName())) {
                     Reflect.callMethod(
                             controller,
                             controllerMethod,

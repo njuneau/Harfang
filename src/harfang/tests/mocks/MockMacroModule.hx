@@ -34,7 +34,7 @@ class MockMacroModule extends AbstractModule {
     public function new() {
         super();
 
-        MacroConfigurator.mapController(this, MockMacroController, "URL", "prefix");
+        MacroConfigurator.mapController(this, MockMacroController, "URL", "MYPREFIX");
     }
 
 }

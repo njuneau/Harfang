@@ -17,39 +17,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.tests.mocks;
 
-#if php
-import php.Lib;
-#elseif neko
-import neko.Lib;
-#else
-#error "Unsupported platform"
-#end
+import harfang.module.AbstractModule;
 
-import haxe.unit2.TestRunner;
-import haxe.unit2.TestCase;
-import haxe.unit2.output.TextOutputWriter;
+import harfang.tests.mocks.MockURLDispatcherController;
 
 /**
- * This is Harfang's main test launcher. It will launch the unit tests.
+ * Module that is used for the URL dispatcher test
  */
-class TestMain {
+class MockURLDispatcherModule extends AbstractModule {
 
     /**
-     * Launch the tests
+     * Maps the module's controllers to URLs
      */
-    public static function main() : Void {
-        var testRunner : TestRunner = new TestRunner();
-
-        testRunner.add(new MacroConfiguratorTest());
-        testRunner.add(new URLDispatcherTest());
-        testRunner.run();
-
-        var testOutput : TextOutputWriter = new TextOutputWriter();
-
-        Lib.print(testOutput.writeResults(testRunner));
-
+    public function new() {
+        super();
+        this.addURLMapping(~/^\/$/, MockURLDispatcherController, "dispatchSimple");
+        this.addURLMapping(~/^\/([a-zA-Z]+)\/$/, MockURLDispatcherController, "dispatchParam");
+        this.addURLMapping(~/^\/([a-zA-Z]+)\/([0-9]+)\/$/, MockURLDispatcherController, "dispatchMultipleParam");
+        this.addURLMapping(~/^\/doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
     }
 
 }
