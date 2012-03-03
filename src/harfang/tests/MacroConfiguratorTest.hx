@@ -30,13 +30,6 @@ import harfang.tests.mocks.MockMacroController;
 class MacroConfiguratorTest extends TestCase {
 
     /**
-     * Default constructor
-     */
-    public function new() {
-        super();
-    }
-
-    /**
      * Test the MacroConfigurator's map method
      */
     @Test

@@ -42,8 +42,8 @@ class TestMain {
     public static function main() : Void {
         var testRunner : TestRunner = new TestRunner();
 
-        testRunner.add(new MacroConfiguratorTest());
-        testRunner.add(new URLDispatcherTest());
+        testRunner.add(MacroConfiguratorTest);
+        testRunner.add(URLDispatcherTest);
         testRunner.run();
 
         var testOutput : TextOutputWriter = new TextOutputWriter();

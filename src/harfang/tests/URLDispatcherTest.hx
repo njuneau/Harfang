@@ -22,6 +22,8 @@ package harfang.tests;
 import haxe.unit2.TestCase;
 
 import harfang.url.URLDispatcher;
+import harfang.exceptions.Exception;
+import harfang.exceptions.NotFoundException;
 import harfang.tests.mocks.MockURLDispatcherUserConfiguration;
 import harfang.tests.mocks.MockURLDispatcherController;
 
@@ -35,13 +37,17 @@ class URLDispatcherTest extends TestCase {
     private var configuration : MockURLDispatcherUserConfiguration;
 
     /**
-     * This method is called before each test is ran
+     * This method is called whem the test case is initialised.
      */
-    public override function prepare() : Void {
+    @BeforeClass
+    public function prepare() : Void {
         this.configuration = new MockURLDispatcherUserConfiguration();
         this.dispatcher = new URLDispatcher(this.configuration);
     }
 
+    /**
+     * Dispatch a simple URL, without parameters
+     */
     @Test
     public function testDispatchSimple() {
         this.dispatcher.dispatch("/");
@@ -55,6 +61,9 @@ class URLDispatcherTest extends TestCase {
         assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchSimple");
     }
 
+    /**
+     * Dispatch an URL, with a single parameter
+     */
     @Test
     public function testDispatchParam() {
         this.dispatcher.dispatch("/abc/");
@@ -71,6 +80,9 @@ class URLDispatcherTest extends TestCase {
         assertEquals(MockURLDispatcherController.getDispatchParamParam(), "abc");
     }
 
+    /**
+     * Dispatch a simple URL, with multiple parameters
+     */
     @Test
     public function testDispatchMultipleParam() {
         this.dispatcher.dispatch("/cDe/0988/");
@@ -90,8 +102,13 @@ class URLDispatcherTest extends TestCase {
         assertEquals(MockURLDispatcherController.getDispatchMutlipleParamParamB(), "0988");
     }
 
+    /**
+     * Dispatch the URL, but do not call controller method (stopped at
+     * handleRequest)
+     */
+    @Test
     public function testDoNotDispatch() {
-        this.dispatcher.dispatch("/doNotDispatch/");
+        this.dispatcher.dispatch("/_doNotDispatch/");
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -100,6 +117,27 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "doNotDispatch");
+    }
+
+    /**
+     * Dispatch an URL that is not mapped (trigger 404)
+     */
+    @Test
+    public function testDispatchNotFound() {
+        try {
+            this.dispatcher.dispatch("-+-+qwe");
+        } catch(e : Exception) {
+            assertEquals(Type.getClass(e), NotFoundException);
+        }
+
+        assertFalse(MockURLDispatcherController.getIsInit());
+
+        // No methods should be called
+        assertFalse(MockURLDispatcherController.getDispatchedSimple());
+        assertFalse(MockURLDispatcherController.getDispatchedParam());
+        assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
+        assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
+
     }
 
 }

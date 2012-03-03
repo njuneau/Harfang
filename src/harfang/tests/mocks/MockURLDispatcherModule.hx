@@ -36,7 +36,7 @@ class MockURLDispatcherModule extends AbstractModule {
         this.addURLMapping(~/^\/$/, MockURLDispatcherController, "dispatchSimple");
         this.addURLMapping(~/^\/([a-zA-Z]+)\/$/, MockURLDispatcherController, "dispatchParam");
         this.addURLMapping(~/^\/([a-zA-Z]+)\/([0-9]+)\/$/, MockURLDispatcherController, "dispatchMultipleParam");
-        this.addURLMapping(~/^\/doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
+        this.addURLMapping(~/^\/_doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
     }
 
 }

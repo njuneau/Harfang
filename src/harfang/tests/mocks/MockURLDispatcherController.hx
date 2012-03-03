@@ -27,17 +27,17 @@ import harfang.module.Module;
  */
 class MockURLDispatcherController extends AbstractController {
 
-    private static var isInit : Bool;
-    private static var dispatchedSimple : Bool;
+    private static var isInit : Bool = false;
+    private static var dispatchedSimple : Bool = false;
 
-    private static var dispatchedParam : Bool;
+    private static var dispatchedParam : Bool = false;
     private static var dispatchParamParam : String;
 
-    private static var dispatchedMutlipleParam : Bool;
+    private static var dispatchedMutlipleParam : Bool = false;
     private static var dispatchMutlipleParamParamA : String;
     private static var dispatchMutlipleParamParamB : String;
 
-    private static var dispatchedDoNotDispatch : Bool;
+    private static var dispatchedDoNotDispatch : Bool = false;
     private static var lastMethodName : String;
 
     /**
