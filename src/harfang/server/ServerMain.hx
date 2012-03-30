@@ -42,19 +42,26 @@ import server.UserConfiguration;
 class ServerMain {
 
     /**
-     * Program's entry point, starts up pretty much everything and handles
-     * the recieved request.
+     * Harfang's entry point - creates the user's configuration and launches the
+     * server with it.
      */
     public static function main() : Void {
-        // Load the configuration
-        var userConfiguration : UserConfiguration = new UserConfiguration();
+        // Load the configuration and start the application
+        launch(new UserConfiguration(), Web.getURI());
+    }
 
+    /**
+     * Launches the Harfang server (request processing, controller dispatching
+     * and error detection)
+     * @param userConfiguration The configuration to use in the server
+     * @param uri The URI that has been requested
+     */
+    public static function launch(userConfiguration : ServerConfiguration, uri : String) : Void {
         var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
-        var url : String = appendSlash(Web.getURI());
 
         try {
             // Dispatch the URL
-            urlDispatcher.dispatch(url);
+            urlDispatcher.dispatch(appendSlash(uri));
         } catch(he : HTTPException) {
             // Send HTTP error event
             userConfiguration.onHTTPError(he);

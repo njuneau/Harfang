@@ -17,40 +17,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.tests.mocks;
 
-#if php
-import php.Lib;
-#elseif neko
-import neko.Lib;
-#else
-#error "Unsupported platform"
-#end
+import harfang.module.AbstractModule;
 
-import haxe.unit2.TestRunner;
-import haxe.unit2.TestCase;
-import haxe.unit2.output.TextOutputWriter;
+import harfang.tests.mocks.MockServerConfigurationController;
 
 /**
- * This is Harfang's main test launcher. It will launch the unit tests.
+ * Mock module that goes with the server configuration mock
  */
-class TestMain {
+class MockServerConfigrationModule extends AbstractModule {
 
     /**
-     * Launch the tests
+     * Creates the mock module
      */
-    public static function main() : Void {
-        var testRunner : TestRunner = new TestRunner();
-
-        testRunner.add(MacroConfiguratorTest);
-        testRunner.add(URLDispatcherTest);
-        testRunner.add(ServerConfigurationTest);
-        testRunner.run();
-
-        var testOutput : TextOutputWriter = new TextOutputWriter();
-
-        Lib.print(testOutput.writeResults(testRunner));
-
+    public function new() {
+        super();
+        this.addURLMapping(~/^\/$/, MockServerConfigurationController, "handleNormal");
+        this.addURLMapping(~/^\/error\/$/, MockServerConfigurationController, "handleServerError");
+        this.addURLMapping(~/^\/303\/$/, MockServerConfigurationController, "handleHTTPError");
     }
 
 }
