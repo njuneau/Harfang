@@ -58,10 +58,10 @@ class URLDispatcher {
      * Dipatches the URL to the correct view
      * @param url The URL to process
      */
-    public function dispatch(url:String) : Void {
-        this.currentURL = url;
-        var dispatched:Bool = false;
-        var moduleIterator:Iterator<Module> = this.serverConfiguration.getModules().iterator();
+    public function dispatch(url : String) : Void {
+        this.currentURL = this.appendSlash(url);
+        var dispatched : Bool = false;
+        var moduleIterator : Iterator<Module> = this.serverConfiguration.getModules().iterator();
 
         // Scan all the URLS
         while(!dispatched && moduleIterator.hasNext()) {
@@ -127,5 +127,23 @@ class URLDispatcher {
 
         // Return the status of the search
         return foundURL;
+    }
+
+
+    /**
+     * Appends a slash to the URL if it doesn't have one at the end.
+     * It won't appear in browsers, but it will simplify the regular expressions
+     * a lot.
+     *
+     * @param url The url in which to append the slash
+     * @return The url, with the trailing slash
+     */
+    private function appendSlash(url : String) : String {
+
+        if(url.charAt(url.length - 1) != "/") {
+            url += "/";
+        }
+
+        return url;
     }
 }

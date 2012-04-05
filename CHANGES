@@ -1,0 +1,15 @@
+release-0.2
+===============
+
+* URL mapping macro/metadata configurator
+* Test suite
+
+release-0.1 (2011-08-22)
+===============
+
+* Initial release
+* Default implementations of the framework interfaces
+  * EReg implementation of the URL mapping
+  * Default Controller implementation
+  * Default Configuration implementation
+* Server-side events detection

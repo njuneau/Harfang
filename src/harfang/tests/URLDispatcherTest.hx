@@ -62,6 +62,23 @@ class URLDispatcherTest extends TestCase {
     }
 
     /**
+     * Same as disptach a simple URL, makes sure that the slash is appended at
+     * the end of the URL.
+     */
+    @Test
+    public function testDispatchSlash() {
+        this.dispatcher.dispatch("");
+        assertTrue(MockURLDispatcherController.getIsInit());
+
+        // Make sure correct method is dispatched
+        assertFalse(MockURLDispatcherController.getDispatchedParam());
+        assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
+        assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
+        assertTrue(MockURLDispatcherController.getDispatchedSimple());
+        assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchSimple");
+    }
+
+    /**
      * Dispatch an URL, with a single parameter
      */
     @Test

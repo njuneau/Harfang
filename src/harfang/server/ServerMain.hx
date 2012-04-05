@@ -61,7 +61,7 @@ class ServerMain {
 
         try {
             // Dispatch the URL
-            urlDispatcher.dispatch(appendSlash(uri));
+            urlDispatcher.dispatch(uri);
         } catch(he : HTTPException) {
             // Send HTTP error event
             userConfiguration.onHTTPError(he);
@@ -73,22 +73,5 @@ class ServerMain {
 
         // Close the application
         userConfiguration.onClose();
-    }
-
-    /**
-     * Appends a slash to the URL if it doesn't have one at the end.
-     * It won't appear in browsers, but it will simplify the regular expressions
-     * a lot.
-     *
-     * @param url The url in which to append the slash
-     * @return The url, with the trailing slash
-     */
-    private static function appendSlash(url : String) : String {
-
-        if(url.charAt(url.length - 1) != "/") {
-            url += "/";
-        }
-
-        return url;
     }
 }
