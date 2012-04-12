@@ -1,5 +1,5 @@
 // Harfang - A Web development framework
-// Copyright (C) 2011  Nicolas Juneau <n.juneau@gmail.com>
+// Copyright (C) 2011-2012  Nicolas Juneau <n.juneau@gmail.com>
 // Full copyright notice can be found in the project root's "COPYRIGHT" file
 //
 // This file is part of Harfang.

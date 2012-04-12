@@ -1,5 +1,5 @@
 // Harfang - A Web development framework
-// Copyright (C) 2011  Nicolas Juneau <n.juneau@gmail.com>
+// Copyright (C) 2011-2012  Nicolas Juneau <n.juneau@gmail.com>
 // Full copyright notice can be found in the project root's "COPYRIGHT" file
 //
 // This file is part of Harfang.
@@ -26,6 +26,12 @@ import haxe.macro.Type;
 /**
  * The macro configurator is used to automatically configure modules at
  * compile time using haXe macros and metadata.
+ *
+ * The MacroConfigurator scans a controller for method metadata. It will use
+ * the metadata of a controller's method to map it to a URL. The
+ * MacroConfigurator depends on AbstractModule's addURLMapping method. Thus, it
+ * can only be used with AbstractModule or a Module implementation that supports
+ * the same addURLMapping method.
  */
 class MacroConfigurator {
 
@@ -37,9 +43,9 @@ class MacroConfigurator {
      * @param clExpr The controller's class (must be an implementation of the
      * Controller interface)
      * @param metaTag The metadata tag that will be used to extract the URL
-     * regular expression.
+     * regular expression from a controller method.
      * @param prefix Optional parameter that defines a string to prefix all of
-     * the controller's URL. In order for this to work, you URL meta tag must
+     * the controller's URL. In order for this to work, the URL meta tag must
      * have 3 parameters : the URL regular expression, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.

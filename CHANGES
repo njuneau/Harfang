@@ -2,6 +2,8 @@ release-0.2
 ===============
 
 * URL mapping macro/metadata configurator
+* Controller interface now has controller method's name in handleRequest parameters
+* Controllers are now instanciated only if Reflect can find the mapped method
 * Test suite
 
 release-0.1 (2011-08-22)
