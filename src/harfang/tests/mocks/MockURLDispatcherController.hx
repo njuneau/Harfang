@@ -45,15 +45,7 @@ class MockURLDispatcherController extends AbstractController {
      */
     public override function init(module : Module) {
         super.init(module);
-        dispatchedSimple = false;
-        dispatchedParam = false;
-        dispatchParamParam = null;
-        dispatchedMutlipleParam = false;
-        dispatchMutlipleParamParamA = null;
-        dispatchMutlipleParamParamB = null;
-        dispatchedDoNotDispatch = false;
-        lastMethodName = null;
-        isInit = true;
+        MockURLDispatcherController.isInit = true;
     }
 
     /**
@@ -61,7 +53,7 @@ class MockURLDispatcherController extends AbstractController {
      * @param controllerMethodName The controller method what will be called
      */
     public override function handleRequest(controllerMethodName : String) : Bool {
-        lastMethodName = controllerMethodName;
+        MockURLDispatcherController.lastMethodName = controllerMethodName;
 
         var dispatch : Bool = true;
 
@@ -76,24 +68,24 @@ class MockURLDispatcherController extends AbstractController {
      * Dispatch a simple request
      */
     public function dispatchSimple() : Void {
-        dispatchedSimple = true;
+        MockURLDispatcherController.dispatchedSimple = true;
     }
 
     /**
      * Dispatch a request with a parameter
      */
     public function dispatchParam(param : String) : Void {
-        dispatchedParam = true;
-        dispatchParamParam = param;
+        MockURLDispatcherController.dispatchedParam = true;
+        MockURLDispatcherController.dispatchParamParam = param;
     }
 
     /**
      * Dispatch a request with multiple parameters
      */
     public function dispatchMultipleParam(paramA : String, paramB : String) {
-        dispatchedMutlipleParam = true;
-        dispatchMutlipleParamParamA = paramA;
-        dispatchMutlipleParamParamB = paramB;
+        MockURLDispatcherController.dispatchedMutlipleParam = true;
+        MockURLDispatcherController.dispatchMutlipleParamParamA = paramA;
+        MockURLDispatcherController.dispatchMutlipleParamParamB = paramB;
     }
 
     /**
@@ -101,7 +93,7 @@ class MockURLDispatcherController extends AbstractController {
      * called because we prevent so in the handleRequest method.
      */
     public function doNotDispatch() : Void {
-        dispatchedDoNotDispatch = true;
+        MockURLDispatcherController.dispatchedDoNotDispatch = true;
     }
 
     /**************************************************************************/
@@ -112,63 +104,78 @@ class MockURLDispatcherController extends AbstractController {
      * Indicates if the controller was call at initialisation
      */
     public static function getIsInit() : Bool {
-        return isInit;
+        return MockURLDispatcherController.isInit;
+    }
+
+    /**
+     * Resets all test variables
+     */
+    public static function reset() : Void {
+        MockURLDispatcherController.dispatchedSimple = false;
+        MockURLDispatcherController.dispatchedParam = false;
+        MockURLDispatcherController.dispatchParamParam = null;
+        MockURLDispatcherController.dispatchedMutlipleParam = false;
+        MockURLDispatcherController.dispatchMutlipleParamParamA = null;
+        MockURLDispatcherController.dispatchMutlipleParamParamB = null;
+        MockURLDispatcherController.dispatchedDoNotDispatch = false;
+        MockURLDispatcherController.lastMethodName = null;
+        MockURLDispatcherController.isInit = false;
     }
 
     /**
      * Indicates if "dispatchSimple" was called
      */
     public static function getDispatchedSimple() : Bool {
-        return dispatchedSimple;
+        return MockURLDispatcherController.dispatchedSimple;
     }
 
     /**
      * Indicates if "dispatchParam" was called
      */
     public static function getDispatchedParam() : Bool {
-        return dispatchedParam;
+        return MockURLDispatcherController.dispatchedParam;
     }
 
     /**
      * Returns the value of the parameter that was given to "dispatchParam"
      */
     public static function getDispatchParamParam() : String {
-        return dispatchParamParam;
+        return MockURLDispatcherController.dispatchParamParam;
     }
 
     /**
      * Indicates if "dispatchMultipleParam" was called
      */
     public static function getDispatchedMultipleParam() : Bool {
-        return dispatchedMutlipleParam;
+        return MockURLDispatcherController.dispatchedMutlipleParam;
     }
 
     /**
      * Returns the value of the first parameter that was given to "dispatchMutlipleParam"
      */
     public static function getDispatchMutlipleParamParamA() : String {
-        return dispatchMutlipleParamParamA;
+        return MockURLDispatcherController.dispatchMutlipleParamParamA;
     }
 
     /**
      * Returns the value of the second parameter that was given to "dispatchMutlipleParam"
      */
     public static function getDispatchMutlipleParamParamB() : String {
-        return dispatchMutlipleParamParamB;
+        return MockURLDispatcherController.dispatchMutlipleParamParamB;
     }
 
     /**
      * Indicates if the "doNotDispatch" method was called
      */
     public static function getDispatchedDoNotDispatch() : Bool {
-        return dispatchedDoNotDispatch;
+        return MockURLDispatcherController.dispatchedDoNotDispatch;
     }
 
     /**
      * Returns the last method name that was sent to handleRequest
      */
     public static function getLastMethodName() : String {
-        return lastMethodName;
+        return MockURLDispatcherController.lastMethodName;
     }
 
 }

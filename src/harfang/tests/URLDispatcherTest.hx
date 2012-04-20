@@ -46,11 +46,20 @@ class URLDispatcherTest extends TestCase {
     }
 
     /**
+     * Resets the test controller before each test
+     */
+    @Before
+    public function before() : Void {
+        MockURLDispatcherController.reset();
+    }
+
+    /**
      * Dispatch a simple URL, without parameters
      */
     @Test
     public function testDispatchSimple() {
         this.dispatcher.dispatch("/");
+
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -154,7 +163,6 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedParam());
         assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
-
     }
 
 }
