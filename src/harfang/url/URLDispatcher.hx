@@ -24,6 +24,7 @@ import harfang.controller.Controller;
 import harfang.configuration.ServerConfiguration;
 import harfang.exceptions.NotFoundException;
 import harfang.exceptions.ServerErrorException;
+import harfang.server.event.ServerEventListener;
 
 /**
  * This class handles the request made to your application
@@ -89,6 +90,7 @@ class URLDispatcher {
         var controller : Controller = null;
         var controllerMethod : Dynamic = null;
         var controllerMethodParams : Array<String> = null;
+        var serverEventListeners : Iterable<ServerEventListener> = this.serverConfiguration.getServerEventListeners();
 
         // Try matching a pattern
         while(!foundURL && mappingIterator.hasNext()) {
@@ -99,8 +101,10 @@ class URLDispatcher {
 
         // Call the controller
         if(foundURL) {
-            // Call the dispatch event
-            this.serverConfiguration.onDispatch(currentMapping);
+            // Call the dispatch event on all listeners
+            for(listener in serverEventListeners) {
+                listener.onDispatch(currentMapping);
+            }
 
             // Create the controller instance and find its function
             controller = Type.createEmptyInstance(currentMapping.getControllerClass());

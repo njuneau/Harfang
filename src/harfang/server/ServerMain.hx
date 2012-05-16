@@ -31,6 +31,7 @@ import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
 import harfang.exceptions.Exception;
 import harfang.exceptions.HTTPException;
+import harfang.server.event.ServerEventListener;
 
 import server.UserConfiguration;
 
@@ -58,17 +59,22 @@ class ServerMain {
      */
     public static function launch(userConfiguration : ServerConfiguration, uri : String) : Void {
         var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
+        var serverEventListeners : Iterable<ServerEventListener> = userConfiguration.getServerEventListeners();
 
         try {
             // Dispatch the URL
             urlDispatcher.dispatch(uri);
         } catch(he : HTTPException) {
-            // Send HTTP error event
-            userConfiguration.onHTTPError(he);
+            // Send HTTP error event to all listeners
+            for(listener in serverEventListeners) {
+                listener.onHTTPError(he);
+            }
         } catch(e : Exception) {
             // Error does not lead to a 404 or 500 error and may need further
             // processing
-            userConfiguration.onError(e);
+            for(listener in serverEventListeners) {
+                listener.onError(e);
+            }
         }
 
         // Close the application

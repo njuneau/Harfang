@@ -23,6 +23,7 @@ import harfang.module.Module;
 import harfang.url.URLMapping;
 import harfang.exceptions.Exception;
 import harfang.exceptions.HTTPException;
+import harfang.server.event.ServerEventListener;
 
 
 /**
@@ -32,37 +33,21 @@ import harfang.exceptions.HTTPException;
 interface ServerConfiguration {
 
     /**
+     * Init event - called when the server starts
+     */
+    public function init() : Void;
+
+    /**
      * Returns the modules contained in the application
      * @return The modules contained in the application
      */
     public function getModules() : Iterable<Module>;
 
     /**
-     * Dispatch event - called when the queried URL corresponds to a controller
-     * (the URL has been dispatched). Call done before the controller is called
-     *
-     * @param urlMapping The URL mapping that was matched
+     * Returns the components that listens to server events
+     * @return The components that listens to server events
      */
-    public function onDispatch(urlMapping : URLMapping) : Void;
-
-    /**
-     * HTTP Error event - called when the server encounters a HTTP error
-     * during URL dispatching or controller operations. Usually, these are
-     * 404 or 500 errors.
-     *
-     * @param exception The exception that was thrown
-     */
-    public function onHTTPError(exception : HTTPException) : Void;
-
-    /**
-     * Error event - called when the server encounters an error during URL
-     * dispatching or controller operations that are not covered by the 404
-     * and 500 errors. (Although the 500 error is pretty broad, the user could
-     * throw other types of exceptions that would lead to this event)
-     *
-     * @param exception The exception that was thrown
-     */
-    public function onError(exception : Exception) : Void;
+    public function getServerEventListeners() : Iterable<ServerEventListener>;
 
     /**
      * Close event - called when the server closes

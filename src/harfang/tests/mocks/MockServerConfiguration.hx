@@ -46,12 +46,20 @@ class MockServerConfiguration extends AbstractServerConfiguration {
      */
     public function new() {
         super();
+    }
+
+    /**
+     * Initialise the configuration
+     */
+    public override function init() {
+        super.init();
         this.addModule(new MockServerConfigrationModule());
         this.sequence = 0;
         this.calledOnDispatch = 0;
         this.calledOnHTTPError = 0;
         this.calledOnError = 0;
         this.calledOnClose = 0;
+
     }
 
     public override function onDispatch(urlMapping : URLMapping) : Void {

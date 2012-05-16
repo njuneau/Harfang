@@ -42,6 +42,7 @@ class URLDispatcherTest extends TestCase {
     @BeforeClass
     public function prepare() : Void {
         this.configuration = new MockURLDispatcherUserConfiguration();
+        this.configuration.init();
         this.dispatcher = new URLDispatcher(this.configuration);
     }
 

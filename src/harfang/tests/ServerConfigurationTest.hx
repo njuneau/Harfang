@@ -41,6 +41,7 @@ class ServerConfigurationTest extends TestCase {
     @Before
     public function setup() {
         this.configuration = new MockServerConfiguration();
+        this.configuration.init();
     }
 
     /**

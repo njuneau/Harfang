@@ -34,6 +34,13 @@ class MockURLDispatcherUserConfiguration extends AbstractServerConfiguration {
      */
     public function new() {
         super();
+    }
+
+    /**
+     * Add the modules in init
+     */
+    public override function init() {
+        super.init();
         this.addModule(new MockURLDispatcherModule());
     }
 

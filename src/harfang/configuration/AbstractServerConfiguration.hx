@@ -23,13 +23,14 @@ import harfang.url.URLMapping;
 import harfang.exceptions.Exception;
 import harfang.exceptions.HTTPException;
 import harfang.module.Module;
+import harfang.server.event.ServerEventListener;
 
 /**
  * Provides a default implementation for the ServerConfiguration interface,
  * providing helper functions so you don't have to worry about how the data
  * is contained behind the scenes.
  */
-class AbstractServerConfiguration implements ServerConfiguration {
+class AbstractServerConfiguration implements ServerConfiguration, implements ServerEventListener {
 
     /**************************************************************************/
     /*                             PRIVATE FIELDS                             */
@@ -38,6 +39,9 @@ class AbstractServerConfiguration implements ServerConfiguration {
     // The list of modules of the server side of your application
     private var modules : List<Module>;
 
+    // The list of server event listeners
+    private var serverEventListeners : List<ServerEventListener>;
+
     /**************************************************************************/
     /*                            PUBLIC METHODS                              */
     /**************************************************************************/
@@ -45,8 +49,15 @@ class AbstractServerConfiguration implements ServerConfiguration {
     /**
      * Constructs a default implementation of the server configuration
      */
-    public function new() {
+    public function new() {}
+
+    /**
+     * Init event - called when the server starts
+     */
+    public function init() {
         this.modules = new List<Module>();
+        this.serverEventListeners = new List<ServerEventListener>();
+        this.serverEventListeners.add(this);
     }
 
     /**
@@ -92,6 +103,10 @@ class AbstractServerConfiguration implements ServerConfiguration {
      */
     public function getModules():Iterable<Module> {
         return this.modules;
+    }
+
+    public function getServerEventListeners() : Iterable<ServerEventListener> {
+        return this.serverEventListeners;
     }
 
     /**************************************************************************/
