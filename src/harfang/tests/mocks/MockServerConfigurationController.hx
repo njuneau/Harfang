@@ -28,9 +28,9 @@ import harfang.exceptions.HTTPException;
  */
 class MockServerConfigurationController extends AbstractController {
 
-    public static var SERVER_ERROR_MESSAGE : String = "!!!";
-    public static var ERROR_MESSAGE_303 : String = "Unothorized";
-    public static var ERROR_CODE_303 : Int = 303;
+    public static inline var SERVER_ERROR_MESSAGE : String = "!!!";
+    public static inline var ERROR_MESSAGE_303 : String = "Unothorized";
+    public static inline var ERROR_CODE_303 : Int = 303;
 
     /**
      * Normal handle, does nothing.

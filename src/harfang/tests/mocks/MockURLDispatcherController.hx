@@ -40,6 +40,8 @@ class MockURLDispatcherController extends AbstractController {
     private static var dispatchedDoNotDispatch : Bool = false;
     private static var lastMethodName : String;
 
+    private static var calledPostRequest : Bool = false;
+
     /**
      * Init the module
      */
@@ -62,6 +64,13 @@ class MockURLDispatcherController extends AbstractController {
         }
 
         return dispatch;
+    }
+
+    /**
+     * Post-request call
+     */
+    public override function handlePostRequest() : Void {
+        MockURLDispatcherController.calledPostRequest = true;
     }
 
     /**
@@ -120,6 +129,7 @@ class MockURLDispatcherController extends AbstractController {
         MockURLDispatcherController.dispatchedDoNotDispatch = false;
         MockURLDispatcherController.lastMethodName = null;
         MockURLDispatcherController.isInit = false;
+        MockURLDispatcherController.calledPostRequest = false;
     }
 
     /**
@@ -176,6 +186,10 @@ class MockURLDispatcherController extends AbstractController {
      */
     public static function getLastMethodName() : String {
         return MockURLDispatcherController.lastMethodName;
+    }
+
+    public static function getCalledPostRequest() : Bool  {
+        return MockURLDispatcherController.calledPostRequest;
     }
 
 }

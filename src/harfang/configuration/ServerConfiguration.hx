@@ -28,7 +28,7 @@ import harfang.server.event.ServerEventListener;
 
 /**
  * The configuration specifies pretty much everything that the framework needs
- * to work. It is a singleton class.
+ * to work.
  */
 interface ServerConfiguration {
 

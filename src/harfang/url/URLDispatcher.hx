@@ -27,7 +27,14 @@ import harfang.exceptions.ServerErrorException;
 import harfang.server.event.ServerEventListener;
 
 /**
- * This class handles the request made to your application
+ * This class handles the request made to your application. The dispatcher
+ * scans for a method that may be matched to the URL it has been told to
+ * dispatch. It does do by asking each of the URL mappings it has if they can
+ * resolve the given URL.
+ *
+ * Once a mapping reports that it matches an URL, the dispatcher constructs the
+ * Controller associated to the URL in the mapping and asks it to handle the
+ * request.
  */
 class URLDispatcher {
 
@@ -45,7 +52,6 @@ class URLDispatcher {
     /**
      * Constructor
      * @param serverConfiguration The server's configuration
-     * @param modules The modules you want this dispatcher to handle
      */
     public function new(serverConfiguration : ServerConfiguration) {
         this.serverConfiguration = serverConfiguration;
@@ -56,7 +62,7 @@ class URLDispatcher {
     /**************************************************************************/
 
     /**
-     * Dipatches the URL to the correct view
+     * Dipatches the URL to the correct controller
      * @param url The URL to process
      */
     public function dispatch(url : String) : Void {
@@ -123,8 +129,12 @@ class URLDispatcher {
                             currentMapping.extractParameters(this.currentURL)
                     );
                 }
+
+                // Post request
+                controller.handlePostRequest();
             } else {
-                // Controller function was not found - error!
+                // Controller function was not found - this should not be
+                // happening. Throw an error!
                 throw new ServerErrorException();
             }
         }
@@ -136,8 +146,7 @@ class URLDispatcher {
 
     /**
      * Appends a slash to the URL if it doesn't have one at the end.
-     * It won't appear in browsers, but it will simplify the regular expressions
-     * a lot.
+     * It won't appear in browsers, but it will unify the regular expressions.
      *
      * @param url The url in which to append the slash
      * @return The url, with the trailing slash
