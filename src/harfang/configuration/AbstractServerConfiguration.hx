@@ -29,6 +29,9 @@ import harfang.server.event.ServerEventListener;
  * Provides a default implementation for the ServerConfiguration interface,
  * providing helper functions so you don't have to worry about how the data
  * is contained behind the scenes.
+ *
+ * By default, this implementation of the ServerConfiguration is a
+ * ServerEventListener, for convenience.
  */
 class AbstractServerConfiguration implements ServerConfiguration, implements ServerEventListener {
 
@@ -117,7 +120,16 @@ class AbstractServerConfiguration implements ServerConfiguration, implements Ser
      * Adds a server module in the configuration's list of modules
      * @param module The module to add in the list
      */
-    private function addModule(module : Module) {
+    private function addModule(module : Module) : Void {
         this.modules.add(module);
+    }
+
+    /**
+     * Adds a server event listener in the configuration's list of event
+     * listeners
+     * @param The listener to add to the list
+     */
+    private function addServerEventListener(listener : ServerEventListener) : Void {
+        this.serverEventListeners.add(listener);
     }
 }
