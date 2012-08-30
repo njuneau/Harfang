@@ -17,14 +17,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
+package harfang.test.serverconfiguration.mock;
 
 import harfang.configuration.AbstractServerConfiguration;
 import harfang.url.URLMapping;
-import harfang.exceptions.Exception;
-import harfang.exceptions.HTTPException;
-
-import harfang.tests.mocks.MockServerConfigrationModule;
+import harfang.exception.Exception;
+import harfang.exception.HTTPException;
 
 /**
  * The mock server condifuration is used to test the different behaviours of

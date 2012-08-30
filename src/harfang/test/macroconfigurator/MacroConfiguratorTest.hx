@@ -17,12 +17,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.test.macroconfigurator;
 
 import haxe.unit2.TestCase;
 
-import harfang.tests.mocks.MockMacroModule;
-import harfang.tests.mocks.MockMacroController;
+import harfang.test.macroconfigurator.mock.MockMacroModule;
+import harfang.test.macroconfigurator.mock.MockMacroController;
 
 /**
  * This is the MacroConfigurator test case

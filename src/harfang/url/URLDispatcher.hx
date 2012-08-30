@@ -22,8 +22,8 @@ package harfang.url;
 import harfang.module.Module;
 import harfang.controller.Controller;
 import harfang.configuration.ServerConfiguration;
-import harfang.exceptions.NotFoundException;
-import harfang.exceptions.ServerErrorException;
+import harfang.exception.NotFoundException;
+import harfang.exception.ServerErrorException;
 import harfang.server.event.ServerEventListener;
 
 /**

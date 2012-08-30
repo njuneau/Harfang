@@ -17,25 +17,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
+package harfang.exception;
 
-import harfang.module.AbstractModule;
-
-import harfang.tests.mocks.MockServerConfigurationController;
+import harfang.exception.HTTPException;
 
 /**
- * Mock module that goes with the server configuration mock
+ * The 505 exception is called whenever something went wrong server-side.
  */
-class MockServerConfigrationModule extends AbstractModule {
+class ServerErrorException extends HTTPException {
 
     /**
-     * Creates the mock module
+     * Creates a new 500 HTTP error
+     * @param message The message you want to show to the user (optional)
      */
-    public function new() {
-        super();
-        this.addURLMapping(~/^\/$/, MockServerConfigurationController, "handleNormal");
-        this.addURLMapping(~/^\/error\/$/, MockServerConfigurationController, "handleServerError");
-        this.addURLMapping(~/^\/303\/$/, MockServerConfigurationController, "handleHTTPError");
-    }
+    public function new(? message : String) {
+        super("Internal server error", 500);
 
+        if(message != null) {
+            this.setMessage(message);
+        }
+    }
 }

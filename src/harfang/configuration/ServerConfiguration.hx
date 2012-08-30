@@ -21,8 +21,8 @@ package harfang.configuration;
 
 import harfang.module.Module;
 import harfang.url.URLMapping;
-import harfang.exceptions.Exception;
-import harfang.exceptions.HTTPException;
+import harfang.exception.Exception;
+import harfang.exception.HTTPException;
 import harfang.server.event.ServerEventListener;
 
 

@@ -17,24 +17,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.exceptions;
+package harfang.test.urldispatcher.mock;
 
-import harfang.exceptions.HTTPException;
+import harfang.configuration.AbstractServerConfiguration;
 
 /**
- * The 505 exception is called whenever something went wrong server-side.
+ * This is a mock server configuration to test the various functionnalities of
+ * the framework. It is used in the URL dispatcher test.
  */
-class ServerErrorException extends HTTPException {
+class MockURLDispatcherUserConfiguration extends AbstractServerConfiguration {
 
     /**
-     * Creates a new 500 HTTP error
-     * @param message The message you want to show to the user (optional)
+     * Create the new mock
      */
-    public function new(? message : String) {
-        super("Internal server error", 500);
-
-        if(message != null) {
-            this.setMessage(message);
-        }
+    public function new() {
+        super();
     }
+
+    /**
+     * Add the modules in init
+     */
+    public override function init() {
+        super.init();
+        this.addModule(new MockURLDispatcherModule());
+    }
+
 }

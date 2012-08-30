@@ -3,4 +3,4 @@
 #--------------------------------------------------------------#
 -neko out/test.n
 -cp src/
--main harfang.tests.TestMain
+-main harfang.test.TestMain

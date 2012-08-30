@@ -17,28 +17,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.exceptions;
+package harfang.test.macroconfigurator.mock;
+
+import harfang.module.AbstractModule;
+import harfang.configuration.MacroConfigurator;
 
 /**
- * An HTTP exception represents an error that must be communicated down to the
- * browser (400 error, 500 error etc.)
+ * Mock module to test the macro configurator
  */
-class HTTPException extends Exception {
-
-    private var errorCode : Int;
+class MockMacroModule extends AbstractModule {
 
     /**
-     * Construcs a new HTTP exception
-     * @param message The error message
-     * @param errorCode The HTTP error code
-     * @param template The HTML template to render the error
+     * Auto-configure using macros
      */
-    public function new(message : String, errorCode : Int) {
-        super(message);
-        this.errorCode = errorCode;
+    public function new() {
+        super();
+
+        MacroConfigurator.mapController(this, MockMacroController, "URL", "MYPREFIX");
     }
 
-    public function getErrorCode() : Int {
-        return this.errorCode;
-    }
 }

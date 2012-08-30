@@ -17,31 +17,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
-
-import harfang.configuration.AbstractServerConfiguration;
-
-import harfang.tests.mocks.MockURLDispatcherModule;
+package harfang.exception;
 
 /**
- * This is a mock server configuration to test the various functionnalities of
- * the framework. It is used in the URL dispatcher test.
+ * An HTTP exception represents an error that must be communicated down to the
+ * browser (400 error, 500 error etc.)
  */
-class MockURLDispatcherUserConfiguration extends AbstractServerConfiguration {
+class HTTPException extends Exception {
+
+    private var errorCode : Int;
 
     /**
-     * Create the new mock
+     * Construcs a new HTTP exception
+     * @param message The error message
+     * @param errorCode The HTTP error code
+     * @param template The HTML template to render the error
      */
-    public function new() {
-        super();
+    public function new(message : String, errorCode : Int) {
+        super(message);
+        this.errorCode = errorCode;
     }
 
-    /**
-     * Add the modules in init
-     */
-    public override function init() {
-        super.init();
-        this.addModule(new MockURLDispatcherModule());
+    public function getErrorCode() : Int {
+        return this.errorCode;
     }
-
 }

@@ -17,15 +17,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.test.urldispatcher;
 
 import haxe.unit2.TestCase;
 
 import harfang.url.URLDispatcher;
-import harfang.exceptions.Exception;
-import harfang.exceptions.NotFoundException;
-import harfang.tests.mocks.MockURLDispatcherUserConfiguration;
-import harfang.tests.mocks.MockURLDispatcherController;
+import harfang.exception.Exception;
+import harfang.exception.NotFoundException;
+import harfang.test.urldispatcher.mock.MockURLDispatcherUserConfiguration;
+import harfang.test.urldispatcher.mock.MockURLDispatcherController;
 
 /**
  * This tests the URL dispatcher - make sure it's able to dispatch calls to the

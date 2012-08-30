@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.test;
 
 #if php
 import php.Lib;
@@ -29,7 +29,13 @@ import neko.Lib;
 
 import haxe.unit2.TestRunner;
 import haxe.unit2.TestCase;
+import haxe.unit2.output.OutputWriter;
 import haxe.unit2.output.TextOutputWriter;
+import haxe.unit2.output.XHTMLOutputWriter;
+
+import harfang.test.macroconfigurator.MacroConfiguratorTest;
+import harfang.test.urldispatcher.URLDispatcherTest;
+import harfang.test.serverconfiguration.ServerConfigurationTest;
 
 /**
  * This is Harfang's main test launcher. It will launch the unit tests.
@@ -47,7 +53,11 @@ class TestMain {
         testRunner.add(ServerConfigurationTest);
         testRunner.run();
 
-        var testOutput : TextOutputWriter = new TextOutputWriter();
+        #if php
+        var testOutput : OutputWriter = new XHTMLOutputWriter();
+        #else
+        var testOutput : OutputWriter = new TextOutputWriter();
+        #end
 
         Lib.print(testOutput.writeResults(testRunner));
 

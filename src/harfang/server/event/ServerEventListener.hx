@@ -20,8 +20,8 @@
 package harfang.server.event;
 
 import harfang.url.URLMapping;
-import harfang.exceptions.HTTPException;
-import harfang.exceptions.Exception;
+import harfang.exception.HTTPException;
+import harfang.exception.Exception;
 
 /**
  * A server event listener will receive signals from the framework regarding

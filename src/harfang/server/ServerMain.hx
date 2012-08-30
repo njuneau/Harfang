@@ -29,8 +29,8 @@ import neko.Web;
 
 import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
-import harfang.exceptions.Exception;
-import harfang.exceptions.HTTPException;
+import harfang.exception.Exception;
+import harfang.exception.HTTPException;
 import harfang.server.event.ServerEventListener;
 
 import server.UserConfiguration;

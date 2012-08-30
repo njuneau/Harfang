@@ -17,25 +17,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.exceptions;
+package harfang.test.urldispatcher.mock;
 
-import harfang.exceptions.HTTPException;
+import harfang.module.AbstractModule;
 
 /**
- * The 404 exception is thrown whenever something is not found, server-side.
+ * Module that is used for the URL dispatcher test
  */
-class NotFoundException extends HTTPException {
+class MockURLDispatcherModule extends AbstractModule {
 
     /**
-     * Creates a new 404 not found HTTP error
-     * @param message The message you want to show to the user (optional)
+     * Maps the module's controllers to URLs
      */
-    public function new(? message : String) {
-        super("The requested resource could not be found", 404);
-
-        // If no default message is sent, put a default one
-        if(message != null) {
-            this.setMessage(message);
-        }
+    public function new() {
+        super();
+        this.addURLMapping(~/^\/$/, MockURLDispatcherController, "dispatchSimple");
+        this.addURLMapping(~/^\/([a-zA-Z]+)\/$/, MockURLDispatcherController, "dispatchParam");
+        this.addURLMapping(~/^\/([a-zA-Z]+)\/([0-9]+)\/$/, MockURLDispatcherController, "dispatchMultipleParam");
+        this.addURLMapping(~/^\/_doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
     }
+
 }

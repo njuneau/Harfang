@@ -17,11 +17,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
+package harfang.test.serverconfiguration.mock;
 
 import harfang.controller.AbstractController;
-import harfang.exceptions.Exception;
-import harfang.exceptions.HTTPException;
+import harfang.exception.Exception;
+import harfang.exception.HTTPException;
 
 /**
  * Mock controller to use with the server configuration test

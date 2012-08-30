@@ -17,37 +17,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.exceptions;
+package harfang.exception;
+
+import harfang.exception.HTTPException;
 
 /**
- * An exception is thrown when an error occurs somewhere in the application and
- * the message is displayed.
+ * The 404 exception is thrown whenever something is not found, server-side.
  */
-class Exception {
-
-    private var message : String;
+class NotFoundException extends HTTPException {
 
     /**
-     * Creates a new exception
-     * @param message The error message
+     * Creates a new 404 not found HTTP error
+     * @param message The message you want to show to the user (optional)
      */
-    public function new(message : String) {
-        this.message = message;
-    }
+    public function new(? message : String) {
+        super("The requested resource could not be found", 404);
 
-    /**
-     * Sets the error message
-     * @param message The error message
-     */
-    private function setMessage(message : String) : Void {
-        this.message = message;
-    }
-
-    /**
-     * Returns the Exception's message
-     * @return the Exception's message
-     */
-    public function getMessage() : String {
-        return this.message;
+        // If no default message is sent, put a default one
+        if(message != null) {
+            this.setMessage(message);
+        }
     }
 }

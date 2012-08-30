@@ -17,14 +17,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests;
+package harfang.test.serverconfiguration;
 
 import haxe.unit2.TestCase;
 
 import harfang.server.ServerMain;
 
-import harfang.tests.mocks.MockServerConfiguration;
-import harfang.tests.mocks.MockServerConfigurationController;
+import harfang.test.serverconfiguration.mock.MockServerConfiguration;
+import harfang.test.serverconfiguration.mock.MockServerConfigurationController;
 
 /**
  * The server configuration test tests the behaviours of the configuration

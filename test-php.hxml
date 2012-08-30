@@ -3,4 +3,4 @@
 #--------------------------------------------------------------#
 -php out/phptest
 -cp src/
--main harfang.tests.TestMain
+-main harfang.test.TestMain

@@ -17,26 +17,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
-
-import harfang.module.AbstractModule;
-
-import harfang.tests.mocks.MockURLDispatcherController;
+package harfang.exception;
 
 /**
- * Module that is used for the URL dispatcher test
+ * An exception is thrown when an error occurs somewhere in the application and
+ * the message is displayed.
  */
-class MockURLDispatcherModule extends AbstractModule {
+class Exception {
+
+    private var message : String;
 
     /**
-     * Maps the module's controllers to URLs
+     * Creates a new exception
+     * @param message The error message
      */
-    public function new() {
-        super();
-        this.addURLMapping(~/^\/$/, MockURLDispatcherController, "dispatchSimple");
-        this.addURLMapping(~/^\/([a-zA-Z]+)\/$/, MockURLDispatcherController, "dispatchParam");
-        this.addURLMapping(~/^\/([a-zA-Z]+)\/([0-9]+)\/$/, MockURLDispatcherController, "dispatchMultipleParam");
-        this.addURLMapping(~/^\/_doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
+    public function new(message : String) {
+        this.message = message;
     }
 
+    /**
+     * Sets the error message
+     * @param message The error message
+     */
+    private function setMessage(message : String) : Void {
+        this.message = message;
+    }
+
+    /**
+     * Returns the Exception's message
+     * @return the Exception's message
+     */
+    public function getMessage() : String {
+        return this.message;
+    }
 }

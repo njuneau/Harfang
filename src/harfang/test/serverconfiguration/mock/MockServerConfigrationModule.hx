@@ -17,24 +17,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.tests.mocks;
+package harfang.test.serverconfiguration.mock;
 
 import harfang.module.AbstractModule;
-import harfang.tests.mocks.MockMacroController;
-import harfang.configuration.MacroConfigurator;
 
 /**
- * Mock module to test the macro configurator
+ * Mock module that goes with the server configuration mock
  */
-class MockMacroModule extends AbstractModule {
+class MockServerConfigrationModule extends AbstractModule {
 
     /**
-     * Auto-configure using macros
+     * Creates the mock module
      */
     public function new() {
         super();
-
-        MacroConfigurator.mapController(this, MockMacroController, "URL", "MYPREFIX");
+        this.addURLMapping(~/^\/$/, MockServerConfigurationController, "handleNormal");
+        this.addURLMapping(~/^\/error\/$/, MockServerConfigurationController, "handleServerError");
+        this.addURLMapping(~/^\/303\/$/, MockServerConfigurationController, "handleHTTPError");
     }
 
 }

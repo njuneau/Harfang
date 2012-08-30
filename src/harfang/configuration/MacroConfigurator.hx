@@ -60,7 +60,7 @@ class MacroConfigurator {
         switch(clExpr.expr) {
             case EConst(c):
                 switch(c) {
-                    case CType(s):
+                    case CIdent(s):
                         // A type has been sent. Extract Class.
                         var type = Context.getType(s);
                         switch(type) {
