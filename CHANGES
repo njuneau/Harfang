@@ -4,6 +4,7 @@ release-0.3 (TESTING)
 * Package names are now always singular (for example : harfang.exceptions is now harfang.exception)
 * New server event listener mechanics
 * Fixed regression for the MacroConfigurator
+* ServerConfiguration interface now has a "init" method
 
 release-0.2 (2012-04-20)
 ===============

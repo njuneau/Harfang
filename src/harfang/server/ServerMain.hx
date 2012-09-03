@@ -58,6 +58,7 @@ class ServerMain {
      * @param uri The URI that has been requested
      */
     public static function launch(userConfiguration : ServerConfiguration, uri : String) : Void {
+        userConfiguration.init();
         var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
         var serverEventListeners : Iterable<ServerEventListener> = userConfiguration.getServerEventListeners();
 
