@@ -65,11 +65,21 @@ class AbstractServerConfiguration implements ServerConfiguration, implements Ser
 
     /**
      * Dispatch event - called when the queried URL corresponds to a controller
-     * (the URL has been dispatched). Call done before the controller is called
+     * (the URL has been dispatched). The event is only triggered when the
+     * controller's "handleRequest" returns true.
      *
      * @param urlMapping The URL mapping that was matched
      */
     public function onDispatch(urlMapping : URLMapping) : Void {}
+
+    /**
+     * Interrupted dispatch event - called when the URL dispatcher manages to
+     * find the controller and method to call but that the controller's
+     * handleRequest method returns false.
+     *
+     * @param urlMapping The URL mapping that was matched
+     */
+    public function onDispatchInterrupted(urlMapping : URLMapping) : Void {}
 
     /**
      * HTTP Error event - called when the server encounters a HTTP error

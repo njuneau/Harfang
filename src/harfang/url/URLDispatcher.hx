@@ -107,11 +107,6 @@ class URLDispatcher {
 
         // Call the controller
         if(foundURL) {
-            // Call the dispatch event on all listeners
-            for(listener in serverEventListeners) {
-                listener.onDispatch(currentMapping);
-            }
-
             // Create the controller instance and find its function
             controller = Type.createEmptyInstance(currentMapping.getControllerClass());
             controllerMethod = Reflect.field(controller, currentMapping.getControllerMethodName());
@@ -123,11 +118,20 @@ class URLDispatcher {
 
                 // Handle request
                 if(controller.handleRequest(currentMapping.getControllerMethodName())) {
+                    // Call the dispatch event on all listeners
+                    for(listener in serverEventListeners) {
+                        listener.onDispatch(currentMapping);
+                    }
+
                     Reflect.callMethod(
                             controller,
                             controllerMethod,
                             currentMapping.extractParameters(this.currentURL)
                     );
+                } else {
+                    for(listener in serverEventListeners) {
+                        listener.onDispatchInterrupted(currentMapping);
+                    }
                 }
 
                 // Post request
