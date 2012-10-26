@@ -91,11 +91,10 @@ class AbstractServerConfiguration implements ServerConfiguration, implements Ser
     public function onHTTPError(error : HTTPException) : Void {}
 
     /**
-     * Error event - called when the server encounters an error during URL
-     * dispatching or controller operations that are not covered by the 404
-     * and 500 errors. Although the 500 error is pretty broad, the user could
-     * throw other types of exceptions that would lead to this event. Maybe
-     * the error needs further processing before returning a 404 or 500 message.
+     * Error event - called when the server encounters errors that are not
+     * covered by HTTP status codes. (Although the 500 error is pretty broad,
+     * the developer could throw other types of exceptions that would lead
+     * to this event)
      *
      * @param exception The exception that was thrown
      */

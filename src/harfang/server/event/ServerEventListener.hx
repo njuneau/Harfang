@@ -58,10 +58,8 @@ interface ServerEventListener {
     public function onHTTPError(exception : HTTPException) : Void;
 
     /**
-     * Error event - called when the server encounters an error during URL
-     * dispatching or controller operations that are not covered by the 404
-     * and 500 errors. (Although the 500 error is pretty broad, the user could
-     * throw other types of exceptions that would lead to this event)
+     * Error event - called when the server encounters errors that are not
+     * covered by HTTP status codes.
      *
      * @param exception The exception that was thrown
      */
