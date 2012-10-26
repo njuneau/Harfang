@@ -70,6 +70,7 @@ class URLDispatcherTest extends TestCase {
         assertTrue(MockURLDispatcherController.getDispatchedSimple());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchSimple");
         assertTrue(MockURLDispatcherController.getCalledPostRequest());
+        assertEquals(MockURLDispatcherController.getLastPostMethodName(), "dispatchSimple");
     }
 
     /**
@@ -88,6 +89,7 @@ class URLDispatcherTest extends TestCase {
         assertTrue(MockURLDispatcherController.getDispatchedSimple());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchSimple");
         assertTrue(MockURLDispatcherController.getCalledPostRequest());
+        assertEquals(MockURLDispatcherController.getLastPostMethodName(), "dispatchSimple");
     }
 
     /**
@@ -104,6 +106,8 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
         assertTrue(MockURLDispatcherController.getDispatchedParam());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchParam");
+        assertTrue(MockURLDispatcherController.getCalledPostRequest());
+        assertEquals(MockURLDispatcherController.getLastPostMethodName(), "dispatchParam");
 
         // Make sure correct parameter is sent to the controller
         assertEquals(MockURLDispatcherController.getDispatchParamParam(), "abc");
@@ -124,13 +128,14 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
         assertTrue(MockURLDispatcherController.getDispatchedMultipleParam());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "dispatchMultipleParam");
+        assertTrue(MockURLDispatcherController.getCalledPostRequest());
+        assertEquals(MockURLDispatcherController.getLastPostMethodName(), "dispatchMultipleParam");
 
         // Make sure correct parameters are sent to the controller
         assertEquals(MockURLDispatcherController.getDispatchMutlipleParamParamA(), "cDe");
 
         // Make sure correct parameters are sent to the controller
         assertEquals(MockURLDispatcherController.getDispatchMutlipleParamParamB(), "0988");
-        assertTrue(MockURLDispatcherController.getCalledPostRequest());
     }
 
     /**
@@ -148,7 +153,11 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
         assertEquals(MockURLDispatcherController.getLastMethodName(), "doNotDispatch");
-        assertTrue(MockURLDispatcherController.getCalledPostRequest());
+
+        // The post handle request shouldn't be called when handleRequest
+        // returns false.
+        assertTrue(MockURLDispatcherController.getLastPostMethodName() == null);
+        assertFalse(MockURLDispatcherController.getCalledPostRequest());
     }
 
     /**
@@ -169,7 +178,9 @@ class URLDispatcherTest extends TestCase {
         assertFalse(MockURLDispatcherController.getDispatchedParam());
         assertFalse(MockURLDispatcherController.getDispatchedMultipleParam());
         assertFalse(MockURLDispatcherController.getDispatchedDoNotDispatch());
+        assertTrue(MockURLDispatcherController.getLastMethodName() == null);
         assertFalse(MockURLDispatcherController.getCalledPostRequest());
+        assertTrue(MockURLDispatcherController.getLastPostMethodName() == null);
     }
 
 }

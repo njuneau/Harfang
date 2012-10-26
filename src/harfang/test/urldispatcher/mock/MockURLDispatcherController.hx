@@ -41,6 +41,7 @@ class MockURLDispatcherController extends AbstractController {
     private static var lastMethodName : String;
 
     private static var calledPostRequest : Bool = false;
+    private static var lastPostMethodName : String;
 
     /**
      * Init the module
@@ -69,8 +70,9 @@ class MockURLDispatcherController extends AbstractController {
     /**
      * Post-request call
      */
-    public override function handlePostRequest() : Void {
+    public override function handlePostRequest(controllerMethodName : String) : Void {
         MockURLDispatcherController.calledPostRequest = true;
+        MockURLDispatcherController.lastPostMethodName = controllerMethodName;
     }
 
     /**
@@ -128,6 +130,7 @@ class MockURLDispatcherController extends AbstractController {
         MockURLDispatcherController.dispatchMutlipleParamParamB = null;
         MockURLDispatcherController.dispatchedDoNotDispatch = false;
         MockURLDispatcherController.lastMethodName = null;
+        MockURLDispatcherController.lastPostMethodName = null;
         MockURLDispatcherController.isInit = false;
         MockURLDispatcherController.calledPostRequest = false;
     }
@@ -188,8 +191,18 @@ class MockURLDispatcherController extends AbstractController {
         return MockURLDispatcherController.lastMethodName;
     }
 
+    /**
+     * Indicates if the "postRequest" method was called
+     */
     public static function getCalledPostRequest() : Bool  {
         return MockURLDispatcherController.calledPostRequest;
+    }
+
+    /**
+     * Returns the last method name that was sent to handlePostRequest
+     */
+    public static function getLastPostMethodName() : String {
+        return MockURLDispatcherController.lastPostMethodName;
     }
 
 }

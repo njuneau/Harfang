@@ -5,6 +5,7 @@ release-0.3 (TESTING)
 * New server event listener mechanics
 * Fixed regression for the MacroConfigurator
 * ServerConfiguration interface now has a "init" method
+* Controller interface now has a "postRequest" method
 
 release-0.2 (2012-04-20)
 ===============

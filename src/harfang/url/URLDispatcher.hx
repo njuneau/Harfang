@@ -128,14 +128,14 @@ class URLDispatcher {
                             controllerMethod,
                             currentMapping.extractParameters(this.currentURL)
                     );
+
+                    // Post request
+                    controller.handlePostRequest(currentMapping.getControllerMethodName());
                 } else {
                     for(listener in serverEventListeners) {
                         listener.onDispatchInterrupted(currentMapping);
                     }
                 }
-
-                // Post request
-                controller.handlePostRequest();
             } else {
                 // Controller function was not found - this should not be
                 // happening. Throw an error!

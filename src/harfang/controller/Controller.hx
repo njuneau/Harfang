@@ -69,8 +69,11 @@ interface Controller {
     /**
      * This is called after the mapped controller method has been called.
      * Use this method to perform any post-request operations.
+     *
+     * @param controllerMethodName The name of the method that was was called
+     * in the controller
      */
-    public function handlePostRequest() : Void;
+    public function handlePostRequest(controllerMethodName : String) : Void;
 
 
 }

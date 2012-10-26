@@ -60,8 +60,11 @@ class AbstractController implements Controller {
      * This is called after the mapped controller method has been called.
      *
      * This particular implementation does nothing.
+     *
+     * @param controllerMethodName The name of the method that was was called
+     * in the controller
      */
-    public function handlePostRequest() : Void {}
+    public function handlePostRequest(controllerMethodName : String) : Void {}
 
     /**
      * Returns the module that owns this controller
