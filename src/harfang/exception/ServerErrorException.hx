@@ -26,12 +26,14 @@ import harfang.exception.HTTPException;
  */
 class ServerErrorException extends HTTPException {
 
+    private static var MESSAGE : String = "Internal server error";
+
     /**
      * Creates a new 500 HTTP error
      * @param message The message you want to show to the user (optional)
      */
     public function new(? message : String) {
-        super("Internal server error", 500);
+        super(MESSAGE, 500);
 
         if(message != null) {
             this.setMessage(message);

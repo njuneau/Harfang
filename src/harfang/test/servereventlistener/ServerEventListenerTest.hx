@@ -22,7 +22,8 @@ package harfang.test.servereventlistener;
 import haxe.unit2.TestCase;
 
 import harfang.exception.Exception;
-import harfang.exception.NotFoundException;
+import harfang.exception.HTTPException;
+import harfang.exception.WrappedException;
 import harfang.server.ServerMain;
 import harfang.test.servereventlistener.mock.MockServerEventListenerUserConfiguration;
 import harfang.test.servereventlistener.mock.MockServerEventListenerModule;
@@ -83,6 +84,50 @@ class ServerEventListenerTest extends TestCase {
         ServerMain.launch(this.configuration, "/errorThrow/");
         this.assertTrue(configuration.onErrorCalled);
         this.assertEquals(configuration.onErrorException.getMessage(), MockServerEventListenerController.ERROR_MESSAGE);
+        this.assertEquals(Type.getClass(configuration.onErrorException), Exception);
+        this.assertFalse(Type.getClass(configuration.onErrorException) == WrappedException);
+    }
+
+    /**
+     * Test the "onError" event, with a string exception type
+     */
+    @Test
+    public function testOnStringErrorThrow() {
+        ServerMain.launch(this.configuration, "/stringErrorThrow/");
+        this.assertTrue(configuration.onErrorCalled);
+        this.assertEquals(Type.getClass(configuration.onErrorException), Exception);
+        this.assertFalse(Type.getClass(configuration.onErrorException) == WrappedException);
+    }
+
+    /**
+     * Test the "onError" event, with an unknown exception type
+     */
+    @Test
+    public function testOnUnknownErrorThrow() {
+        ServerMain.launch(this.configuration, "/unknownErrorThrow/");
+        this.assertTrue(configuration.onErrorCalled);
+        this.assertEquals(Type.getClass(configuration.onErrorException), WrappedException);
+    }
+
+    /**
+     * Test the "onError" event, with a pre-wrapped exception type. The server
+     * shouldn't try to wrap an already wrapped exception.
+     */
+    @Test
+    public function testOnUnknownWrappedErrorThrow() {
+        ServerMain.launch(this.configuration, "/unknownWrappedErrorThrow/");
+
+        // Check base error type
+        this.assertTrue(configuration.onErrorCalled);
+        this.assertEquals(Type.getClass(configuration.onErrorException), WrappedException);
+
+        // Check inner error type
+        var innerError : Dynamic = cast(configuration.onErrorException, WrappedException).getError();
+        this.assertFalse(Type.getClass(innerError) == WrappedException);
+        this.assertEquals(Type.getClass(innerError), null);
+
+        // Make sure inner object was there
+        this.assertEquals(innerError.message, "Unknown error type");
     }
 
     /**
@@ -93,5 +138,6 @@ class ServerEventListenerTest extends TestCase {
         ServerMain.launch(this.configuration, "/httpErrorThrow/");
         this.assertTrue(configuration.onHTTPErrorCalled);
         this.assertEquals(configuration.onHTTPErrorException.getMessage(), MockServerEventListenerController.HTTP_ERROR_MESSAGE);
+        this.assertEquals(Type.getClass(configuration.onHTTPErrorException), HTTPException);
     }
 }

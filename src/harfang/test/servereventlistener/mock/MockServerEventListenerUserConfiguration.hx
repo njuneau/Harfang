@@ -62,7 +62,7 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
         this.onDispatchInterruptedMapping = null;
         this.onHTTPErrorCalled = true;
         this.onHTTPErrorException = null;
-        this.onErrorCalled = true;
+        this.onErrorCalled = false;
         this.onErrorException = null;
     }
 

@@ -31,6 +31,7 @@ import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
+import harfang.exception.WrappedException;
 import harfang.server.event.ServerEventListener;
 
 import server.UserConfiguration;
@@ -75,6 +76,18 @@ class ServerMain {
             // processing
             for(listener in serverEventListeners) {
                 listener.onError(e);
+            }
+        } catch(e : String) {
+            // Error is a string, may need further processing
+            var stringException : Exception = new Exception(e);
+            for(listener in serverEventListeners) {
+                listener.onError(stringException);
+            }
+        } catch(e : Dynamic) {
+            // Error is of unknown type. May need further processing
+            var wrappedException : WrappedException = new WrappedException(e);
+            for(listener in serverEventListeners) {
+                listener.onError(wrappedException);
             }
         }
 

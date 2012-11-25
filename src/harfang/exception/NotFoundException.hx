@@ -26,12 +26,14 @@ import harfang.exception.HTTPException;
  */
 class NotFoundException extends HTTPException {
 
+    private static var MESSAGE : String = "The requested resource could not be found";
+
     /**
      * Creates a new 404 not found HTTP error
      * @param message The message you want to show to the user (optional)
      */
     public function new(? message : String) {
-        super("The requested resource could not be found", 404);
+        super(MESSAGE, 404);
 
         // If no default message is sent, put a default one
         if(message != null) {

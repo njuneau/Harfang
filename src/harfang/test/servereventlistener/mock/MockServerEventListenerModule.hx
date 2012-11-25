@@ -31,6 +31,9 @@ class MockServerEventListenerModule extends AbstractModule {
     public static inline var DO_NOT_DISPATCH_SIMPLE_NAME : String = "doNotDispatch";
     public static inline var ERROR_THROW_NAME : String = "errorThrow";
     public static inline var HTTP_ERROR_THROW_NAME : String = "httpErrorThrow";
+    public static inline var STRING_ERROR_THROW_NAME : String = "stringErrorThrow";
+    public static inline var UNKNOWN_ERROR_THROW_NAME : String = "unknownErrorThrow";
+    public static inline var UNKNOWN_WRAPPED_ERROR_THROW_NAME : String = "unknownWrappedErrorThrow";
 
     /**
      * Maps the module's controllers to URLs
@@ -41,6 +44,9 @@ class MockServerEventListenerModule extends AbstractModule {
         this.addURLMapping(~/^\/doNotDispatch\/$/, MockServerEventListenerController, DO_NOT_DISPATCH_SIMPLE_NAME);
         this.addURLMapping(~/^\/errorThrow\/$/, MockServerEventListenerController, ERROR_THROW_NAME);
         this.addURLMapping(~/^\/httpErrorThrow\/$/, MockServerEventListenerController, HTTP_ERROR_THROW_NAME);
+        this.addURLMapping(~/^\/stringErrorThrow\/$/, MockServerEventListenerController, STRING_ERROR_THROW_NAME);
+        this.addURLMapping(~/^\/unknownErrorThrow\/$/, MockServerEventListenerController, UNKNOWN_ERROR_THROW_NAME);
+        this.addURLMapping(~/^\/unknownWrappedErrorThrow\/$/, MockServerEventListenerController, UNKNOWN_WRAPPED_ERROR_THROW_NAME);
     }
 
 }

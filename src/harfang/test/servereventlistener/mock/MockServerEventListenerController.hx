@@ -22,6 +22,7 @@ package harfang.test.servereventlistener.mock;
 import harfang.controller.AbstractController;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
+import harfang.exception.WrappedException;
 import harfang.module.Module;
 
 /**
@@ -71,6 +72,27 @@ class MockServerEventListenerController extends AbstractController {
      */
     public function httpErrorThrow() : Void {
         throw new HTTPException(HTTP_ERROR_MESSAGE, HTTP_ERROR_CODE);
+    }
+
+    /**
+     * Throws an error with a string
+     */
+    public function stringErrorThrow() : Void {
+        throw "Error message";
+    }
+
+    /**
+     * Throws a generic error
+     */
+    public function unknownErrorThrow() : Void {
+        throw {message : "Unknown error type"};
+    }
+
+    /**
+     * Throws an already wrapped generic error
+     */
+    public function unknownWrappedErrorThrow() : Void {
+        throw new WrappedException({message : "Unknown error type"});
     }
 
 }
