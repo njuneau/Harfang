@@ -1,4 +1,4 @@
-release-0.3 (TESTING)
+release-0.3 (2012-11-25)
 ===============
 
 * Package names are now always singular (for example : harfang.exceptions is now harfang.exception)
@@ -6,6 +6,7 @@ release-0.3 (TESTING)
 * Fixed regression for the MacroConfigurator
 * ServerConfiguration interface now has a "init" method
 * Controller interface now has a "postRequest" method
+* Exceptions of types different from harfang.exception.Exception are now managed
 
 release-0.2 (2012-04-20)
 ===============

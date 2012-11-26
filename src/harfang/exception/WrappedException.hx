@@ -22,11 +22,11 @@ package harfang.exception;
 import harfang.exception.Exception;
 
 /**
- * This kind of exception is thrown when the error type is unknown. Normally,
- * Harfang looks for an "Exception" instance or a String instance. However,
- * the developer may throw an object not covered in the previous cases. In the
- * case the type is unknown, the WrappedException wraps the underlying exception
- * in it.
+ * Exceptions of this type are used when the error type is unknown. Harfang
+ * looks for an "Exception" instance or a String instance when catching errors.
+ * However, an error with a type not covered in the previous cases may be
+ * thrown. In the case the type is unknown, the framework wraps the error in a
+ * WrappedException. The developer shoulnd't have to directly use this class.
  */
 class WrappedException extends Exception {
 

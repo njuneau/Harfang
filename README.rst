@@ -4,9 +4,8 @@ Harfang Web framework
 Description
 -----------------
 
-Harfang is a lightweight Web development framework written in the haXe language
-(http://haxe.org), currently aimed at the PHP target (although it should work
-with Neko as well).
+Harfang is a lightweight Web development framework written in Haxe
+(http://haxe.org), currently working for the PHP and Neko targets.
 
 Documentation
 -----------------
@@ -14,7 +13,7 @@ Documentation
 The framework's documentation can be found there :
 http://haxe.org/com/libs/harfang. A tutorial to build your first application
 with the framework is also available there :
-http://haxe.org/com/libs/harfang/tutorials/quickstart/0.2
+http://haxe.org/com/libs/harfang/tutorials/quickstart/0.3
 
 Running the unit tests
 -----------------
