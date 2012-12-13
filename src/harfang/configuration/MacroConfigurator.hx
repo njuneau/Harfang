@@ -194,7 +194,7 @@ class MacroConfigurator {
         }
 
         params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
-        params.push({pos : pos, expr : EConst(CType(cl.name))});
+        params.push({pos : pos, expr : EConst(CIdent(cl.name))});
         params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
         var addMethod : Expr = {
