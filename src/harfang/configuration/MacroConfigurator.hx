@@ -205,6 +205,19 @@ class MacroConfigurator {
             }, params)
         }
 
+        //var constructorCall : Expr = {
+        //    pos : pos,
+        //    expr : ENew({
+        //        t : TPath({
+        //            name : "harfang.url.ERegURLMapping",
+        //            sub : null,
+        //            pack : [],
+        //            params : [],
+        //        }),
+        //        params : []
+        //    })
+        //}
+
         return addMethod;
     }
 
