@@ -22,6 +22,8 @@ package harfang.test.serverconfiguration;
 import haxe.unit2.TestCase;
 
 import harfang.server.ServerMain;
+import harfang.server.request.RequestInfo;
+import harfang.server.request.Method;
 
 import harfang.test.serverconfiguration.mock.MockServerConfiguration;
 import harfang.test.serverconfiguration.mock.MockServerConfigurationController;
@@ -70,7 +72,11 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testNormalSequence() {
-        ServerMain.launch(this.configuration, "/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/";
+        rqInfo.method = Method.GET;
+
+        ServerMain.launch(this.configuration, rqInfo);
 
         // Make sure call sequence is ok
         assertEquals(this.configuration.getCalledOnDispatch(), 1);
@@ -87,7 +93,11 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatch404() {
-        ServerMain.launch(this.configuration, "/0");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/0";
+        rqInfo.method = Method.GET;
+
+        ServerMain.launch(this.configuration, rqInfo);
 
         // Make sure call sequence is ok
         assertEquals(this.configuration.getCalledOnDispatch(), 0);
@@ -108,7 +118,11 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatchError() {
-        ServerMain.launch(this.configuration, "/error");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/error";
+        rqInfo.method = Method.GET;
+
+        ServerMain.launch(this.configuration, rqInfo);
 
         // Make sure call sequence is ok
         assertEquals(this.configuration.getCalledOnDispatch(), 1);
@@ -129,7 +143,11 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatchHTTPErrorInController() {
-        ServerMain.launch(this.configuration, "/303");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/303";
+        rqInfo.method = Method.GET;
+
+        ServerMain.launch(this.configuration, rqInfo);
 
         // Make sure call sequence is ok
         assertEquals(this.configuration.getCalledOnDispatch(), 1);

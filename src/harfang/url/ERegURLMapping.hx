@@ -20,6 +20,7 @@
 package harfang.url;
 
 import harfang.controller.Controller;
+import harfang.server.request.RequestInfo;
 
 /**
  * A URL mapping consists of a binding between a controller and a URL. Whenever
@@ -69,7 +70,18 @@ class ERegURLMapping implements URLMapping {
      * @return True if the URL can be resolved with this mapping, false otherwize
      */
     public function resolve(url : String) : Bool {
-        return this.urlReg.match(url);
+        return this.urlReg.match(this.appendSlash(url));
+    }
+
+    /**
+     * Indicates if the URL dispatcher should proceed to dispatch the request
+     * given the provided request information.
+     *
+     * @param requestInfo Object containg the request's information.
+     * @return True if the dispatcher may disptach the request, false otherwize.
+     */
+    public function filter(requestInfo : RequestInfo) : Bool {
+        return true;
     }
 
     /**
@@ -78,10 +90,11 @@ class ERegURLMapping implements URLMapping {
      * PRECONDITION : It's better to extract the parameters when you know
      *                if that this mapping can resolve the given URL.
      *                Use the "resolve" method on the same URL to know.
-     * @param url The URL on which we extract the parameters
+     * @param requestInfo Object containg the request's information. It is the
+     * same object that is sent to the "filter" method.
      * @return An array containing all the extracted parameters
      */
-    public function extractParameters(url : String) : Array<String> {
+    public function extractParameters(requestInfo : RequestInfo) : Array<String> {
         var parameters : Array<String> = new Array();
         var counter : Int = 1;
         var parameter : String = null;
@@ -115,6 +128,26 @@ class ERegURLMapping implements URLMapping {
      */
     public function getControllerMethodName() : String {
         return this.controllerFunctionName;
+    }
+
+    /**************************************************************************/
+    /*                            PRIVATE METHODS                             */
+    /**************************************************************************/
+
+    /**
+     * Appends a slash to the URL if it doesn't have one at the end.
+     * It won't appear in browsers, but it will unify the regular expressions.
+     *
+     * @param url The url in which to append the slash
+     * @return The url, with the trailing slash
+     */
+    private function appendSlash(url : String) : String {
+
+        if(url.charAt(url.length - 1) != "/") {
+            url += "/";
+        }
+
+        return url;
     }
 
 }

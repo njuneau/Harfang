@@ -24,6 +24,9 @@ import haxe.unit2.TestCase;
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
 import harfang.exception.NotFoundException;
+import harfang.server.request.RequestInfo;
+import harfang.server.request.Method;
+
 import harfang.test.urldispatcher.mock.MockURLDispatcherUserConfiguration;
 import harfang.test.urldispatcher.mock.MockURLDispatcherController;
 
@@ -59,7 +62,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSimple() {
-        this.dispatcher.dispatch("/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/";
+        rqInfo.method = Method.GET;
+
+        this.dispatcher.dispatch(rqInfo);
 
         assertTrue(MockURLDispatcherController.getIsInit());
 
@@ -79,7 +86,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSlash() {
-        this.dispatcher.dispatch("");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "";
+        rqInfo.method = Method.GET;
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -97,7 +108,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchParam() {
-        this.dispatcher.dispatch("/abc/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/abc/";
+        rqInfo.method = Method.GET;
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -119,7 +134,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchMultipleParam() {
-        this.dispatcher.dispatch("/cDe/0988/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/cDe/0988/";
+        rqInfo.method = Method.GET;
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -144,7 +163,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDoNotDispatch() {
-        this.dispatcher.dispatch("/_doNotDispatch/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/_doNotDispatch/";
+        rqInfo.method = Method.GET;
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -165,8 +188,12 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchNotFound() {
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "-+-+qwe";
+        rqInfo.method = Method.GET;
+
         try {
-            this.dispatcher.dispatch("-+-+qwe");
+            this.dispatcher.dispatch(rqInfo);
         } catch(e : Exception) {
             assertEquals(Type.getClass(e), NotFoundException);
         }

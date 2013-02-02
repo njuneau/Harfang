@@ -33,13 +33,13 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 import harfang.server.event.ServerEventListener;
+import harfang.server.request.Method;
+import harfang.server.request.RequestInfo;
 
 import server.UserConfiguration;
 
 /**
  * Program entry point
- * The configuration is loaded here
- * The request is processed here
  */
 class ServerMain {
 
@@ -49,23 +49,23 @@ class ServerMain {
      */
     public static function main() : Void {
         // Load the configuration and start the application
-        launch(new UserConfiguration(), Web.getURI());
+        var requestInfo : RequestInfo = buildRequestInfo();
+        launch(new UserConfiguration(), requestInfo);
     }
 
     /**
      * Launches the Harfang server (request processing, controller dispatching
      * and error detection)
-     * @param userConfiguration The configuration to use in the server
-     * @param uri The URI that has been requested
+     * @param requestInfo The request's information
      */
-    public static function launch(userConfiguration : ServerConfiguration, uri : String) : Void {
+    public static function launch(userConfiguration : ServerConfiguration, requestInfo : RequestInfo) : Void {
         userConfiguration.init();
         var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
         var serverEventListeners : Iterable<ServerEventListener> = userConfiguration.getServerEventListeners();
 
         try {
             // Dispatch the URL
-            urlDispatcher.dispatch(uri);
+            urlDispatcher.dispatch(requestInfo);
         } catch(he : HTTPException) {
             // Send HTTP error event to all listeners
             for(listener in serverEventListeners) {
@@ -93,5 +93,35 @@ class ServerMain {
 
         // Close the application
         userConfiguration.onClose();
+    }
+
+    /**
+     * Builds the request info object based on the server's information
+     */
+    private static function buildRequestInfo() : RequestInfo {
+        var method : Method = null;
+        var requestInfo : RequestInfo = new RequestInfo();
+
+        // Determine request method
+        var stringMethod = Web.getMethod();
+        switch(stringMethod) {
+            case "GET":
+                method = Method.GET;
+            case "PUT":
+                method = Method.PUT;
+            case "POST":
+                method = Method.POST;
+            case "DELETE":
+                method = Method.DELETE;
+            case "OPTIONS":
+                method = Method.OPTIONS;
+            default:
+                method = Method.OTHER(stringMethod);
+        }
+
+        requestInfo.setMethod(method);
+        requestInfo.setURI(Web.getURI());
+
+        return requestInfo;
     }
 }
