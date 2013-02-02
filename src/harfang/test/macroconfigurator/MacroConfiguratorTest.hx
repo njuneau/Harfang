@@ -94,7 +94,7 @@ class MacroConfiguratorTest extends TestCase {
      * Tests the MacroConfigurator's createERegUrlMappingArray method
      */
     @Test
-    private function testCreateURLMappingBlock() {
+    private function testCreateURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
                 MacroConfigurator.createERegUrlMappingArray(MockMacroController, "URL", "MYPREFIX");
 

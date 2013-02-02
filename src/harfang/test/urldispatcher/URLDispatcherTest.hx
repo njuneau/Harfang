@@ -28,6 +28,7 @@ import harfang.server.request.RequestInfo;
 import harfang.server.request.Method;
 
 import harfang.test.urldispatcher.mock.MockURLDispatcherUserConfiguration;
+import harfang.test.urldispatcher.mock.MockURLDispatcherFilterConfiguration;
 import harfang.test.urldispatcher.mock.MockURLDispatcherController;
 
 /**
@@ -208,6 +209,58 @@ class URLDispatcherTest extends TestCase {
         assertTrue(MockURLDispatcherController.getLastMethodName() == null);
         assertFalse(MockURLDispatcherController.getCalledPostRequest());
         assertTrue(MockURLDispatcherController.getLastPostMethodName() == null);
+    }
+
+    /**
+     * Tests the dispatcher "filter" and "resolve" functionnality
+     */
+    @Test
+    public function testResolveFilter() {
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.uri = "/";
+        rqInfo.method = Method.GET;
+
+        var filterAndResolve : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(true, true);
+        filterAndResolve.init();
+
+        var filter : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(false, true);
+        filter.init();
+
+        var resolve : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(true, false);
+        resolve.init();
+
+        // Resolving and filtering returns true
+        var filterDispatcher : URLDispatcher = new URLDispatcher(filterAndResolve);
+        var dispatched : Bool = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertTrue(dispatched);
+
+        // Resolving returns false
+        filterDispatcher = new URLDispatcher(filter);
+        dispatched  = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertFalse(dispatched);
+
+        // Filtering returns false
+        filterDispatcher = new URLDispatcher(resolve);
+        dispatched = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertFalse(dispatched);
     }
 
 }
