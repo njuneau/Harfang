@@ -53,7 +53,7 @@ class MacroConfigurator {
      * @return The addURLMapping expressions that will map the controllers to
      * URLs.
      */
-    @:macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
+    macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);
