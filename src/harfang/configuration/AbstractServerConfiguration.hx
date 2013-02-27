@@ -33,7 +33,7 @@ import harfang.server.event.ServerEventListener;
  * By default, this implementation of the ServerConfiguration is a
  * ServerEventListener, for convenience.
  */
-class AbstractServerConfiguration implements ServerConfiguration, implements ServerEventListener {
+class AbstractServerConfiguration implements ServerConfiguration implements ServerEventListener {
 
     /**************************************************************************/
     /*                             PRIVATE FIELDS                             */
