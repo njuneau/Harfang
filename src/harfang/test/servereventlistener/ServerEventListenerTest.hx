@@ -63,8 +63,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnDispatch() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onDispatchCalled);
@@ -77,8 +77,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnDoNotDispatch() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/doNotDispatch/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/doNotDispatch/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onDispatchInterruptedCalled);
@@ -92,8 +92,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnError() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/errorThrow/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/errorThrow/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
@@ -108,8 +108,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnStringErrorThrow() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/stringErrorThrow/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/stringErrorThrow/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
@@ -123,8 +123,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnUnknownErrorThrow() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/unknownErrorThrow/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/unknownErrorThrow/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
@@ -138,8 +138,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnUnknownWrappedErrorThrow() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/unknownWrappedErrorThrow/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/unknownWrappedErrorThrow/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -162,8 +162,8 @@ class ServerEventListenerTest extends TestCase {
     @Test
     public function testOnHTTPError() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/httpErrorThrow/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/httpErrorThrow/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onHTTPErrorCalled);

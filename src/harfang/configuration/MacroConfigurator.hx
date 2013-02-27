@@ -85,7 +85,7 @@ class MacroConfigurator {
      * @return An array expression containing all the ERegURLMapping instances
      * that maps the controllers to URLs.
      */
-    @:macro public static function createERegUrlMappingArray(clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
+    macro public static function createERegUrlMappingArray(clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);

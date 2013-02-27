@@ -73,8 +73,8 @@ class ServerConfigurationTest extends TestCase {
     @Test
     public function testNormalSequence() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -94,8 +94,8 @@ class ServerConfigurationTest extends TestCase {
     @Test
     public function testCatch404() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/0";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/0");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -119,8 +119,8 @@ class ServerConfigurationTest extends TestCase {
     @Test
     public function testCatchError() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/error";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/error");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -144,8 +144,8 @@ class ServerConfigurationTest extends TestCase {
     @Test
     public function testCatchHTTPErrorInController() {
         var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.uri = "/303";
-        rqInfo.method = Method.GET;
+        rqInfo.setURI("/303");
+        rqInfo.setMethod(Method.GET);
 
         ServerMain.launch(this.configuration, rqInfo);
 

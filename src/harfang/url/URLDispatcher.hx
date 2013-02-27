@@ -102,7 +102,7 @@ class URLDispatcher {
         while(!foundURL && mappingIterator.hasNext()) {
             currentMapping = mappingIterator.next();
             // Try matching the URL
-            foundURL = (currentMapping.resolve(requestInfo.uri) && currentMapping.filter(requestInfo));
+            foundURL = (currentMapping.resolve(requestInfo.getURI()) && currentMapping.filter(requestInfo));
         }
 
         // Call the controller

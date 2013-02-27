@@ -25,14 +25,16 @@ package harfang.server.request;
  */
 class RequestInfo {
 
-    public var uri(getURI, setURI) : String;
-
-    public var method(getMethod, setMethod) : Method;
+    private var uri : String;
+    private var method : Method;
 
     /**
      * Default constructor
      */
-    public function new() {}
+    public function new() {
+        this.uri = null;
+        this.method = null;
+    }
 
     /**
      * Returns the request's URI
@@ -46,9 +48,8 @@ class RequestInfo {
      * Sets the request's URI
      * @param uri The URI that has been requested
      */
-    public function setURI(uri : String) : String {
+    public function setURI(uri : String) : Void {
         this.uri = uri;
-        return uri;
     }
 
     /**
@@ -63,9 +64,8 @@ class RequestInfo {
      * Sets the request's method
      * @param method The request's method
      */
-    public function setMethod(method : Method) : Method {
+    public function setMethod(method : Method) : Void {
         this.method = method;
-        return method;
     }
 
 }
