@@ -49,7 +49,11 @@ class ServerMain {
      */
     public static function main() : Void {
         // Load the configuration and start the application
+#if HXFCGI
+        Web.cacheModule( function() ServerMain.launch(new UserConfiguration(), Web.getURI()) );
+#else
         launch(new UserConfiguration(), Web.getURI());
+#end
     }
 
     /**
