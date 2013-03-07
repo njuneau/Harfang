@@ -50,7 +50,11 @@ class ServerMain {
     public static function main() : Void {
         // Load the configuration and start the application
         var requestInfo : RequestInfo = buildRequestInfo();
+#if HXFCGI
+        Web.cacheModule(function() ServerMain.launch(new UserConfiguration(), requestInfo);
+#else
         launch(new UserConfiguration(), requestInfo);
+#end
     }
 
     /**
