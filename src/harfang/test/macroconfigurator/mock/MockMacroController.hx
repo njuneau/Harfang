@@ -27,6 +27,12 @@ import harfang.controller.AbstractController;
 class MockMacroController extends AbstractController {
 
     /**
+     * This variable indicates the number of methods that must be mapped by the
+     * macro configurator.
+     */
+    public static var MAPPED_METHOD_COUNT : Int = 4;
+
+    /**
      * Just initialise some diagnostic variables
      */
     public function new() {}

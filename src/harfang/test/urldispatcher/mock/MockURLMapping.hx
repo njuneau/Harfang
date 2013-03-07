@@ -17,22 +17,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.url;
+package harfang.test.urldispatcher.mock;
 
 import harfang.controller.Controller;
 import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
- * A URL mapping consists of a binding between a controller and a URL. Whenever
- * the user enters a URL, the dispatcher must know where to forward the request.
- * This is the job of the URL mapping: binding an URL pattern with a handler.
+ * This URL mapping is used to test if the dispatcher handles resolving and
+ * filtering correctly
  */
-interface URLMapping {
+class MockURLMapping implements URLMapping {
 
+    private var controllerClass : Class<Controller>;
 
-    /**************************************************************************/
-    /*                                GETTERS                                 */
-    /**************************************************************************/
+    private var methodName : String;
+
+    private var resolveValue : Bool;
+
+    private var filterValue : Bool;
+
+    /**
+     * Creates the mock URL mapping
+     * @param controllerClass The controller class to map
+     * @param methodName The name of the method to call on the controller
+     * @param resolve The return value of the "resolve" method
+     * @param filter The return value of the "filter" method
+     */
+    public function new(controllerClass : Class<Controller>, methodName : String, resolve : Bool, filter : Bool) {
+        this.controllerClass = controllerClass;
+        this.methodName = methodName;
+        this.resolveValue = resolve;
+        this.filterValue = filter;
+    }
 
     /**
      * Indicates if the URL can be resolved using this mapping
@@ -40,7 +57,9 @@ interface URLMapping {
      * @return True if the request can be resolved with this mapping, false
      * otherwize.
      */
-    public function resolve(url : String) : Bool;
+    public function resolve(url : String) : Bool {
+        return this.resolveValue;
+    }
 
     /**
      * Indicates if the URL dispatcher should proceed to dispatch the request
@@ -49,7 +68,9 @@ interface URLMapping {
      * @param requestInfo Object containg the request's information.
      * @return True if the dispatcher may disptach the request, false otherwize.
      */
-    public function filter(requestInfo : RequestInfo) : Bool;
+    public function filter(requestInfo : RequestInfo) : Bool {
+        return this.filterValue;
+    }
 
     /**
      * Extracts the parameters that would be sent to this mapping's
@@ -62,17 +83,24 @@ interface URLMapping {
      * that is sent to the "resolve" method.
      * @return An array containing all the extracted parameters
      */
-    public function extractParameters(requestInfo : RequestInfo) : Array<String>;
+    public function extractParameters(requestInfo : RequestInfo) : Array<String> {
+        return [];
+    }
 
     /**
      * Returns the controller contained in the mapping
      * @return The controller contained in the mapping
      */
-    public function getControllerClass() : Class<Controller>;
+    public function getControllerClass() : Class<Controller> {
+        return this.controllerClass;
+    }
 
     /**
      * Returns the controller's method to call name
      * @return The controller's method to call name
      */
-    public function getControllerMethodName() : String;
+    public function getControllerMethodName() : String {
+        return this.methodName;
+    }
+
 }

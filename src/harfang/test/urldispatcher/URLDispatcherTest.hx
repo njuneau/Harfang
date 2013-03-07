@@ -24,7 +24,11 @@ import haxe.unit2.TestCase;
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
 import harfang.exception.NotFoundException;
+import harfang.server.request.RequestInfo;
+import harfang.server.request.Method;
+
 import harfang.test.urldispatcher.mock.MockURLDispatcherUserConfiguration;
+import harfang.test.urldispatcher.mock.MockURLDispatcherFilterConfiguration;
 import harfang.test.urldispatcher.mock.MockURLDispatcherController;
 
 /**
@@ -59,7 +63,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSimple() {
-        this.dispatcher.dispatch("/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/");
+        rqInfo.setMethod(Method.GET);
+
+        this.dispatcher.dispatch(rqInfo);
 
         assertTrue(MockURLDispatcherController.getIsInit());
 
@@ -79,7 +87,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSlash() {
-        this.dispatcher.dispatch("");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("");
+        rqInfo.setMethod(Method.GET);
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -97,7 +109,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchParam() {
-        this.dispatcher.dispatch("/abc/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/abc/");
+        rqInfo.setMethod(Method.GET);
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -119,7 +135,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchMultipleParam() {
-        this.dispatcher.dispatch("/cDe/0988/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/cDe/0988/");
+        rqInfo.setMethod(Method.GET);
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -144,7 +164,11 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDoNotDispatch() {
-        this.dispatcher.dispatch("/_doNotDispatch/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/_doNotDispatch/");
+        rqInfo.setMethod(Method.GET);
+
+        this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
 
         // Make sure correct method is dispatched
@@ -165,8 +189,12 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchNotFound() {
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("-+-+qwe");
+        rqInfo.setMethod(Method.GET);
+
         try {
-            this.dispatcher.dispatch("-+-+qwe");
+            this.dispatcher.dispatch(rqInfo);
         } catch(e : Exception) {
             assertEquals(Type.getClass(e), NotFoundException);
         }
@@ -181,6 +209,58 @@ class URLDispatcherTest extends TestCase {
         assertTrue(MockURLDispatcherController.getLastMethodName() == null);
         assertFalse(MockURLDispatcherController.getCalledPostRequest());
         assertTrue(MockURLDispatcherController.getLastPostMethodName() == null);
+    }
+
+    /**
+     * Tests the dispatcher "filter" and "resolve" functionnality
+     */
+    @Test
+    public function testResolveFilter() {
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/");
+        rqInfo.setMethod(Method.GET);
+
+        var filterAndResolve : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(true, true);
+        filterAndResolve.init();
+
+        var filter : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(false, true);
+        filter.init();
+
+        var resolve : MockURLDispatcherFilterConfiguration =
+                new MockURLDispatcherFilterConfiguration(true, false);
+        resolve.init();
+
+        // Resolving and filtering returns true
+        var filterDispatcher : URLDispatcher = new URLDispatcher(filterAndResolve);
+        var dispatched : Bool = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertTrue(dispatched);
+
+        // Resolving returns false
+        filterDispatcher = new URLDispatcher(filter);
+        dispatched  = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertFalse(dispatched);
+
+        // Filtering returns false
+        filterDispatcher = new URLDispatcher(resolve);
+        dispatched = true;
+        try {
+            filterDispatcher.dispatch(rqInfo);
+        } catch(e : NotFoundException) {
+            dispatched = false;
+        }
+        assertFalse(dispatched);
     }
 
 }

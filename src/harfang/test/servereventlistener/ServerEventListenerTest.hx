@@ -25,6 +25,8 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 import harfang.server.ServerMain;
+import harfang.server.request.RequestInfo;
+import harfang.server.request.Method;
 import harfang.test.servereventlistener.mock.MockServerEventListenerUserConfiguration;
 import harfang.test.servereventlistener.mock.MockServerEventListenerModule;
 import harfang.test.servereventlistener.mock.MockServerEventListenerController;
@@ -60,7 +62,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnDispatch() {
-        ServerMain.launch(this.configuration, "/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onDispatchCalled);
         this.assertEquals(configuration.onDispatchMapping.getControllerMethodName(), MockServerEventListenerModule.DISPATCH_SIMPLE_NAME);
     }
@@ -70,7 +76,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnDoNotDispatch() {
-        ServerMain.launch(this.configuration, "/doNotDispatch/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/doNotDispatch/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onDispatchInterruptedCalled);
         this.assertFalse(configuration.onDispatchCalled);
         this.assertEquals(configuration.onDispatchInterruptedMapping.getControllerMethodName(), MockServerEventListenerModule.DO_NOT_DISPATCH_SIMPLE_NAME);
@@ -81,7 +91,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnError() {
-        ServerMain.launch(this.configuration, "/errorThrow/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/errorThrow/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
         this.assertEquals(configuration.onErrorException.getMessage(), MockServerEventListenerController.ERROR_MESSAGE);
         this.assertEquals(Type.getClass(configuration.onErrorException), Exception);
@@ -93,7 +107,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnStringErrorThrow() {
-        ServerMain.launch(this.configuration, "/stringErrorThrow/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/stringErrorThrow/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
         this.assertEquals(Type.getClass(configuration.onErrorException), Exception);
         this.assertFalse(Type.getClass(configuration.onErrorException) == WrappedException);
@@ -104,7 +122,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnUnknownErrorThrow() {
-        ServerMain.launch(this.configuration, "/unknownErrorThrow/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/unknownErrorThrow/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onErrorCalled);
         this.assertEquals(Type.getClass(configuration.onErrorException), WrappedException);
     }
@@ -115,7 +137,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnUnknownWrappedErrorThrow() {
-        ServerMain.launch(this.configuration, "/unknownWrappedErrorThrow/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/unknownWrappedErrorThrow/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
 
         // Check base error type
         this.assertTrue(configuration.onErrorCalled);
@@ -135,7 +161,11 @@ class ServerEventListenerTest extends TestCase {
      */
     @Test
     public function testOnHTTPError() {
-        ServerMain.launch(this.configuration, "/httpErrorThrow/");
+        var rqInfo : RequestInfo = new RequestInfo();
+        rqInfo.setURI("/httpErrorThrow/");
+        rqInfo.setMethod(Method.GET);
+
+        ServerMain.launch(this.configuration, rqInfo);
         this.assertTrue(configuration.onHTTPErrorCalled);
         this.assertEquals(configuration.onHTTPErrorException.getMessage(), MockServerEventListenerController.HTTP_ERROR_MESSAGE);
         this.assertEquals(Type.getClass(configuration.onHTTPErrorException), HTTPException);

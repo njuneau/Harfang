@@ -25,6 +25,7 @@ import harfang.configuration.ServerConfiguration;
 import harfang.exception.NotFoundException;
 import harfang.exception.ServerErrorException;
 import harfang.server.event.ServerEventListener;
+import harfang.server.request.RequestInfo;
 
 /**
  * This class handles the request made to your application. The dispatcher
@@ -46,8 +47,6 @@ class URLDispatcher {
     private var serverConfiguration : ServerConfiguration;
     // The modules that this dispatcher handles
     private var modules : Iterable<Module>;
-    // The URL that is currently being processed
-    private var currentURL : String;
 
     /**
      * Constructor
@@ -63,16 +62,15 @@ class URLDispatcher {
 
     /**
      * Dipatches the URL to the correct controller
-     * @param url The URL to process
+     * @param requestInfo The request that has been made to the server
      */
-    public function dispatch(url : String) : Void {
-        this.currentURL = this.appendSlash(url);
+    public function dispatch(requestInfo : RequestInfo) : Void {
         var dispatched : Bool = false;
         var moduleIterator : Iterator<Module> = this.serverConfiguration.getModules().iterator();
 
         // Scan all the URLS
         while(!dispatched && moduleIterator.hasNext()) {
-            dispatched = this.scanURLs(moduleIterator.next());
+            dispatched = this.scanURLs(moduleIterator.next(), requestInfo);
         }
 
         // If the URL could not have been dispatched, throw a 404 error
@@ -86,10 +84,12 @@ class URLDispatcher {
     /**************************************************************************/
 
     /**
-     * Try matching the URLS with one of the module's regexes.
+     * Try matching the given request with one of the module's mappings.
+     * @param module The module that has the mappings
+     * @param requestInfo The request that has been made to the server
      * @return Scan status (true if URL has been found, false otherwize)
      */
-    private function scanURLs(module : Module) : Bool {
+    private function scanURLs(module : Module, requestInfo : RequestInfo) : Bool {
         var foundURL = false;
         var mappingIterator : Iterator<URLMapping> = module.getURLMappings().iterator();
         var currentMapping : URLMapping = null;
@@ -98,11 +98,11 @@ class URLDispatcher {
         var controllerMethodParams : Array<String> = null;
         var serverEventListeners : Iterable<ServerEventListener> = this.serverConfiguration.getServerEventListeners();
 
-        // Try matching a pattern
+        // Try matching a mapping
         while(!foundURL && mappingIterator.hasNext()) {
             currentMapping = mappingIterator.next();
             // Try matching the URL
-            foundURL = currentMapping.resolve(this.currentURL);
+            foundURL = (currentMapping.resolve(requestInfo.getURI()) && currentMapping.filter(requestInfo));
         }
 
         // Call the controller
@@ -126,7 +126,7 @@ class URLDispatcher {
                     Reflect.callMethod(
                             controller,
                             controllerMethod,
-                            currentMapping.extractParameters(this.currentURL)
+                            currentMapping.extractParameters(requestInfo)
                     );
 
                     // Post request
@@ -145,22 +145,5 @@ class URLDispatcher {
 
         // Return the status of the search
         return foundURL;
-    }
-
-
-    /**
-     * Appends a slash to the URL if it doesn't have one at the end.
-     * It won't appear in browsers, but it will unify the regular expressions.
-     *
-     * @param url The url in which to append the slash
-     * @return The url, with the trailing slash
-     */
-    private function appendSlash(url : String) : String {
-
-        if(url.charAt(url.length - 1) != "/") {
-            url += "/";
-        }
-
-        return url;
     }
 }
