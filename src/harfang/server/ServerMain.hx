@@ -27,6 +27,7 @@ import neko.Web;
 #error "Unsupported platform"
 #end
 
+import harfang.configuration.MacroConfigurator;
 import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
@@ -35,8 +36,6 @@ import harfang.exception.WrappedException;
 import harfang.server.event.ServerEventListener;
 import harfang.server.request.Method;
 import harfang.server.request.RequestInfo;
-
-import server.UserConfiguration;
 
 /**
  * Program entry point
@@ -50,7 +49,7 @@ class ServerMain {
     public static function main() : Void {
         // Load the configuration and start the application
         var requestInfo : RequestInfo = buildRequestInfo();
-        launch(new UserConfiguration(), requestInfo);
+        launch(MacroConfigurator.getServerConfigurationConstructorCall(), requestInfo);
     }
 
     /**

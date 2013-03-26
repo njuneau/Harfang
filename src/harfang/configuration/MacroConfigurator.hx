@@ -29,6 +29,9 @@ import haxe.macro.Type;
  */
 class MacroConfigurator {
 
+    // This variable contains the name of the server configuration class
+    private static var SERVER_CONFIGURATION_CLASS_NAME : String = "server.UserConfiguration";
+
     /**
      * This will map a controller's methods to URLs using the given meta tag
      * name. Use this macro inside an AbstractModule instance.
@@ -93,6 +96,51 @@ class MacroConfigurator {
         var block : Array<Expr> = createNewERegURLMappingBlock(type, metaTag, pos, prefix);
 
         return {pos : pos, expr : EArrayDecl(block)};
+    }
+
+    /**
+     * This method sets the server configuration class that will be used at
+     * launch of the framework
+     *
+     * @param serverConfigurationClassName The full name of the class, including
+     * its package. For example : 'server.UserConfiguration'
+     */
+    macro public static function setServerConfigurationClass(serverConfigurationClassName : String) : Void {
+        SERVER_CONFIGURATION_CLASS_NAME = serverConfigurationClassName;
+    }
+
+    /**
+     * Returns a call to the server configuration's constructor
+     *
+     * @return A call to the server configuration's constructor
+     * (by default, calls 'new server.UserConfiguration()')
+     */
+    macro public static function getServerConfigurationConstructorCall() : Expr {
+        var pathParts : Array<String> = SERVER_CONFIGURATION_CLASS_NAME.split(".");
+        var packParts : Array<String> = new Array<String>();
+
+        // Separate package from class name
+        var i : Int = 0;
+        while(i < pathParts.length - 1) {
+            packParts.push(pathParts[i]);
+            i++;
+        }
+
+        // Class name is the last part of the full class' path
+        var className : String = pathParts[i];
+
+        var constructorCall : Expr = {
+            pos : Context.currentPos(),
+            expr : ENew({
+                    pack : packParts,
+                    name : className,
+                    sub : null,
+                    params : []
+                }, []
+            )
+        }
+
+        return constructorCall;
     }
 
     /**
