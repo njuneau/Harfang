@@ -1,5 +1,5 @@
 // Harfang - A Web development framework
-// Copyright (C) 2011-2012  Nicolas Juneau <n.juneau@gmail.com>
+// Copyright (C) 2011-2013  Nicolas Juneau <n.juneau@gmail.com>
 // Full copyright notice can be found in the project root's "COPYRIGHT" file
 //
 // This file is part of Harfang.
@@ -85,8 +85,8 @@ class MacroConfigurator {
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
-     * @return An array expression containing all the ERegURLMapping instances
-     * that maps the controllers to URLs.
+     * @return An array of expressions containing all the ERegURLMapping
+     * instances that maps the controllers to URLs.
      */
     macro public static function createERegUrlMappingArray(clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
@@ -106,6 +106,22 @@ class MacroConfigurator {
      * metadata of a controller's method to map it to a URL. This method
      * shouldn't have any dependency regarding the object it's called from, but
      * it is most often used from a Module instance.
+     *
+     * To use this macro, annotate a controller's method like this:
+     * @URL("my.custom.CustomURLMapping", "/")
+     *
+     * The macro will generate calls to CustomURLMapping's constructor.
+     * The first parameter will be the controller class to map. The second
+     * parameter will be the method (as a string) on which the metadata is
+     * applied and in the case of the example above, the last parameter will be
+     * the string "/".
+     *
+     * @param clExpr The controller's class (must be an implementation of the
+     * Controller interface)
+     * @param metaTag The metadata tag that will be used to extract the URL
+     * regular expression from a controller method.
+     *
+     * @return An array of expressions containing custom URL mapping instances
      */
     macro public static function createUrlMappingArray(clExpr : Expr, metaTag : String) : Expr {
         var pos : Position = Context.currentPos();
