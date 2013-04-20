@@ -28,6 +28,8 @@ import harfang.url.ERegURLMapping;
 
 import harfang.test.macroconfigurator.mock.MockMacroModule;
 import harfang.test.macroconfigurator.mock.MockMacroController;
+import harfang.test.macroconfigurator.mock.MockMacroControllerCustom;
+import harfang.test.macroconfigurator.mock.MockMacroURLMapping;
 
 /**
  * This is the MacroConfigurator test case
@@ -94,7 +96,7 @@ class MacroConfiguratorTest extends TestCase {
      * Tests the MacroConfigurator's createERegUrlMappingArray method
      */
     @Test
-    private function testCreateURLMappingArray() {
+    private function testCreateERegURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
                 MacroConfigurator.createERegUrlMappingArray(MockMacroController, "URL", "MYPREFIX");
 
@@ -150,6 +152,33 @@ class MacroConfiguratorTest extends TestCase {
                 default:
             }
         }
+    }
+
+    /**
+     * Tests the MacroConfigurator's createERegUrlMappingArray method
+     */
+    @Test
+    private function testCreateURLMappingArray() {
+        var mappings : Array<MockMacroURLMapping> = MacroConfigurator.createUrlMappingArray(MockMacroControllerCustom, "Custom");
+        var mappingCount : Int = 0;
+
+        for(mapping in mappings) {
+            this.assertEquals(Type.getClass(mapping), MockMacroURLMapping);
+            if(mapping.getControllerClass() == MockMacroControllerCustom) {
+                switch(mapping.getControllerMethodName()) {
+                    case "handleRequestA":
+                        if(mapping.getParam() == null) {
+                            mappingCount++;
+                        }
+                    case "handleRequestB":
+                        if(mapping.getParam() == "abc") {
+                            mappingCount++;
+                        }
+                }
+            }
+        }
+
+        this.assertEquals(mappingCount, MockMacroControllerCustom.MAPPING_COUNT);
     }
 
 }

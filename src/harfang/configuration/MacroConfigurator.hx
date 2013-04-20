@@ -99,6 +99,25 @@ class MacroConfigurator {
     }
 
     /**
+     * This will map a controller's methods to URLs using the given meta tag
+     * name.
+     *
+     * This mehod scans a controller for method metadata. It will use the
+     * metadata of a controller's method to map it to a URL. This method
+     * shouldn't have any dependency regarding the object it's called from, but
+     * it is most often used from a Module instance.
+     */
+    macro public static function createUrlMappingArray(clExpr : Expr, metaTag : String) : Expr {
+        var pos : Position = Context.currentPos();
+
+        var typeName : String = getTypeName(clExpr);
+        var type : Type = Context.getType(typeName);
+        var block : Array<Expr> = createNewURLMappingBlock(type, metaTag, pos);
+
+        return {pos : pos, expr : EArrayDecl(block)};
+    }
+
+    /**
      * This method sets the server configuration class that will be used at
      * launch of the framework
      *
@@ -172,6 +191,35 @@ class MacroConfigurator {
     }
 
     /**
+     * This method creates a block of call to an object's  constructor using
+     * the information of a class' metadata
+     *
+     * @param type The type (class) in which to scan for metadata
+     * @param metaTag The metadata tag's name that contains the information
+     * @param pos Current context position
+     * @return A block of calls to URLMapping implementations constructors
+     */
+    private static function createNewURLMappingBlock(type : Type, metaTag : String, pos : Position) : Array<Expr> {
+        var block : Array<Expr> = new Array<Expr>();
+
+        switch(type) {
+            case TInst(t, params):
+                var fieldsMeta : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), metaTag, pos);
+                for(field in fieldsMeta.keys()) {
+                    var callParams = fieldsMeta.get(field);
+                    var call : Expr = createNewExpr(t.get(), field, callParams, pos);
+                    if(call != null) {
+                        block.push(call);
+                    }
+                }
+            default:
+                // Not a class instance
+        }
+
+        return block;
+    }
+
+    /**
      * This method creates a block of calls to the ERegURLMapping's constructor
      * using the information of a class' metadata.
      *
@@ -179,16 +227,20 @@ class MacroConfigurator {
      * @param metaTag The metadata tag's name that contains the URL
      * @param pos Current context position
      * @param prefix The URL prefix
+     * @return A block of calls to ERegURLMapping constructors
      */
     private static function createNewERegURLMappingBlock(type : Type, metaTag : String, pos : Position, prefix : String) : Array<Expr> {
         var block : Array<Expr> = new Array<Expr>();
 
         switch(type) {
             case TInst(t, params):
-                var callParams : Array<Dynamic> = processClassMeta(t.get(), metaTag, pos, prefix);
-                for(callParam in callParams) {
-                    var call : Expr = createNewExpr(t.get(), callParam.field, callParam.urlEReg, pos, callParam.eregOpts, prefix, callParam.urlPrefixVar);
-                    block.push(call);
+                var fieldsMeta : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), metaTag, pos);
+                for(field in fieldsMeta.keys()) {
+                    var callParams = fieldsMeta.get(field);
+                    var call : Expr = createNewEregExpr(t.get(), field, callParams, pos, prefix);
+                    if(call != null) {
+                        block.push(call);
+                    }
                 }
             default:
                 // Not a class instance
@@ -206,16 +258,20 @@ class MacroConfigurator {
      * @param metaTag The metadata tag's name that contains the URL
      * @param pos Current context position
      * @param prefix The URL prefix
+     * @return A block of calls to the "addERegURLMapping" method
      */
     private static function createAddERegURLMappingBlock(eThis : Expr, type : Type, metaTag : String, pos : Position, prefix : String) : Array<Expr> {
         var block : Array<Expr> = new Array<Expr>();
 
         switch(type) {
             case TInst(t, params):
-                var callParams : Array<Dynamic> = processClassMeta(t.get(), metaTag, pos, prefix);
-                for(callParam in callParams) {
-                    var call : Expr = createAddExpr(eThis, t.get(), callParam.field, callParam.urlEReg, pos, callParam.eregOpts, prefix, callParam.urlPrefixVar);
-                    block.push(call);
+                var fieldsMeta : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), metaTag, pos);
+                for(field in fieldsMeta.keys()) {
+                    var callParams = fieldsMeta.get(field);
+                    var call : Expr = createAddExpr(eThis, t.get(), field, callParams, pos, prefix);
+                    if(call != null) {
+                        block.push(call);
+                    }
                 }
             default:
                 // Not a class instance
@@ -225,18 +281,16 @@ class MacroConfigurator {
     }
 
     /**
-     * Processes a class' macros
+     * Extract a class' metadata information
      * @param cl The class to process
-     * @param metaTag The metadata tag's name that contains the URL
+     * @param metaTag The metadata tag's name that contains the information
      * @param pos Current context position
-     * @param prefix The URL prefix
-     * @return A object containing all the parameters necessary to generation of
-     * an ERegURLMapping. The object has the following structure :
-     * { field, urlEReg, eregOpts, urlPrefixVar }
      *
+     * @return An array containing all the parameters contained in the field's
+     * given metadata tag
      */
-    private static function processClassMeta(cl : ClassType, metaTag : String, pos : Position, ? prefix : String) : Array<Dynamic> {
-        var callParams : Array<Dynamic> = new Array<Dynamic>();
+    private static function extractMetaInformation(cl : ClassType, metaTag : String, pos : Position) : Map<ClassField, Array<ExprDef>> {
+        var callParams : Map<ClassField, Array<ExprDef>> = new Map<ClassField, Array<ExprDef>>();
 
         // Scan for all the class' methods
         for(field in cl.fields.get()) {
@@ -252,62 +306,15 @@ class MacroConfigurator {
                             if(fieldMeta[i].name == metaTag) {
                                 found = true;
 
-                                var urlEReg : String = null;
-                                var eregOpts : String = "";
-                                var urlPrefixVar : String = null;
+                                var className : String = null;
+                                var extractedParams : Array<ExprDef> = new Array<ExprDef>();
 
                                 // Process method URL metadata
                                 if(fieldMeta[i].params.length >= 1) {
-                                    switch(fieldMeta[i].params[0].expr) {
-                                        case EConst(c):
-                                            switch(c) {
-                                                case CString(s):
-                                                    // Got an URL regex, create call
-                                                    urlEReg = s;
-                                                default:
-                                            }
-                                        default:
+                                    for(param in fieldMeta[i].params) {
+                                        extractedParams.push(param.expr);
                                     }
-
-                                    // Process ereg optional argument
-                                    if(fieldMeta[i].params.length >= 2) {
-                                        switch(fieldMeta[i].params[1].expr) {
-                                            case EConst(c):
-                                                switch(c) {
-                                                    case CString(s):
-                                                        // Got an URL regex opt
-                                                        eregOpts = s;
-                                                    default:
-                                                }
-                                            default:
-                                        }
-
-                                        // Process url prefix argument
-                                        if(fieldMeta[i].params.length == 3) {
-                                            switch(fieldMeta[i].params[2].expr) {
-                                                case EConst(c):
-                                                    switch(c) {
-                                                        case CString(s):
-                                                            // Got the URL prefix variable
-                                                            urlPrefixVar = s;
-                                                        default:
-                                                    }
-                                                default:
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                                // If we have at least the URL regex, create the
-                                // ERegUrlMapping parameters
-                                if(urlEReg != null) {
-                                    callParams.push({
-                                        field : field,
-                                        urlEReg : urlEReg,
-                                        eregOpts : eregOpts,
-                                        urlPrefixVar : urlPrefixVar
-                                    });
+                                    callParams.set(field, extractedParams);
                                 }
                             }
                             i++;
@@ -322,76 +329,285 @@ class MacroConfigurator {
     }
 
     /**
-     * Creates the "addURLMapping" method call expression
+     * Creates a constructor call for the URLMapping
+     *
      * @param cl The controller class on which we map an URL
+     *
      * @param controllerMethod The controller method to map
-     * @param url The URL regular expression mapping
-     * @pos The context position
-     * @param eregOptions The regular expression's options
-     * @param prefix the URL prefix
-     * @param prefixVar The part of the regular expression to replace with the
-     * prefix
-     * @return A single addURLMapping call expression
+     *
+     * @param callParams The list of parameters to pass to the constructor. The
+     * first parameter must be the class name of the URLMapping implementation
+     * to construct.
+     *
+     * @param pos The context position
+     *
+     * @return A single call to an URLMapping constructor expression or null if
+     * the given call parameters are not satisfactory
      */
-    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, url : String, pos : Position, eregOptions : String, ? prefix : String, ? prefixVar : String) : Expr {
-        var params : Array<Expr> = new Array<Expr>();
+    private static function createNewExpr(cl : ClassType, controllerMethod : ClassField, callParams : Array<ExprDef>, pos : Position) : Expr {
+        var constructorParams : Array<Expr> = new Array<Expr>();
+        var constructorCall : Expr = null;
 
-        // Process prefix
-        if(prefix != null && prefixVar != null) {
-            url = StringTools.replace(url, prefixVar, prefix);
+        var mappingClassPack : Array<String> = new Array<String>();
+        var mappingClassName : String = null;
+
+        // First parameter must be the class name
+        switch(callParams[0]) {
+            case EConst(c):
+                switch(c) {
+                    case CString(s):
+                        var mappingClassPath : Array<String> = s.split(".");
+                        var classPathLength = mappingClassPath.length;
+                        var i : Int = 0;
+
+                        // Separate class name and package from class path
+                        while(i < classPathLength) {
+                            if(i != classPathLength - 1) {
+                                mappingClassPack.push(mappingClassPath[i]);
+                            } else {
+                                mappingClassName = mappingClassPath[i];
+                            }
+                            i++;
+                        }
+                    default:
+                }
+            default:
         }
 
-        params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
-        params.push({pos : pos, expr : EConst(CIdent(cl.name))});
-        params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
+        // Create the call only if we have the necessary information
+        if(mappingClassPack.length > 0 && mappingClassName != null) {
+            constructorParams.push({pos : pos, expr : EConst(CIdent(cl.name))});
+            constructorParams.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
-        var addMethod : Expr = {
-            pos : pos,
-            expr : ECall({
+            var i : Int = 1;
+            var callParamsLength : Int = callParams.length;
+
+            while(i < callParamsLength) {
+                constructorParams.push({pos : pos, expr : callParams[i]});
+                i++;
+            }
+
+            // Create the constructor call
+            constructorCall = {
                 pos : pos,
-                expr : EField(eThis, "addURLMapping")
-            }, params)
+                expr : ENew({
+                        pack : mappingClassPack,
+                        name : mappingClassName,
+                        sub : null,
+                        params : []
+                    }, constructorParams
+                )
+            }
         }
 
-        return addMethod;
+        return constructorCall;
     }
 
     /**
      * Creates a constructor call for the ERegURLMapping
+     *
      * @param cl The controller class on which we map an URL
+     *
      * @param controllerMethod The controller method to map
-     * @param url The URL regular expression mapping
+     *
+     * @param callParams The list of parameters to pass to the constructor. The
+     * first parameter must be the URL regular expression pattern. The second
+     * argument may be regular expression options. The third argument may be
+     * an URL prefix variable.
+     *
      * @param pos The context position
-     * @param eregOptions The regular expression's options
-     * @param prefix the URL prefix
-     * @param prefixVar The part of the regular expression to replace with the
-     * prefix
-     * @return A single call to the ERegURLMapping constructor expression
+     *
+     * @param prefix An optionnal prefix that replaces the URL prefix variable
+     * given in the callParams.
+     *
+     * @return A single call to the ERegURLMapping constructor expression or
+     * null if the given callParams aren't satisfactory
      */
-    private static function createNewExpr(cl : ClassType, controllerMethod : ClassField, url : String, pos : Position, eregOptions : String, ? prefix : String, ? prefixVar : String) : Expr {
-        var params : Array<Expr> = new Array<Expr>();
+    private static function createNewEregExpr(cl : ClassType, controllerMethod : ClassField, callParams : Array<ExprDef>, pos : Position, ? prefix : String) : Expr {
+        var constructorCall : Expr = null;
+        var url : String = null;
+        var eregOptions : String = "";
+        var prefixVar : String = null;
+        var extractedParameters = extractERregURLMappingParameters(callParams);
 
-        // Process prefix
-        if(prefix != null && prefixVar != null) {
-            url = StringTools.replace(url, prefixVar, prefix);
+        // Process method URL metadata
+        if(extractedParameters != null) {
+            if(extractedParameters.length >= 1) {
+                url = extractedParameters[0];
+
+                // Process ereg optional argument
+                if(extractedParameters.length >= 2) {
+                    eregOptions = extractedParameters[1];
+
+                    // Process url prefix argument
+                    if(extractedParameters.length == 3) {
+                        prefixVar = extractedParameters[2];
+                    }
+                }
+            }
         }
 
-        params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
-        params.push({pos : pos, expr : EConst(CIdent(cl.name))});
-        params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
+        // Process information only if we have at least a regular expression url
+        if(url != null) {
+            var params : Array<Expr> = new Array<Expr>();
 
-        var constructorCall : Expr = {
-            pos : pos,
-            expr : ENew({
-                    pack : ["harfang", "url"],
-                    name : "ERegURLMapping",
-                    sub : null,
-                    params : []
-                }, params
-            )
+            // Process prefix
+            if(prefix != null && prefixVar != null) {
+                url = StringTools.replace(url, prefixVar, prefix);
+            }
+
+            params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
+            params.push({pos : pos, expr : EConst(CIdent(cl.name))});
+            params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
+
+            constructorCall = {
+                pos : pos,
+                expr : ENew({
+                        pack : ["harfang", "url"],
+                        name : "ERegURLMapping",
+                        sub : null,
+                        params : []
+                    }, params
+                )
+            }
         }
 
         return constructorCall;
+    }
+
+    /**
+     * Creates the "addURLMapping" method call expression
+     *
+     * @param eThis The module instance having the "addURLMapping" method
+     *
+     * @param cl The controller class on which we map an URL
+     *
+     * @param controllerMethod The controller method to map
+     *
+     * @param callParams The list of parameters to pass to the constructor. The
+     * first parameter must be the URL regular expression pattern. The second
+     * argument may be regular expression options. The third argument may be
+     * an URL prefix variable.
+     *
+     * @param pos The context position
+     *
+     * @param prefix An optionnal prefix that replaces the URL prefix variable
+     * given in the callParams.
+     *
+     * @return A single call to the ERegURLMapping constructor expression or
+     * null if the given callParams aren't satisfactory
+     *
+     * @return A single addURLMapping call expression
+     */
+    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, callParams : Array<ExprDef>, pos : Position, ? prefix : String) : Expr {
+        var url : String = null;
+        var eregOptions : String = "";
+        var prefixVar : String = null;
+        var extractedParameters = extractERregURLMappingParameters(callParams);
+        var addCall : Expr = null;
+
+        // Process method URL metadata
+        if(extractedParameters != null) {
+            if(extractedParameters.length >= 1) {
+                url = extractedParameters[0];
+
+                // Process ereg optional argument
+                if(extractedParameters.length >= 2) {
+                    eregOptions = extractedParameters[1];
+
+                    // Process url prefix argument
+                    if(extractedParameters.length == 3) {
+                        prefixVar = extractedParameters[2];
+                    }
+                }
+            }
+        }
+
+        if(url != null) {
+            var params : Array<Expr> = new Array<Expr>();
+
+            // Process prefix
+            if(prefix != null && prefixVar != null) {
+                url = StringTools.replace(url, prefixVar, prefix);
+            }
+
+            params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
+            params.push({pos : pos, expr : EConst(CIdent(cl.name))});
+            params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
+
+            addCall = {
+                pos : pos,
+                expr : ECall({
+                    pos : pos,
+                    expr : EField(eThis, "addURLMapping")
+                }, params)
+            }
+        }
+
+        return addCall;
+    }
+
+    /**
+     * Extracts the parameters to give to ERegURLMapping's constructor
+     *
+     * @param callParams The list of parameters to pass to the constructor. The
+     * first parameter must be the URL regular expression pattern. The second
+     * argument may be regular expression options. The third argument may be
+     * an URL prefix variable.
+     *
+     * @return An array containing, in order, the URL pattern and optionnaly,
+     * in order, a string containing regex parameters and the prefix variable
+     * to replace in the URL pattern. If callParams is malformed, this method
+     * may return null.
+     */
+    private static function extractERregURLMappingParameters(callParams : Array<ExprDef>) : Array<String> {
+        var params : Array<String> = null;
+
+        // First parameter must contain the URL
+        if(callParams.length >= 1) {
+
+            switch(callParams[0]) {
+                case EConst(c):
+                    switch(c) {
+                        case CString(s):
+                            // Got an URL regex, create parameters
+                            params = new Array<String>();
+                            params.push(s);
+                        default:
+                    }
+                default:
+            }
+
+            // Process ereg optional argument
+            if(callParams.length >= 2 && params != null) {
+                switch(callParams[1]) {
+                    case EConst(c):
+                        switch(c) {
+                            case CString(s):
+                                // Got an URL regex opt
+                                params.push(s);
+                            default:
+                        }
+                    default:
+                }
+
+                // Process url prefix argument
+                if(callParams.length == 3 && params.length == 2) {
+                    switch(callParams[2]) {
+                        case EConst(c):
+                            switch(c) {
+                                case CString(s):
+                                    // Got the URL prefix variable
+                                    params.push(s);
+                                default:
+                            }
+                        default:
+                    }
+                }
+            }
+        }
+
+        return params;
     }
 
 }

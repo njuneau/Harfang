@@ -4,6 +4,7 @@ release-0.5 (Unreleased)
 * Added a createERegUrlMappingArray macro for MacroConfigurator to return an array of mappings
 * Changed URLMapping API to support request filtering
 * Added the possibility to change the class implementing ServerConfiguration at compile-time
+* Added the possibility to map custom URL mapping implementations using MacroConfigurator
 
 release-0.3 (2012-11-25)
 ===============
