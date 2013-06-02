@@ -19,7 +19,7 @@
 
 package harfang.test.serverconfiguration;
 
-import haxe.unit2.TestCase;
+import unit2.TestCase;
 
 import harfang.server.ServerMain;
 

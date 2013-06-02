@@ -19,7 +19,7 @@
 
 package harfang.test.macroconfigurator;
 
-import haxe.unit2.TestCase;
+import unit2.TestCase;
 
 import harfang.test.macroconfigurator.mock.MockMacroModule;
 import harfang.test.macroconfigurator.mock.MockMacroController;

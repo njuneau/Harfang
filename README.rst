@@ -22,7 +22,7 @@ Harfang cannot be "compiled" as a standalone application as it needs user
 configuration to run. However, there are a couple of unit tests that tests
 various components of the framework. These don't need user configuration.
 
-You will need Unit2_ in order to run the tests. Copy Unit2's ``haxe.unit2``
+You will need Unit2_ in order to run the tests. Copy Unit2's ``unit2``
 package into Harfang's ``src`` folder prior to running the tests. Once Unit2 has
 been included, run ``haxe test-neko.hxml`` or ``haxe test-php.hxml``
 depending on your target platform.

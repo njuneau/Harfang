@@ -19,7 +19,7 @@
 
 package harfang.test.urldispatcher;
 
-import haxe.unit2.TestCase;
+import unit2.TestCase;
 
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;

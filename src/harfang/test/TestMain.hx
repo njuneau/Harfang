@@ -27,11 +27,11 @@ import neko.Lib;
 #error "Unsupported platform"
 #end
 
-import haxe.unit2.TestRunner;
-import haxe.unit2.TestCase;
-import haxe.unit2.output.OutputWriter;
-import haxe.unit2.output.TextOutputWriter;
-import haxe.unit2.output.XHTMLOutputWriter;
+import unit2.TestRunner;
+import unit2.TestCase;
+import unit2.output.OutputWriter;
+import unit2.output.TextOutputWriter;
+import unit2.output.XHTMLOutputWriter;
 
 import harfang.test.macroconfigurator.MacroConfiguratorTest;
 import harfang.test.urldispatcher.URLDispatcherTest;
