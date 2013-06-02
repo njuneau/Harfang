@@ -2,7 +2,7 @@ doc/*
 out/*
 content/*
 src/server/*
-src/haxe
+src/unit2
 index.html
 harfang.xml
 haxedoc.xml

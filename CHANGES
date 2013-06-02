@@ -6,6 +6,11 @@ release-0.5 (Unreleased)
 * Added the possibility to change the class implementing ServerConfiguration at compile-time
 * Added the possibility to map custom URL mapping implementations using MacroConfigurator
 
+release-0.4 (Unreleased)
+===============
+
+* Haxe 3 compatibility
+
 release-0.3 (2012-11-25)
 ===============
 

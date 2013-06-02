@@ -19,7 +19,7 @@
 
 package harfang.test.servereventlistener;
 
-import haxe.unit2.TestCase;
+import unit2.TestCase;
 
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
