@@ -25,7 +25,6 @@ import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
 import harfang.exception.NotFoundException;
 import harfang.server.request.RequestInfo;
-import harfang.server.request.Method;
 
 import harfang.test.urldispatcher.mock.MockURLDispatcherUserConfiguration;
 import harfang.test.urldispatcher.mock.MockURLDispatcherFilterConfiguration;
@@ -63,9 +62,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSimple() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/", "GET");
 
         this.dispatcher.dispatch(rqInfo);
 
@@ -87,9 +84,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchSlash() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("", "GET");
 
         this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
@@ -109,9 +104,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchParam() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/abc/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/abc/", "GET");
 
         this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
@@ -135,9 +128,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchMultipleParam() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/cDe/0988/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/cDe/0988/", "GET");
 
         this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
@@ -164,9 +155,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDoNotDispatch() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/_doNotDispatch/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/_doNotDispatch/", "GET");
 
         this.dispatcher.dispatch(rqInfo);
         assertTrue(MockURLDispatcherController.getIsInit());
@@ -189,9 +178,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testDispatchNotFound() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("-+-+qwe");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("-+-+qwe", "GET");
 
         try {
             this.dispatcher.dispatch(rqInfo);
@@ -216,9 +203,7 @@ class URLDispatcherTest extends TestCase {
      */
     @Test
     public function testResolveFilter() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/", "GET");
 
         var filterAndResolve : MockURLDispatcherFilterConfiguration =
                 new MockURLDispatcherFilterConfiguration(true, true);

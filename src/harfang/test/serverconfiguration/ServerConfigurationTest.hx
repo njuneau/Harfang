@@ -23,7 +23,6 @@ import unit2.TestCase;
 
 import harfang.server.ServerMain;
 import harfang.server.request.RequestInfo;
-import harfang.server.request.Method;
 
 import harfang.test.serverconfiguration.mock.MockServerConfiguration;
 import harfang.test.serverconfiguration.mock.MockServerConfigurationController;
@@ -72,9 +71,7 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testNormalSequence() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -93,9 +90,7 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatch404() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/0");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/0", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -118,9 +113,7 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatchError() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/error");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/error", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
 
@@ -143,9 +136,7 @@ class ServerConfigurationTest extends TestCase {
      */
     @Test
     public function testCatchHTTPErrorInController() {
-        var rqInfo : RequestInfo = new RequestInfo();
-        rqInfo.setURI("/303");
-        rqInfo.setMethod(Method.GET);
+        var rqInfo : RequestInfo = new RequestInfo("/303", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
 

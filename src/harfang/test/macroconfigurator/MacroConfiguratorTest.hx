@@ -23,7 +23,6 @@ import unit2.TestCase;
 
 import harfang.configuration.MacroConfigurator;
 import harfang.server.request.RequestInfo;
-import harfang.server.request.Method;
 import harfang.url.ERegURLMapping;
 
 import harfang.test.macroconfigurator.mock.MockMacroModule;
@@ -48,9 +47,9 @@ class MacroConfiguratorTest extends TestCase {
         var handleRequestPrefix : Bool = false;
         var handleRequestNoPrefix : Bool = false;
         var doNotHandle : Bool = false;
+        var httpMethod : String = "GET";
 
-        var testRequestInfo : RequestInfo = new RequestInfo();
-        testRequestInfo.setMethod(Method.GET);
+        var testRequestInfo : RequestInfo = null;
 
         for(urlMapping in module.getURLMappings()) {
             assertEquals(urlMapping.getControllerClass(), MockMacroController);
@@ -58,21 +57,22 @@ class MacroConfiguratorTest extends TestCase {
             switch(urlMapping.getControllerMethodName()) {
                 case "handleRequestA":
                     foundHandleRequestA = true;
-                    testRequestInfo.setURI("/a/");
+                    testRequestInfo = new RequestInfo("/a/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestEregOptions":
                     handleRequestEregOptions = true;
-                    testRequestInfo.setURI("/b/aoisuasinoi/");
+                    testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestPrefix":
                     handleRequestPrefix = true;
-                    testRequestInfo.setURI("/MYPREFIX/b/asodhuiahiuh/");
+                    testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    testRequestInfo.setURI("/$prefix/b/asodhuiahiuh/");
+
+                    testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
                     assertFalse(urlMapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestNoPrefix":
                     handleRequestNoPrefix = true;
-                    testRequestInfo.setURI("/b/jkandahjsbh/");
+                    testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
                 case "doNotHandleA":
                     doNotHandle = true;
@@ -106,9 +106,8 @@ class MacroConfiguratorTest extends TestCase {
                                              "handleRequestEregOptions",
                                              "handleRequestPrefix",
                                              "handleRequestNoPrefix"];
-
-        var testRequestInfo : RequestInfo = new RequestInfo();
-        testRequestInfo.setMethod(Method.GET);
+        var httpMethod : String = "GET";
+        var testRequestInfo : RequestInfo = null;
 
         // Make sure all mappings are all right
         for(mapping in mappings) {
@@ -117,18 +116,19 @@ class MacroConfiguratorTest extends TestCase {
 
             switch(mapping.getControllerMethodName()) {
                 case "handleRequestA":
-                    testRequestInfo.setURI("/a/");
+                    testRequestInfo = new RequestInfo("/a/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestEregOptions":
-                    testRequestInfo.setURI("/b/aoisuasinoi/");
+                    testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestPrefix":
-                    testRequestInfo.setURI("/MYPREFIX/b/asodhuiahiuh/");
+                    testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    testRequestInfo.setURI("/$prefix/b/asodhuiahiuh/");
+
+                    testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
                     assertFalse(mapping.resolve(testRequestInfo.getURI()));
                 case "handleRequestNoPrefix":
-                    testRequestInfo.setURI("/b/jkandahjsbh/");
+                    testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
                 default:
             }
@@ -139,15 +139,16 @@ class MacroConfiguratorTest extends TestCase {
         var unprefixedMappings : Array<ERegURLMapping> =
                 MacroConfigurator.createERegUrlMappingArray(MockMacroController, "URL");
 
-        var testRequestInfo : RequestInfo = new RequestInfo();
-        testRequestInfo.setMethod(Method.GET);
+        var httpMethod : String = "GET";
+        var testRequestInfo : RequestInfo = null;
 
         for(mapping in unprefixedMappings) {
             switch(mapping.getControllerMethodName()) {
                 case "handleRequestPrefix":
-                    testRequestInfo.setURI("/MYPREFIX/b/asodhuiahiuh/");
+                    testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
                     assertFalse(mapping.resolve(testRequestInfo.getURI()));
-                    testRequestInfo.setURI("/$prefix/b/asodhuiahiuh/");
+
+                    testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
                     assertFalse(mapping.resolve(testRequestInfo.getURI()));
                 default:
             }

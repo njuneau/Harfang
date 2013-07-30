@@ -34,7 +34,6 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 import harfang.server.event.ServerEventListener;
-import harfang.server.request.Method;
 import harfang.server.request.RequestInfo;
 
 /**
@@ -96,31 +95,9 @@ class ServerMain {
 
     /**
      * Builds the request info object based on the server's information
+     * @return A RequestInfo instance containing the HTTP request information
      */
     private static function buildRequestInfo() : RequestInfo {
-        var method : Method = null;
-        var requestInfo : RequestInfo = new RequestInfo();
-
-        // Determine request method
-        var stringMethod = Web.getMethod();
-        switch(stringMethod) {
-            case "GET":
-                method = Method.GET;
-            case "PUT":
-                method = Method.PUT;
-            case "POST":
-                method = Method.POST;
-            case "DELETE":
-                method = Method.DELETE;
-            case "OPTIONS":
-                method = Method.OPTIONS;
-            default:
-                method = Method.OTHER(stringMethod);
-        }
-
-        requestInfo.setMethod(method);
-        requestInfo.setURI(Web.getURI());
-
-        return requestInfo;
+        return new RequestInfo(Web.getURI(), Web.getMethod());
     }
 }
