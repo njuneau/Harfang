@@ -22,7 +22,7 @@ package harfang.exception;
 import harfang.exception.HTTPException;
 
 /**
- * The 505 exception is called whenever something went wrong server-side.
+ * The 500 exception is called whenever something went wrong server-side.
  */
 class ServerErrorException extends HTTPException {
 
