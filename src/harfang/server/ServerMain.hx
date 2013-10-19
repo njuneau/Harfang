@@ -27,7 +27,9 @@ import neko.Web;
 #error "Unsupported platform"
 #end
 
-import harfang.configuration.MacroConfigurator;
+import haxe.macro.Expr;
+import haxe.macro.Context;
+
 import harfang.configuration.ServerConfiguration;
 import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
@@ -41,6 +43,9 @@ import harfang.server.request.RequestInfo;
  */
 class ServerMain {
 
+    // This variable contains the name of the server configuration class
+    private static var SERVER_CONFIGURATION_CLASS_NAME : String = "server.UserConfiguration";
+
     /**
      * Harfang's entry point - creates the user's configuration and launches the
      * server with it.
@@ -48,7 +53,7 @@ class ServerMain {
     public static function main() : Void {
         // Load the configuration and start the application
         var requestInfo : RequestInfo = buildRequestInfo();
-        launch(MacroConfigurator.getServerConfigurationConstructorCall(), requestInfo);
+        launch(getServerConfigurationConstructorCall(), requestInfo);
     }
 
     /**
@@ -92,6 +97,59 @@ class ServerMain {
         // Close the application
         userConfiguration.onClose();
     }
+
+    /**************************************************************************/
+    /*                             INTERNAL MACROS                            */
+    /**************************************************************************/
+
+    /**
+     * This method sets the server configuration class that will be used at
+     * launch of the framework
+     *
+     * @param serverConfigurationClassName The full name of the class, including
+     * its package. For example : 'server.UserConfiguration'
+     */
+    macro private static function setServerConfigurationClass(serverConfigurationClassName : String) : Void {
+        SERVER_CONFIGURATION_CLASS_NAME = serverConfigurationClassName;
+    }
+
+    /**
+     * Returns a call to the server configuration's constructor
+     *
+     * @return A call to the server configuration's constructor
+     * (by default, calls 'new server.UserConfiguration()')
+     */
+    macro private static function getServerConfigurationConstructorCall() : Expr {
+        var pathParts : Array<String> = SERVER_CONFIGURATION_CLASS_NAME.split(".");
+        var packParts : Array<String> = new Array<String>();
+
+        // Separate package from class name
+        var i : Int = 0;
+        while(i < pathParts.length - 1) {
+            packParts.push(pathParts[i]);
+            i++;
+        }
+
+        // Class name is the last part of the full class' path
+        var className : String = pathParts[i];
+
+        var constructorCall : Expr = {
+            pos : Context.currentPos(),
+            expr : ENew({
+                    pack : packParts,
+                    name : className,
+                    sub : null,
+                    params : []
+                }, []
+            )
+        }
+
+        return constructorCall;
+    }
+
+    /**************************************************************************/
+    /*                            PRIVATE FUNCTIONS                           */
+    /**************************************************************************/
 
     /**
      * Builds the request info object based on the server's information
