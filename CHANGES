@@ -5,6 +5,7 @@ release-0.5 (Unreleased)
 * Changed URLMapping API to support request filtering
 * Added the possibility to change the class implementing ServerConfiguration at compile-time
 * Added the possibility to map custom URL mapping implementations using MacroConfigurator
+* Removed the MacroConfigurator class in favor of the URLMappingFactory
 
 release-0.4.0 (2013-08-07)
 ===============

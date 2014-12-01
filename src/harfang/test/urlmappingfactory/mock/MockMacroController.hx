@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.test.macroconfigurator.mock;
+package harfang.test.urlmappingfactory.mock;
 
 import harfang.controller.AbstractController;
 

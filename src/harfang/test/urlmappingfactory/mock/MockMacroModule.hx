@@ -17,10 +17,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.test.macroconfigurator.mock;
+package harfang.test.urlmappingfactory.mock;
 
 import harfang.module.AbstractModule;
-import harfang.configuration.MacroConfigurator;
+import harfang.url.URLMappingFactory;
 
 /**
  * Mock module to test the macro configurator
@@ -33,7 +33,7 @@ class MockMacroModule extends AbstractModule {
     public function new() {
         super();
 
-        MacroConfigurator.mapController(this, MockMacroController, "URL", "MYPREFIX");
+        URLMappingFactory.mapController(this, MockMacroController, "URL", "MYPREFIX");
     }
 
 }

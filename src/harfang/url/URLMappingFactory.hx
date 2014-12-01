@@ -17,17 +17,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.configuration;
+package harfang.url;
 
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Type;
 
 /**
- * The macro configurator is used to automatically configure various parts of
- * the framework at compile time using Haxe macros and metadata.
+ * This class contains various macros to generate URL mappings using a class'
+ * metadata.
  */
-class MacroConfigurator {
+class URLMappingFactory {
 
     /**
      * This will map a controller's methods to URLs using the given meta tag

@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.test.macroconfigurator.mock;
+package harfang.test.urlmappingfactory.mock;
 
 import harfang.controller.AbstractController;
 
@@ -39,13 +39,13 @@ class MockMacroControllerCustom extends AbstractController {
     /**
      * Macro configurator should map this method with the given URLMapping implementation
      */
-    @Custom("harfang.test.macroconfigurator.mock.MockMacroURLMapping")
+    @Custom("harfang.test.urlmappingfactory.mock.MockMacroURLMapping")
     public function handleRequestA() : Void {}
 
     /**
      * Macro configurator should map this method with the given URLMapping implementation
      */
-    @Custom("harfang.test.macroconfigurator.mock.MockMacroURLMapping", "abc")
+    @Custom("harfang.test.urlmappingfactory.mock.MockMacroURLMapping", "abc")
     public function handleRequestB() : Void {}
 
 }

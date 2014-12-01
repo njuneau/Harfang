@@ -17,23 +17,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.test.macroconfigurator;
+package harfang.test.urlmappingfactory;
 
 import unit2.TestCase;
 
-import harfang.configuration.MacroConfigurator;
+import harfang.url.URLMappingFactory;
 import harfang.server.request.RequestInfo;
 import harfang.url.ERegURLMapping;
 
-import harfang.test.macroconfigurator.mock.MockMacroModule;
-import harfang.test.macroconfigurator.mock.MockMacroController;
-import harfang.test.macroconfigurator.mock.MockMacroControllerCustom;
-import harfang.test.macroconfigurator.mock.MockMacroURLMapping;
+import harfang.test.urlmappingfactory.mock.MockMacroModule;
+import harfang.test.urlmappingfactory.mock.MockMacroController;
+import harfang.test.urlmappingfactory.mock.MockMacroControllerCustom;
+import harfang.test.urlmappingfactory.mock.MockMacroURLMapping;
 
 /**
- * This is the MacroConfigurator test case
+ * This is the URLMappingFactory test case
  */
-class MacroConfiguratorTest extends TestCase {
+class URLMappingFactoryTest extends TestCase {
 
     /**
      * Test the MacroConfigurator's map method
@@ -98,7 +98,7 @@ class MacroConfiguratorTest extends TestCase {
     @Test
     private function testCreateERegURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
-                MacroConfigurator.createERegUrlMappingArray(MockMacroController, "URL", "MYPREFIX");
+                URLMappingFactory.createERegUrlMappingArray(MockMacroController, "URL", "MYPREFIX");
 
         assertEquals(mappings.length, MockMacroController.MAPPED_METHOD_COUNT);
 
@@ -137,7 +137,7 @@ class MacroConfiguratorTest extends TestCase {
         assertEquals(methodsToFind.length, 0);
 
         var unprefixedMappings : Array<ERegURLMapping> =
-                MacroConfigurator.createERegUrlMappingArray(MockMacroController, "URL");
+                URLMappingFactory.createERegUrlMappingArray(MockMacroController, "URL");
 
         var httpMethod : String = "GET";
         var testRequestInfo : RequestInfo = null;
@@ -160,7 +160,7 @@ class MacroConfiguratorTest extends TestCase {
      */
     @Test
     private function testCreateURLMappingArray() {
-        var mappings : Array<MockMacroURLMapping> = MacroConfigurator.createUrlMappingArray(MockMacroControllerCustom, "Custom");
+        var mappings : Array<MockMacroURLMapping> = URLMappingFactory.createUrlMappingArray(MockMacroControllerCustom, "Custom");
         var mappingCount : Int = 0;
 
         for(mapping in mappings) {

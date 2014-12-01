@@ -33,7 +33,7 @@ import unit2.output.OutputWriter;
 import unit2.output.TextOutputWriter;
 import unit2.output.XHTMLOutputWriter;
 
-import harfang.test.macroconfigurator.MacroConfiguratorTest;
+import harfang.test.urlmappingfactory.URLMappingFactoryTest;
 import harfang.test.urldispatcher.URLDispatcherTest;
 import harfang.test.serverconfiguration.ServerConfigurationTest;
 import harfang.test.servereventlistener.ServerEventListenerTest;
@@ -49,7 +49,7 @@ class TestMain {
     public static function main() : Void {
         var testRunner : TestRunner = new TestRunner();
 
-        testRunner.add(MacroConfiguratorTest);
+        testRunner.add(URLMappingFactoryTest);
         testRunner.add(URLDispatcherTest);
         testRunner.add(ServerConfigurationTest);
         testRunner.add(ServerEventListenerTest);
