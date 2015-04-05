@@ -19,7 +19,7 @@
 
 package harfang.server.request;
 
-import haxe.ds.StringMap;
+import StringTools;
 
 /**
  * This class contains information about the HTTP request that has been made to
@@ -27,16 +27,19 @@ import haxe.ds.StringMap;
  */
 class RequestInfo {
 
+    private static var SLASH_CHAR : String = "/";
+
     private var uri : String;
     private var method : String;
 
     /**
      * Default constructor
-     * @param uri The request URI
+     *
+     * @param uri The request URI. A slash will automatically be appended to it.
      * @param method The request HTTP method
      */
     public function new(uri : String, method : String) {
-        this.uri = uri;
+        this.uri = this.appendSlash(uri);
         this.method = method;
     }
 
@@ -54,6 +57,20 @@ class RequestInfo {
      */
     public function getMethod() : String {
         return this.method;
+    }
+
+    /**
+     * Appends a slash to the given URI
+     *
+     * @param uri The URI on which we append the slash
+     * @return The URI with the appended slash
+     */
+    private function appendSlash(uri : String) : String {
+        if(!StringTools.endsWith(uri, SLASH_CHAR)) {
+            uri += SLASH_CHAR;
+        }
+
+        return uri;
     }
 
 }

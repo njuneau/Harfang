@@ -50,6 +50,7 @@ class ERegURLMapping implements URLMapping {
 
     /**
      * Construct a new URL Mapping
+     *
      * @param urlReg The expression that matches the sent URL
      * @param controller The controller to call
      * @param controllerFunctionName The controller's function to call
@@ -70,7 +71,7 @@ class ERegURLMapping implements URLMapping {
      * @return True if the URL can be resolved with this mapping, false otherwize
      */
     public function resolve(url : String) : Bool {
-        return this.urlReg.match(this.appendSlash(url));
+        return this.urlReg.match(url);
     }
 
     /**
@@ -128,26 +129,6 @@ class ERegURLMapping implements URLMapping {
      */
     public function getControllerMethodName() : String {
         return this.controllerFunctionName;
-    }
-
-    /**************************************************************************/
-    /*                            PRIVATE METHODS                             */
-    /**************************************************************************/
-
-    /**
-     * Appends a slash to the URL if it doesn't have one at the end.
-     * It won't appear in browsers, but it will unify the regular expressions.
-     *
-     * @param url The url in which to append the slash
-     * @return The url, with the trailing slash
-     */
-    private function appendSlash(url : String) : String {
-
-        if(url.charAt(url.length - 1) != "/") {
-            url += "/";
-        }
-
-        return url;
     }
 
 }

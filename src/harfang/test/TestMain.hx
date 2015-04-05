@@ -34,6 +34,7 @@ import unit2.output.TextOutputWriter;
 import unit2.output.XHTMLOutputWriter;
 
 import harfang.test.urlmappingfactory.URLMappingFactoryTest;
+import harfang.test.urldispatcher.RequestInfoTest;
 import harfang.test.urldispatcher.URLDispatcherTest;
 import harfang.test.serverconfiguration.ServerConfigurationTest;
 import harfang.test.servereventlistener.ServerEventListenerTest;
@@ -50,17 +51,13 @@ class TestMain {
         var testRunner : TestRunner = new TestRunner();
 
         testRunner.add(URLMappingFactoryTest);
+        testRunner.add(RequestInfoTest);
         testRunner.add(URLDispatcherTest);
         testRunner.add(ServerConfigurationTest);
         testRunner.add(ServerEventListenerTest);
         testRunner.run();
 
-        #if php
-        var testOutput : OutputWriter = new XHTMLOutputWriter();
-        #else
         var testOutput : OutputWriter = new TextOutputWriter();
-        #end
-
         Lib.print(testOutput.writeResults(testRunner));
 
     }
