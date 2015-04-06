@@ -1,14 +1,11 @@
 doc/*
 out/*
 content/*
-src/server/*
+src/main/server/*
 src/unit2
 index.html
 harfang.xml
 haxedoc.xml
 compile-php.hxml
 compile-neko.hxml
-.project
-.paths
-.settings
 .directory

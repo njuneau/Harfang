@@ -2,5 +2,8 @@
 #                      Framework stuff here                    #
 #--------------------------------------------------------------#
 -neko out/test.n
--cp src/
--main harfang.test.TestMain
+-cp src/main
+-cp src/unit2
+-cp src/test
+--macro harfang.server.ServerMain.setServerConfigurationClass('PlaceholderConfiguration')
+-main TestMain
