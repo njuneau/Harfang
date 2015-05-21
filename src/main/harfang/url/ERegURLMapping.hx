@@ -39,6 +39,8 @@ class ERegURLMapping implements URLMapping {
 
     // The regular expression that corresponds to the URL
     private var urlReg : EReg;
+    // The name of the HTTP method
+    private var httpMethod : String;
     // The controller class to instanciate if the URL is matched
     private var controllerClass : Class<Controller>;
     // The controller's function to call
@@ -54,9 +56,14 @@ class ERegURLMapping implements URLMapping {
      * @param urlReg The expression that matches the sent URL
      * @param controller The controller to call
      * @param controllerFunctionName The controller's function to call
+     * @param httpMethod Optional, the name of the HTTP method to target
      */
-    public function new(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) {
+    public function new(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) {
         this.urlReg = urlReg;
+        this.httpMethod = null;
+        if(httpMethod != null) {
+            this.httpMethod = httpMethod.toUpperCase();
+        }
         this.controllerClass = controllerClass;
         this.controllerFunctionName = controllerFunctionName;
     }
@@ -82,7 +89,7 @@ class ERegURLMapping implements URLMapping {
      * @return True if the dispatcher may disptach the request, false otherwize.
      */
     public function filter(requestInfo : RequestInfo) : Bool {
-        return true;
+        return (this.httpMethod == null || (this.httpMethod == requestInfo.getMethod()));
     }
 
     /**

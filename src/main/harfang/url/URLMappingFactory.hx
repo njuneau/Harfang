@@ -40,25 +40,31 @@ class URLMappingFactory {
      * addURLMapping method.
      *
      * @param eThis The module instance (must be a subclass of AbstractModule)
+     *
      * @param clExpr The controller's class (must be an implementation of the
      * Controller interface)
-     * @param metaTag The metadata tag that will be used to extract the URL
+     *
+     * @param urlMetaTag The metadata tag that will be used to extract the URL
      * regular expression from a controller method.
+     *
      * @param prefix Optional parameter that defines a string to prefix all of
      * the controller's URL. In order for this to work, the URL meta tag must
      * have 3 parameters : the URL regular expression, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
+     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
+     * specify the HTTP method on which the URL mapping will be valid
+     *
      * @return The addURLMapping expressions that will map the controllers to
      * URLs.
      */
-    macro public static function mapController(eThis : Expr, clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
+    macro public static function mapController(eThis : Expr, clExpr : Expr, urlMetaTag : String, ? prefix : String, ? httpMethodMetaTag : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);
         var type : Type = Context.getType(typeName);
-        var block : Array<Expr> = createAddERegURLMappingBlock(eThis, type, metaTag, pos, prefix);
+        var block : Array<Expr> = createAddERegURLMappingBlock(eThis, type, urlMetaTag, httpMethodMetaTag, pos, prefix);
 
         return {pos : pos, expr : EBlock(block)};
     }
@@ -74,23 +80,28 @@ class URLMappingFactory {
      *
      * @param clExpr The controller's class (must be an implementation of the
      * Controller interface)
-     * @param metaTag The metadata tag that will be used to extract the URL
+     *
+     * @param urlMetaTag The metadata tag that will be used to extract the URL
      * regular expression from a controller method.
-     * @param prefix Optional parameter that defines a string to prefix all of
-     * the controller's URL. In order for this to work, the URL meta tag must
-     * have 3 parameters : the URL regular expression, the regular expression's
+     *
+     * @param prefix Optional, defines a string to prefix all of the
+     * controller's URL. In order for this to work, the URL meta tag must have
+     * 3 parameters : the URL regular expression, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
+     *
+     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
+     * specify the HTTP method on which the URL mapping will be valid
      *
      * @return An array of expressions containing all the ERegURLMapping
      * instances that maps the controllers to URLs.
      */
-    macro public static function createERegUrlMappingArray(clExpr : Expr, metaTag : String, ? prefix : String) : Expr {
+    macro public static function createERegUrlMappingArray(clExpr : Expr, urlMetaTag : String, ? prefix : String, ? httpMethodMetaTag : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);
         var type : Type = Context.getType(typeName);
-        var block : Array<Expr> = createNewERegURLMappingBlock(type, metaTag, pos, prefix);
+        var block : Array<Expr> = createNewERegURLMappingBlock(type, urlMetaTag, httpMethodMetaTag, pos, prefix);
 
         return {pos : pos, expr : EArrayDecl(block)};
     }
@@ -192,20 +203,37 @@ class URLMappingFactory {
      * using the information of a class' metadata.
      *
      * @param type The type (class) in which to scan for metadata
-     * @param metaTag The metadata tag's name that contains the URL
+     * @param urlMetaTag The metadata tag's name that contains the URL
+     * @param httpMethodMetaTag The metadata tag's name that contains the HTTP
+     * method. May be left null.
      * @param pos Current context position
-     * @param prefix The URL prefix
+     * @param prefix The URL prefix, may be left null
      * @return A block of calls to ERegURLMapping constructors
      */
-    private static function createNewERegURLMappingBlock(type : Type, metaTag : String, pos : Position, prefix : String) : Array<Expr> {
+    private static function createNewERegURLMappingBlock(type : Type, urlMetaTag : String, httpMethodMetaTag : String, pos : Position, prefix : String) : Array<Expr> {
         var block : Array<Expr> = new Array<Expr>();
 
         switch(type) {
             case TInst(t, params):
-                var fieldsMeta : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), metaTag, pos);
-                for(field in fieldsMeta.keys()) {
-                    var callParams = fieldsMeta.get(field);
-                    var call : Expr = createNewEregExpr(t.get(), field, callParams, pos, prefix);
+                var clType : ClassType = t.get();
+                var urlMetaInfo : Map<ClassField, Array<ExprDef>> = extractMetaInformation(clType, urlMetaTag, pos);
+                var httpMethodMetaInfo : Map<ClassField, Array<ExprDef>> = null;
+
+                if(httpMethodMetaTag != null) {
+                    httpMethodMetaInfo = extractMetaInformation(clType, httpMethodMetaTag, pos);
+                }
+
+                // Loop through all the fields which have a URL tag defined
+                for(field in urlMetaInfo.keys()) {
+                    var urlParams : Array<ExprDef> = urlMetaInfo.get(field);
+                    var httpMethodParams : Array<ExprDef> = null;
+
+                    // See if we also have an HTTP method defined
+                    if(httpMethodMetaInfo != null && httpMethodMetaInfo.exists(field)) {
+                        httpMethodParams = httpMethodMetaInfo.get(field);
+                    }
+
+                    var call : Expr = createNewEregExpr(t.get(), field, urlParams, httpMethodParams, pos, prefix);
                     if(call != null) {
                         block.push(call);
                     }
@@ -223,20 +251,34 @@ class URLMappingFactory {
      *
      * @param eThis The module instance in ehich the block will be inserted
      * @param type The type (class) in which to scan for metadata
-     * @param metaTag The metadata tag's name that contains the URL
+     * @param urlMetaTag The metadata tag's name that contains the URL
+     * @param httpMethodMetaTag The metadata tag's name that contains the HTTP
+     * method. May be left null.
      * @param pos Current context position
-     * @param prefix The URL prefix
+     * @param prefix The URL prefix, may be left null
      * @return A block of calls to the "addERegURLMapping" method
      */
-    private static function createAddERegURLMappingBlock(eThis : Expr, type : Type, metaTag : String, pos : Position, prefix : String) : Array<Expr> {
+    private static function createAddERegURLMappingBlock(eThis : Expr, type : Type, urlMetaTag : String, httpMethodMetaTag : String, pos : Position, prefix : String) : Array<Expr> {
         var block : Array<Expr> = new Array<Expr>();
 
         switch(type) {
             case TInst(t, params):
-                var fieldsMeta : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), metaTag, pos);
-                for(field in fieldsMeta.keys()) {
-                    var callParams = fieldsMeta.get(field);
-                    var call : Expr = createAddExpr(eThis, t.get(), field, callParams, pos, prefix);
+                var urlMetaInfo : Map<ClassField, Array<ExprDef>> = extractMetaInformation(t.get(), urlMetaTag, pos);
+                var httpMethodMetaInfo : Map<ClassField, Array<ExprDef>> = null;
+
+                if(httpMethodMetaTag != null) {
+                    httpMethodMetaInfo = extractMetaInformation(t.get(), httpMethodMetaTag, pos);
+                }
+
+                for(field in urlMetaInfo.keys()) {
+                    var urlParams : Array<ExprDef> = urlMetaInfo.get(field);
+                    var httpMethodParams : Array<ExprDef> = null;
+
+                    if(httpMethodMetaInfo != null && httpMethodMetaInfo.exists(field)) {
+                        httpMethodParams = httpMethodMetaInfo.get(field);
+                    }
+
+                    var call : Expr = createAddExpr(eThis, t.get(), field, urlParams, httpMethodParams, pos, prefix);
                     if(call != null) {
                         block.push(call);
                     }
@@ -277,7 +319,7 @@ class URLMappingFactory {
                                 var className : String = null;
                                 var extractedParams : Array<ExprDef> = new Array<ExprDef>();
 
-                                // Process method URL metadata
+                                // Process method metadata
                                 if(fieldMeta[i].params.length >= 1) {
                                     for(param in fieldMeta[i].params) {
                                         extractedParams.push(param.expr);
@@ -378,25 +420,30 @@ class URLMappingFactory {
      *
      * @param controllerMethod The controller method to map
      *
-     * @param callParams The list of parameters to pass to the constructor. The
-     * first parameter must be the URL regular expression pattern. The second
-     * argument may be regular expression options. The third argument may be
-     * an URL prefix variable.
+     * @param urlParams The list of parameters that concerns the URL to pass to
+     * the constructor. The first parameter must be the URL regular expression
+     * pattern. The second argument may be regular expression options. The third
+     * argument may be an URL prefix variable.
+     *
+     * @param httpMethodParams The list of parameters that concerns the targeted
+     * HTTP method to pass to the constructor. May be one of "GET", "POST"...
+     * this parameter may be left null.
      *
      * @param pos The context position
      *
-     * @param prefix An optionnal prefix that replaces the URL prefix variable
-     * given in the callParams.
+     * @param prefix A prefix that replaces the URL prefix variable given in the
+     * urlParams. May be left null.
      *
      * @return A single call to the ERegURLMapping constructor expression or
      * null if the given callParams aren't satisfactory
      */
-    private static function createNewEregExpr(cl : ClassType, controllerMethod : ClassField, callParams : Array<ExprDef>, pos : Position, ? prefix : String) : Expr {
+    private static function createNewEregExpr(cl : ClassType, controllerMethod : ClassField, urlParams : Array<ExprDef>, httpMethodParams : Array<ExprDef>,  pos : Position, prefix : String) : Expr {
         var constructorCall : Expr = null;
         var url : String = null;
         var eregOptions : String = "";
         var prefixVar : String = null;
-        var extractedParameters = extractERregURLMappingParameters(callParams);
+        var extractedParameters : Array<String> = extractERegURLMappingParameters(urlParams);
+        var httpMethod : String = extractERegURLMappingMethodParameter(httpMethodParams);
 
         // Process method URL metadata
         if(extractedParameters != null) {
@@ -428,6 +475,10 @@ class URLMappingFactory {
             params.push({pos : pos, expr : EConst(CIdent(cl.name))});
             params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
+            if(httpMethod != null) {
+                params.push({pos : pos, expr : EConst(CString(httpMethod))});
+            }
+
             constructorCall = {
                 pos : pos,
                 expr : ENew({
@@ -452,26 +503,31 @@ class URLMappingFactory {
      *
      * @param controllerMethod The controller method to map
      *
-     * @param callParams The list of parameters to pass to the constructor. The
-     * first parameter must be the URL regular expression pattern. The second
-     * argument may be regular expression options. The third argument may be
-     * an URL prefix variable.
+     * @param urlParams The list of parameters that concerns the URL to pass to
+     * the constructor. The first parameter must be the URL regular expression
+     * pattern. The second argument may be regular expression options. The third
+     * argument may be an URL prefix variable.
+     *
+     * @param httpMethodParams The list of parameters that concerns the targeted
+     * HTTP method to pass to the constructor. May be one of "GET", "POST"...
+     * this parameter may be left null.
      *
      * @param pos The context position
      *
-     * @param prefix An optionnal prefix that replaces the URL prefix variable
-     * given in the callParams.
+     * @param prefix A prefix that replaces the URL prefix variable given in the
+     * urlParams. May be left null.
      *
      * @return A single call to the ERegURLMapping constructor expression or
      * null if the given callParams aren't satisfactory
      *
      * @return A single addURLMapping call expression
      */
-    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, callParams : Array<ExprDef>, pos : Position, ? prefix : String) : Expr {
+    private static function createAddExpr(eThis : Expr, cl : ClassType, controllerMethod : ClassField, urlParams : Array<ExprDef>, httpMethodParams : Array<ExprDef>, pos : Position, prefix : String) : Expr {
         var url : String = null;
         var eregOptions : String = "";
         var prefixVar : String = null;
-        var extractedParameters = extractERregURLMappingParameters(callParams);
+        var extractedParameters : Array<String> = extractERegURLMappingParameters(urlParams);
+        var httpMethod : String = extractERegURLMappingMethodParameter(httpMethodParams);
         var addCall : Expr = null;
 
         // Process method URL metadata
@@ -503,6 +559,10 @@ class URLMappingFactory {
             params.push({pos : pos, expr : EConst(CIdent(cl.name))});
             params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
+            if(httpMethod != null) {
+                params.push({pos : pos, expr : EConst(CString(httpMethod))});
+            }
+
             addCall = {
                 pos : pos,
                 expr : ECall({
@@ -516,9 +576,10 @@ class URLMappingFactory {
     }
 
     /**
-     * Extracts the parameters to give to ERegURLMapping's constructor
+     * Extracts the URL-related parameters to give to ERegURLMapping's
+     * constructor
      *
-     * @param callParams The list of parameters to pass to the constructor. The
+     * @param urlParams The list of parameters concerning the URL. The
      * first parameter must be the URL regular expression pattern. The second
      * argument may be regular expression options. The third argument may be
      * an URL prefix variable.
@@ -528,47 +589,35 @@ class URLMappingFactory {
      * to replace in the URL pattern. If callParams is malformed, this method
      * may return null.
      */
-    private static function extractERregURLMappingParameters(callParams : Array<ExprDef>) : Array<String> {
+    private static function extractERegURLMappingParameters(urlParams : Array<ExprDef>) : Array<String> {
         var params : Array<String> = null;
 
         // First parameter must contain the URL
-        if(callParams.length >= 1) {
+        if(urlParams.length >= 1) {
 
-            switch(callParams[0]) {
-                case EConst(c):
-                    switch(c) {
-                        case CString(s):
-                            // Got an URL regex, create parameters
-                            params = new Array<String>();
-                            params.push(s);
-                        default:
-                    }
+            switch(urlParams[0]) {
+                case EConst(CString(s)):
+                    // Got an URL regex, create parameters
+                    params = new Array<String>();
+                    params.push(s);
                 default:
             }
 
             // Process ereg optional argument
-            if(callParams.length >= 2 && params != null) {
-                switch(callParams[1]) {
-                    case EConst(c):
-                        switch(c) {
-                            case CString(s):
-                                // Got an URL regex opt
-                                params.push(s);
-                            default:
-                        }
+            if(urlParams.length >= 2 && params != null) {
+                switch(urlParams[1]) {
+                    case EConst(CString(s)):
+                        // Got an URL regex opt
+                        params.push(s);
                     default:
                 }
 
                 // Process url prefix argument
-                if(callParams.length == 3 && params.length == 2) {
-                    switch(callParams[2]) {
-                        case EConst(c):
-                            switch(c) {
-                                case CString(s):
-                                    // Got the URL prefix variable
-                                    params.push(s);
-                                default:
-                            }
+                if(urlParams.length == 3 && params.length == 2) {
+                    switch(urlParams[2]) {
+                        case EConst(CString(s)):
+                            // Got the URL prefix variable
+                            params.push(s);
                         default:
                     }
                 }
@@ -576,6 +625,29 @@ class URLMappingFactory {
         }
 
         return params;
+    }
+
+    /**
+     * Extracts the HTTP method-related parameters to give to ERegURLMapping's
+     * constructor
+     *
+     * @param methodParams The list of parameters concerning the HTTP method. It
+     * must have only one element : The name of the HTTP method.
+     *
+     * @return The name of the HTTP method or null if none found
+     */
+    private static function extractERegURLMappingMethodParameter(methodParams : Array<ExprDef>) : String {
+        var httpMethod : String = null;
+
+        if(methodParams != null && methodParams.length == 1) {
+            switch(methodParams[0]) {
+                case EConst(CString(s)):
+                    httpMethod = s;
+                default:
+            }
+        }
+
+        return httpMethod;
     }
 
 }
