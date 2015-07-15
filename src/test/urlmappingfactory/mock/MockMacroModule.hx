@@ -20,7 +20,7 @@
 package urlmappingfactory.mock;
 
 import harfang.module.AbstractModule;
-import harfang.url.URLMappingFactory;
+import harfang.url.ERegURLMappingFactory;
 
 /**
  * Mock module to test the macro configurator
@@ -33,7 +33,7 @@ class MockMacroModule extends AbstractModule {
     public function new() {
         super();
 
-        URLMappingFactory.mapController(this, MockMacroController, "URL", "MYPREFIX");
+        ERegURLMappingFactory.mapController(this, MockMacroController, "URL", "MYPREFIX");
     }
 
 }

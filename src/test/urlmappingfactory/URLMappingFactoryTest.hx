@@ -21,6 +21,7 @@ package urlmappingfactory;
 
 import unit2.TestCase;
 
+import harfang.url.ERegURLMappingFactory;
 import harfang.url.URLMappingFactory;
 import harfang.server.request.RequestInfo;
 import harfang.url.ERegURLMapping;
@@ -98,7 +99,7 @@ class URLMappingFactoryTest extends TestCase {
     @Test
     private function testCreateERegURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
-                URLMappingFactory.createERegUrlMappingArray(MockMacroController, "URL", "MYPREFIX");
+                ERegURLMappingFactory.createMappingArray(MockMacroController, "URL", "MYPREFIX");
 
         assertEquals(mappings.length, MockMacroController.MAPPED_METHOD_COUNT);
 
@@ -137,7 +138,7 @@ class URLMappingFactoryTest extends TestCase {
         assertEquals(methodsToFind.length, 0);
 
         var unprefixedMappings : Array<ERegURLMapping> =
-                URLMappingFactory.createERegUrlMappingArray(MockMacroController, "URL");
+                ERegURLMappingFactory.createMappingArray(MockMacroController, "URL");
 
         var httpMethod : String = "GET";
         var testRequestInfo : RequestInfo = null;
@@ -160,22 +161,32 @@ class URLMappingFactoryTest extends TestCase {
      */
     @Test
     private function testCreateURLMappingArray() {
-        var mappings : Array<MockMacroURLMapping> = URLMappingFactory.createUrlMappingArray(MockMacroControllerCustom, "Custom");
+        var mappings : Array<MockMacroURLMapping> = URLMappingFactory.createMappingArray(
+            MockMacroURLMapping,
+            MockMacroControllerCustom,
+            "Custom"
+        );
         var mappingCount : Int = 0;
 
         for(mapping in mappings) {
             this.assertEquals(Type.getClass(mapping), MockMacroURLMapping);
-            if(mapping.getControllerClass() == MockMacroControllerCustom) {
-                switch(mapping.getControllerMethodName()) {
-                    case "handleRequestA":
-                        if(mapping.getParam() == null) {
-                            mappingCount++;
-                        }
-                    case "handleRequestB":
-                        if(mapping.getParam() == "abc") {
-                            mappingCount++;
-                        }
-                }
+            this.assertEquals(mapping.getControllerClass(), MockMacroControllerCustom);
+
+            switch(mapping.getControllerMethodName()) {
+                case "handleRequestA":
+                    if(mapping.getParamA() == null && mapping.getParamB() == null) {
+                        mappingCount++;
+                    }
+                case "handleRequestB":
+                    if(mapping.getParamA() == "abc" && mapping.getParamB() == null) {
+                        mappingCount++;
+                    }
+                case "handleRequestC":
+                    if(mapping.getParamA() == "abc" && mapping.getParamB() == "def") {
+                        mappingCount++;
+                    }
+                default:
+                    throw "Unknown method";
             }
         }
 

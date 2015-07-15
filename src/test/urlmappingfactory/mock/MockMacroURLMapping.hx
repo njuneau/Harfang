@@ -30,18 +30,21 @@ class MockMacroURLMapping implements URLMapping {
 
     private var controller : Class<Controller>;
     private var methodName : String;
-    private var param : String;
+    private var paramA : String;
+    private var paramB : String;
 
     /**
      * Creates the URL mapping
      * @param controller The controller that must be mapped
      * @param methodName The controller's function to map
-     * @param param An optionnal parameter
+     * @param paramA An optionnal parameter
+     * @param paramB A second optional parameter
      */
-    public function new(controller : Class<Controller>, methodName : String, ? param : String) {
+    public function new(controller : Class<Controller>, methodName : String, ? paramA : String, ? paramB : String) {
         this.controller = controller;
         this.methodName = methodName;
-        this.param = param;
+        this.paramA = paramA;
+        this.paramB = paramB;
     }
 
     public function resolve(url : String) : Bool {
@@ -65,9 +68,16 @@ class MockMacroURLMapping implements URLMapping {
     }
 
     /**
-     * Returns the parameter that was sent to the constructor (may be null)
+     * Returns the first parameter that was sent to the constructor (may be null)
      */
-    public function getParam() : String {
-        return this.param;
+    public function getParamA() : String {
+        return this.paramA;
+    }
+
+    /**
+     * Returns the second parameter that was sent to the constructor (may be null)
+     */
+    public function getParamB() : String {
+        return this.paramB;
     }
 }

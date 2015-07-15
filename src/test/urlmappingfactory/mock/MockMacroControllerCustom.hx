@@ -37,15 +37,21 @@ class MockMacroControllerCustom extends AbstractController {
     public function new() {}
 
     /**
-     * Macro configurator should map this method with the given URLMapping implementation
+     *URLMappingFactory should map this method
      */
-    @Custom("urlmappingfactory.mock.MockMacroURLMapping")
+    @Custom
     public function handleRequestA() : Void {}
 
     /**
-     * Macro configurator should map this method with the given URLMapping implementation
+     * URLMappingFactory should map this method
      */
-    @Custom("urlmappingfactory.mock.MockMacroURLMapping", "abc")
+    @Custom("abc")
     public function handleRequestB() : Void {}
+
+    /**
+     * URLMappingFactory should map this method
+     */
+    @Custom("abc", "def")
+    public function handleRequestC() : Void {}
 
 }
