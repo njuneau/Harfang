@@ -49,19 +49,19 @@ class ERegURLMappingFactory extends URLMappingFactory {
      * @param urlMetaTag The metadata tag that will be used to extract the URL
      * regular expression from a controller method.
      *
+     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
+     * specify the HTTP method on which the URL mapping will be valid
+     *
      * @param prefix Optional parameter that defines a string to prefix all of
      * the controller's URL. In order for this to work, the URL meta tag must
      * have 3 parameters : the URL regular expression, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
-     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
-     * specify the HTTP method on which the URL mapping will be valid
-     *
      * @return The addURLMapping expressions that will map the controllers to
      * URLs.
      */
-    macro public static function mapController(eThis : Expr, clExpr : Expr, urlMetaTag : String, ? prefix : String, ? httpMethodMetaTag : String) : Expr {
+    macro public static function mapHttpController(eThis : Expr, clExpr : Expr, urlMetaTag : String, ? httpMethodMetaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);
@@ -86,19 +86,19 @@ class ERegURLMappingFactory extends URLMappingFactory {
      * @param urlMetaTag The metadata tag that will be used to extract the URL
      * regular expression from a controller method.
      *
+     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
+     * specify the HTTP method on which the URL mapping will be valid
+     *
      * @param prefix Optional, defines a string to prefix all of the
      * controller's URL. In order for this to work, the URL meta tag must have
      * 3 parameters : the URL regular expression, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
-     * @param httpMethodMetaTag Optional, the metadata tag that will be used to
-     * specify the HTTP method on which the URL mapping will be valid
-     *
      * @return An array of expressions containing all the ERegURLMapping
      * instances that maps the controllers to URLs.
      */
-    macro public static function createMappingArray(clExpr : Expr, urlMetaTag : String, ? prefix : String, ? httpMethodMetaTag : String) : Expr {
+    macro public static function createHttpMappingArray(clExpr : Expr, urlMetaTag : String, ? httpMethodMetaTag : String, ? prefix : String) : Expr {
         var pos : Position = Context.currentPos();
 
         var typeName : String = getTypeName(clExpr);

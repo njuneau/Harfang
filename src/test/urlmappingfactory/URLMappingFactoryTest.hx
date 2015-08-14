@@ -99,7 +99,7 @@ class URLMappingFactoryTest extends TestCase {
     @Test
     private function testCreateERegURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
-                ERegURLMappingFactory.createMappingArray(MockMacroController, "URL", "MYPREFIX");
+                ERegURLMappingFactory.createHttpMappingArray(MockMacroController, "URL", null, "MYPREFIX");
 
         assertEquals(mappings.length, MockMacroController.MAPPED_METHOD_COUNT);
 
@@ -138,7 +138,7 @@ class URLMappingFactoryTest extends TestCase {
         assertEquals(methodsToFind.length, 0);
 
         var unprefixedMappings : Array<ERegURLMapping> =
-                ERegURLMappingFactory.createMappingArray(MockMacroController, "URL");
+                ERegURLMappingFactory.createHttpMappingArray(MockMacroController, "URL");
 
         var httpMethod : String = "GET";
         var testRequestInfo : RequestInfo = null;

@@ -51,7 +51,7 @@ class URLMappingFactory {
      * @param clExpr The controller's class (must be an implementation of the
      * Controller interface)
      * @param metaTag The metadata tag that will be used to extract the URL
-     * regular expression from a controller method.
+     * information from a controller method.
      *
      * @return An array of expressions containing custom URL mapping instances
      */
@@ -194,9 +194,8 @@ class URLMappingFactory {
      * @param mappingClass The URL mapping implementation class
      * @param targetClass The controller class on which we map an URL
      * @param controllerMethod The controller method to map
-     * @param callParams The list of parameters to pass to the constructor. The
-     * first parameter must be the class name of the URLMapping implementation
-     * to construct.
+     * @param callParams The list of parameters to pass to the URL mapping
+              constructor
      * @param pos The context position
      * @return A single call to the given URL mapping implementation constructor
      */
