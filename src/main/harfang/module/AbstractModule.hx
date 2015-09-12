@@ -52,9 +52,11 @@ class AbstractModule implements Module {
      * @param urlReg The expression that matches the sent URL
      * @param controller The controller to call
      * @param controllerFunctionName The controller's function to call
+     * @param httpMethod Optional, the name of the HTTP method on which the
+     *        URL mapping is active
      */
-    private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String) : Void {
-        this.urlMappings.add(new ERegURLMapping(urlReg, controllerClass, controllerFunctionName));
+    private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) : Void {
+        this.urlMappings.add(new ERegURLMapping(urlReg, controllerClass, controllerFunctionName, httpMethod));
     }
 
 }

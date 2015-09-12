@@ -30,7 +30,7 @@ class MockMacroController extends AbstractController {
      * This variable indicates the number of methods that must be mapped by the
      * macro configurator.
      */
-    public static var MAPPED_METHOD_COUNT : Int = 4;
+    public static var MAPPED_METHOD_COUNT : Int = 5;
 
     /**
      * Just initialise some diagnostic variables
@@ -38,31 +38,39 @@ class MockMacroController extends AbstractController {
     public function new() {}
 
     /**
-     * Macro configurator shoul map this method
+     * Macro configurator should map this method
      */
     @URL("^/a/$")
     public function handleRequestA() : Void {}
 
     /**
-     * Macro configurator shoul also map this method and map the correct regex
+     * Macro configurator should also map this method and map the correct regex
      * option "g"
      */
     @URL("^/b/([a-zA-Z]+)/$", "g")
     public function handleRequestEregOptions(param : String) : Void {}
 
     /**
-     * Macro configurator shoul also map this method, also mapping regex option
+     * Macro configurator should also map this method, also mapping regex option
      * "g" and prefixing the URL in the correct place.
      */
     @URL("^/$prefix/b/([a-zA-Z]+)/$", "g", "$prefix")
     public function handleRequestPrefix(param : String) : Void {}
 
     /**
-     * Macro configurator shoul also map this method, also mapping regex option
-     * "g" and try to map the prefix without failing.
+     * Macro configurator should also map this method and try to map the empty
+     * prefix without failing.
      */
     @URL("^/b/([a-zA-Z]+)/$", "", "$prefix")
     public function handleRequestNoPrefix(param : String) : Void {}
+
+    /**
+     * Macro configurator should map this method, but just on the HTTP POST
+     * method
+     */
+    @URL("^/c/$prefix/", "", "$prefix")
+    @Method("POST")
+    public function handleRequestPostOnly() : Void {}
 
     /**
      * Macro configurator shouldn't map this method

@@ -32,12 +32,12 @@ import urlmappingfactory.mock.MockMacroControllerCustom;
 import urlmappingfactory.mock.MockMacroURLMapping;
 
 /**
- * This is the URLMappingFactory test case
+ * This is the URL mapping factory test case
  */
 class URLMappingFactoryTest extends TestCase {
 
     /**
-     * Test the MacroConfigurator's map method
+     * Test the URL mapping facotry's map method
      */
     @Test
     public function testMapController() : Void {
@@ -47,6 +47,7 @@ class URLMappingFactoryTest extends TestCase {
         var handleRequestEregOptions : Bool = false;
         var handleRequestPrefix : Bool = false;
         var handleRequestNoPrefix : Bool = false;
+        var handleRequestPostOnly : Bool = false;
         var doNotHandle : Bool = false;
         var httpMethod : String = "GET";
 
@@ -60,21 +61,35 @@ class URLMappingFactoryTest extends TestCase {
                     foundHandleRequestA = true;
                     testRequestInfo = new RequestInfo("/a/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
                 case "handleRequestEregOptions":
                     handleRequestEregOptions = true;
                     testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
                 case "handleRequestPrefix":
                     handleRequestPrefix = true;
                     testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
 
                     testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
                     assertFalse(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
                 case "handleRequestNoPrefix":
                     handleRequestNoPrefix = true;
                     testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
                     assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
+                case "handleRequestPostOnly":
+                    handleRequestPostOnly = true;
+                    testRequestInfo = new RequestInfo("/c/MYPREFIX/", httpMethod);
+                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertFalse(urlMapping.filter(testRequestInfo));
+
+                    testRequestInfo = new RequestInfo("/c/MYPREFIX/", "post");
+                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(urlMapping.filter(testRequestInfo));
                 case "doNotHandleA":
                     doNotHandle = true;
                 case "doNotHandleB":
@@ -88,13 +103,14 @@ class URLMappingFactoryTest extends TestCase {
         assertTrue(handleRequestEregOptions);
         assertTrue(handleRequestPrefix);
         assertTrue(handleRequestNoPrefix);
+        assertTrue(handleRequestPostOnly);
         assertFalse(doNotHandle);
 
         module.getURLMappings();
     }
 
     /**
-     * Tests the MacroConfigurator's createERegUrlMappingArray method
+     * Tests the URL mapping factory's createERegUrlMappingArray method
      */
     @Test
     private function testCreateERegURLMappingArray() {
@@ -106,7 +122,8 @@ class URLMappingFactoryTest extends TestCase {
         var methodsToFind : Array<String> = ["handleRequestA",
                                              "handleRequestEregOptions",
                                              "handleRequestPrefix",
-                                             "handleRequestNoPrefix"];
+                                             "handleRequestNoPrefix",
+                                             "handleRequestPostOnly"];
         var httpMethod : String = "GET";
         var testRequestInfo : RequestInfo = null;
 
@@ -119,18 +136,31 @@ class URLMappingFactoryTest extends TestCase {
                 case "handleRequestA":
                     testRequestInfo = new RequestInfo("/a/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
                 case "handleRequestEregOptions":
                     testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
                 case "handleRequestPrefix":
                     testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
 
                     testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
                     assertFalse(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
                 case "handleRequestNoPrefix":
                     testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
                     assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
+                case "handleRequestPostOnly":
+                    testRequestInfo = new RequestInfo("/c/MYPREFIX/", httpMethod);
+                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertFalse(mapping.filter(testRequestInfo));
+
+                    testRequestInfo = new RequestInfo("/c/MYPREFIX/", "POST");
+                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
+                    assertTrue(mapping.filter(testRequestInfo));
                 default:
             }
         }
@@ -157,7 +187,7 @@ class URLMappingFactoryTest extends TestCase {
     }
 
     /**
-     * Tests the MacroConfigurator's createERegUrlMappingArray method
+     * Tests the URL mapping factory's createURLMappingArray method
      */
     @Test
     private function testCreateURLMappingArray() {

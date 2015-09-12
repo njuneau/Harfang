@@ -56,7 +56,8 @@ class ERegURLMapping implements URLMapping {
      * @param urlReg The expression that matches the sent URL
      * @param controller The controller to call
      * @param controllerFunctionName The controller's function to call
-     * @param httpMethod Optional, the name of the HTTP method to target
+     * @param httpMethod Optional, the name of the HTTP method to target. HTTP
+     *        method will automatically be uppercased.
      */
     public function new(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) {
         this.urlReg = urlReg;

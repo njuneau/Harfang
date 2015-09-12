@@ -33,7 +33,7 @@ class MockMacroModule extends AbstractModule {
     public function new() {
         super();
 
-        ERegURLMappingFactory.mapHttpController(this, MockMacroController, "URL", null, "MYPREFIX");
+        ERegURLMappingFactory.mapHttpController(this, MockMacroController, "URL", "Method", "MYPREFIX");
     }
 
 }

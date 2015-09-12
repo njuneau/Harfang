@@ -36,11 +36,11 @@ class RequestInfo {
      * Default constructor
      *
      * @param uri The request URI. A slash will automatically be appended to it.
-     * @param method The request HTTP method
+     * @param method The request HTTP method. It will be automatically uppercased.
      */
     public function new(uri : String, method : String) {
         this.uri = this.appendSlash(uri);
-        this.method = method;
+        this.method = method.toUpperCase();
     }
 
     /**

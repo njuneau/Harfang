@@ -160,7 +160,7 @@ class URLMappingFactory {
                     if(field.meta.has(metaTag)) {
                         var found : Bool = false;
                         var i : Int = 0;
-                        var fieldMeta : Array<{pos : Position, params : Array<Expr>, name : String}> = field.meta.get();
+                        var fieldMeta : Array<MetadataEntry> = field.meta.get();
                         while(!found && i < fieldMeta.length) {
 
                             if(fieldMeta[i].name == metaTag) {
@@ -226,5 +226,4 @@ class URLMappingFactory {
 
         return constructorCall;
     }
-
 }
