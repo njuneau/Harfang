@@ -1,9 +1,6 @@
-#--------------------------------------------------------------#
-#                      Framework stuff here                    #
-#--------------------------------------------------------------#
+-lib unit2
 -neko out/test.n
--cp src/main
--cp src/unit2
--cp src/test
+-cp src/main/haxe
+-cp src/test/haxe
 --macro harfang.server.ServerMain.setServerConfigurationClass('PlaceholderConfiguration')
 -main TestMain
