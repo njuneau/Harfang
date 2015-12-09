@@ -115,7 +115,7 @@ class URLMappingFactoryTest extends TestCase {
     @Test
     private function testCreateERegURLMappingArray() {
         var mappings : Array<ERegURLMapping> =
-                ERegURLMappingFactory.createHttpMappingArray(MockMacroController, "URL", null, "MYPREFIX");
+                ERegURLMappingFactory.createHttpMappingArray(MockMacroController, "URL", "Method", "MYPREFIX");
 
         assertEquals(mappings.length, MockMacroController.MAPPED_METHOD_COUNT);
 
