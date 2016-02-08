@@ -11,7 +11,7 @@ if [ $1 != "" ] ; then
     if [ ! -d $releaseFolder ] ; then
         mkdir $releaseFolder
         echo "Created release folder"
-    end
+    fi
     if [ -f $buildArchive ] ; then
         echo "Found old release ${buildArchive} - cleaning up"
         rm $buildArchive
