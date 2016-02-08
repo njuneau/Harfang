@@ -19,6 +19,7 @@
 
 package harfang.server.event;
 
+import harfang.configuration.ServerConfiguration;
 import harfang.controller.Controller;
 import harfang.url.URLMapping;
 import harfang.exception.HTTPException;
@@ -29,6 +30,22 @@ import harfang.exception.Exception;
  * server status. Namely, request status.
  */
 interface ServerEventListener {
+
+    /**
+     * Application start event. Called after the UserConfiguration object is
+     * initialized.
+     *
+     * @param configuration The configuration that is used to start the application
+     */
+    public function onStart(configuration : ServerConfiguration) : Void;
+
+    /**
+     * Application close event. Called before the UserConfiguration object is
+     * closed.
+     *
+     * @param configuration The configuration that has been used throughout the application
+     */
+    public function onClose(configuration : ServerConfiguration): Void;
 
     /**
      * Dispatch event - called when the queried URL corresponds to a controller

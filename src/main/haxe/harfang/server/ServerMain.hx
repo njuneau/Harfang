@@ -39,11 +39,11 @@ import harfang.server.event.ServerEventListener;
 import harfang.server.request.RequestInfo;
 
 /**
- * Program entry point
+ * Program entry point. This is where the frameworks gets initialized.
  */
 class ServerMain {
 
-    // This variable contains the name of the server configuration class
+    // Fully qualified name of the server configuration class
     private static var SERVER_CONFIGURATION_CLASS_NAME : String = "server.UserConfiguration";
 
     /**
@@ -57,15 +57,21 @@ class ServerMain {
     }
 
     /**
-     * Launches the Harfang server (request processing, controller dispatching
-     * and error detection)
+     * Launches the framework (request processing, controller dispatching and
+     * error detection)
+     *
+     * @param configuration The server configuration
      * @param requestInfo The request's information
      */
-    public static function launch(userConfiguration : ServerConfiguration, requestInfo : RequestInfo) : Void {
-        userConfiguration.init();
-        var urlDispatcher : URLDispatcher = new URLDispatcher(userConfiguration);
-        var serverEventListeners : Iterable<ServerEventListener> = userConfiguration.getServerEventListeners();
+    public static function launch(configuration : ServerConfiguration, requestInfo : RequestInfo) : Void {
+        // Initialize the configuration
+        configuration.init();
+        var serverEventListeners : Iterable<ServerEventListener> = configuration.getServerEventListeners();
+        for(listener in serverEventListeners) {
+            listener.onStart(configuration);
+        }
 
+        var urlDispatcher : URLDispatcher = new URLDispatcher(configuration);
         try {
             // Dispatch the URL
             urlDispatcher.dispatch(requestInfo);
@@ -75,27 +81,30 @@ class ServerMain {
                 listener.onHTTPError(he);
             }
         } catch(e : Exception) {
-            // Error does not lead to a 404 or 500 error and may need further
-            // processing
+            // Error does not explicitly maps to an HTTP error code and may need
+            // further processing
             for(listener in serverEventListeners) {
                 listener.onError(e);
             }
         } catch(e : String) {
-            // Error is a string, may need further processing
+            // Error is a string, wrap the string in an exception object
             var stringException : Exception = new Exception(e);
             for(listener in serverEventListeners) {
                 listener.onError(stringException);
             }
         } catch(e : Dynamic) {
-            // Error is of unknown type. May need further processing
+            // Error is of unknown type. Wrap the exception in a wrapper.
             var wrappedException : WrappedException = new WrappedException(e);
             for(listener in serverEventListeners) {
                 listener.onError(wrappedException);
             }
         }
 
+        for(listener in serverEventListeners) {
+            listener.onClose(configuration);
+        }
         // Close the application
-        userConfiguration.onClose();
+        configuration.close();
     }
 
     /**************************************************************************/

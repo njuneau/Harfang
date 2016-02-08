@@ -20,25 +20,28 @@
 package harfang.exception;
 
 /**
- * An HTTP exception represents an error that must be communicated down to the
- * browser (400 error, 500 error etc.)
+ * An HTTP exception represents an error that can be translated to an HTTP error
+ * code (404 error, 500 error etc.)
  */
 class HTTPException extends Exception {
 
-    private var errorCode : Int;
+    private var statusCode : Int;
 
     /**
      * Construcs a new HTTP exception
      * @param message The error message
-     * @param errorCode The HTTP error code
+     * @param statusCode The HTTP status code
      * @param template The HTML template to render the error
      */
-    public function new(message : String, errorCode : Int) {
+    public function new(message : String, statusCode : Int) {
         super(message);
-        this.errorCode = errorCode;
+        this.statusCode = statusCode;
     }
 
-    public function getErrorCode() : Int {
-        return this.errorCode;
+    /**
+     * @return The HTTP status code of this exception
+     */
+    public function getStatusCode() : Int {
+        return this.statusCode;
     }
 }

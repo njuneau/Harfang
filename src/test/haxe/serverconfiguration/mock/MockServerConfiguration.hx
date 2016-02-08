@@ -30,13 +30,8 @@ import harfang.exception.HTTPException;
  */
 class MockServerConfiguration extends AbstractServerConfiguration {
 
-    private var calledOnDispatch : Int;
-    private var calledOnHTTPError : Int;
-    private var calledOnClose : Int;
-    private var calledOnError : Int;
-    private var lastHTTPException : HTTPException;
-    private var lastException : Exception;
-
+    private var calledInit : Int;
+    private var calledClose : Int;
     private var sequence : Int;
 
     /**
@@ -44,6 +39,7 @@ class MockServerConfiguration extends AbstractServerConfiguration {
      */
     public function new() {
         super();
+        this.sequence = 0;
     }
 
     /**
@@ -52,82 +48,27 @@ class MockServerConfiguration extends AbstractServerConfiguration {
     public override function init() {
         super.init();
         this.addModule(new MockServerConfigrationModule());
-        this.sequence = 0;
-        this.calledOnDispatch = 0;
-        this.calledOnHTTPError = 0;
-        this.calledOnError = 0;
-        this.calledOnClose = 0;
-
+        this.calledInit = ++this.sequence;
     }
 
-    public override function onDispatch(urlMapping : URLMapping) : Void {
-        this.sequence++;
-        this.calledOnDispatch = this.sequence;
-    }
-
-    public override function onHTTPError(error : HTTPException) : Void {
-        this.sequence++;
-        this.calledOnHTTPError = this.sequence;
-        this.lastHTTPException = error;
-    }
-
-    public override function onError(error : Exception) : Void {
-        this.sequence++;
-        this.calledOnError = this.sequence;
-        this.lastException = error;
-    }
-
-    public override function onClose() : Void {
-        this.sequence++;
-        this.calledOnClose = this.sequence;
+    public override function close() : Void {
+        this.calledClose = ++this.sequence;
     }
 
     /**
-     * Indicates if "onDispatch" was called
-     * @return An integer indicating when the call was done.
+     * Indicates if "init" was called
+     * @return An integer indicating when the call was done
      */
-    public function getCalledOnDispatch() : Int {
-        return this.calledOnDispatch;
+    public function getCalledInit() : Int {
+        return this.calledInit;
     }
 
     /**
-     * Indicates if "onHTTPError" was called
-     * @return An integer indicating when the call was done.
+     * Indicates if "close" was called
+     * @return An integer indicating when the call was done
      */
-    public function getCalledOnHTTPError() : Int {
-        return this.calledOnHTTPError;
-    }
-
-    /**
-     * Indicates if "onError" was called
-     * @return An integer indicating when the call was done.
-     */
-    public function getCalledOnError() : Int {
-        return this.calledOnError;
-    }
-
-    /**
-     * Indicates if "onDispatch" was called
-     * @return An integer indicating when the call was done.
-     */
-    public function getCalledOnClose() : Int {
-        return this.calledOnClose;
-    }
-
-    /**
-     * Returns the last received HTTP exception
-     * @return The las received HTTP exception
-     */
-    public function getLastHTTPException() : HTTPException {
-        return this.lastHTTPException;
-    }
-
-    /**
-     * Returns the last received server exception
-     * @return The las received server exception
-     */
-    public function getLastException() : Exception {
-        return this.lastException;
+    public function getCalledClose() : Int {
+        return this.calledClose;
     }
 
 }

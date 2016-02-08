@@ -29,11 +29,8 @@ import harfang.server.event.ServerEventListener;
  * Provides a default implementation for the ServerConfiguration interface,
  * providing helper functions so you don't have to worry about how the data
  * is contained behind the scenes.
- *
- * By default, this implementation of the ServerConfiguration is a
- * ServerEventListener, for convenience.
  */
-class AbstractServerConfiguration implements ServerConfiguration implements ServerEventListener {
+class AbstractServerConfiguration implements ServerConfiguration {
 
     /**************************************************************************/
     /*                             PRIVATE FIELDS                             */
@@ -60,50 +57,12 @@ class AbstractServerConfiguration implements ServerConfiguration implements Serv
     public function init() {
         this.modules = new List<Module>();
         this.serverEventListeners = new List<ServerEventListener>();
-        this.serverEventListeners.add(this);
     }
-
-    /**
-     * Dispatch event - called when the queried URL corresponds to a controller
-     * (the URL has been dispatched). The event is only triggered when the
-     * controller's "handleRequest" returns true.
-     *
-     * @param urlMapping The URL mapping that was matched
-     */
-    public function onDispatch(urlMapping : URLMapping) : Void {}
-
-    /**
-     * Interrupted dispatch event - called when the URL dispatcher manages to
-     * find the controller and method to call but that the controller's
-     * handleRequest method returns false.
-     *
-     * @param urlMapping The URL mapping that was matched
-     */
-    public function onDispatchInterrupted(urlMapping : URLMapping) : Void {}
-
-    /**
-     * HTTP Error event - called when the server encounters a HTTP error
-     * during URL dispatching or controller operations. Usually, these are
-     * 404 or 500 errors.
-     *
-     * @param exception The exception that was thrown
-     */
-    public function onHTTPError(error : HTTPException) : Void {}
-
-    /**
-     * Error event - called when the server encounters errors that are not
-     * covered by HTTP status codes. (Although the 500 error is pretty broad,
-     * the developer could throw other types of exceptions that would lead
-     * to this event)
-     *
-     * @param exception The exception that was thrown
-     */
-    public function onError(exception : Exception) : Void {}
 
     /**
      * Close event - called when the server closes
      */
-    public function onClose() : Void {}
+    public function close() : Void {}
 
     /**************************************************************************/
     /*                                GETTERS                                 */

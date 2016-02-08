@@ -20,6 +20,7 @@
 package harfang.exception;
 
 import harfang.exception.HTTPException;
+import harfang.server.response.HTTPStatus;
 
 /**
  * The 404 exception is thrown whenever something is not found, server-side.
@@ -33,7 +34,7 @@ class NotFoundException extends HTTPException {
      * @param message The message you want to show to the user (optional)
      */
     public function new(? message : String) {
-        super(MESSAGE, 404);
+        super(MESSAGE, HTTPStatus.CLIENT_ERROR_NOT_FOUND);
 
         // If no default message is sent, put a default one
         if(message != null) {

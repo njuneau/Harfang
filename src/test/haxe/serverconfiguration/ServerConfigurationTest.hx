@@ -42,7 +42,6 @@ class ServerConfigurationTest extends TestCase {
     @Before
     public function setup() {
         this.configuration = new MockServerConfiguration();
-        this.configuration.init();
     }
 
     /**
@@ -59,6 +58,7 @@ class ServerConfigurationTest extends TestCase {
     @Test
     public function testAddModule() {
         var count : Int = 0;
+        this.configuration.init();
         for(module in this.configuration.getModules()) {
             count++;
         }
@@ -76,83 +76,44 @@ class ServerConfigurationTest extends TestCase {
         ServerMain.launch(this.configuration, rqInfo);
 
         // Make sure call sequence is ok
-        assertEquals(this.configuration.getCalledOnDispatch(), 1);
-        assertEquals(this.configuration.getCalledOnHTTPError(), 0);
-        // Normally, if onHTTPError is called, onError should not.
-        assertEquals(this.configuration.getCalledOnError(), 0);
-        // We should still be able to close the application
-        assertEquals(this.configuration.getCalledOnClose(), 2);
+        assertEquals(this.configuration.getCalledInit(), 1);
+        assertEquals(this.configuration.getCalledClose(), 2);
     }
 
     /**
-     * Make sure that a 404 is thrown to the user configuration when the URL
-     * dispatcher is unable to route a request
+     * Make sure close is called even when a 404 is thrown
      */
     @Test
-    public function testCatch404() {
+    public function test404() {
         var rqInfo : RequestInfo = new RequestInfo("/0", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
-
-        // Make sure call sequence is ok
-        assertEquals(this.configuration.getCalledOnDispatch(), 0);
-        assertEquals(this.configuration.getCalledOnHTTPError(), 1);
-        // Normally, if onHTTPError is called, onError should not.
-        assertEquals(this.configuration.getCalledOnError(), 0);
-        // We should still be able to close the application
-        assertEquals(this.configuration.getCalledOnClose(), 2);
-
-        // Make sure the correct exception is given
-        assertTrue(this.configuration.getLastHTTPException() != null);
-        assertTrue(this.configuration.getLastHTTPException().getErrorCode() == 404);
-        assertTrue(this.configuration.getLastException() == null);
+        assertEquals(this.configuration.getCalledInit(), 1);
+        assertEquals(this.configuration.getCalledClose(), 2);
     }
 
     /**
-     * Make sure that special exceptions are caught by the configuration
+     * Make sure close is called even when an error occurs
      */
     @Test
-    public function testCatchError() {
+    public function testError() {
         var rqInfo : RequestInfo = new RequestInfo("/error", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
-
-        // Make sure call sequence is ok
-        assertEquals(this.configuration.getCalledOnDispatch(), 1);
-        // Normally, if onError is called, onError should not.
-        assertEquals(this.configuration.getCalledOnHTTPError(), 0);
-        assertEquals(this.configuration.getCalledOnError(), 2);
-        // We should still be able to close the application
-        assertEquals(this.configuration.getCalledOnClose(), 3);
-
-        // Make sure the correct exception is given
-        assertTrue(this.configuration.getLastException() != null);
-        assertEquals(this.configuration.getLastException().getMessage(), MockServerConfigurationController.SERVER_ERROR_MESSAGE);
-        assertTrue(this.configuration.getLastHTTPException() == null);
+        assertEquals(this.configuration.getCalledInit(), 1);
+        assertEquals(this.configuration.getCalledClose(), 2);
     }
 
     /**
-     * Make sure HTTP errors are correctly handled when thrown from controllers
+     * Make sure close is called even when a HTTP error is thrown
      */
     @Test
-    public function testCatchHTTPErrorInController() {
+    public function testHTTPErrorInController() {
         var rqInfo : RequestInfo = new RequestInfo("/303", "GET");
 
         ServerMain.launch(this.configuration, rqInfo);
-
-        // Make sure call sequence is ok
-        assertEquals(this.configuration.getCalledOnDispatch(), 1);
-        assertEquals(this.configuration.getCalledOnHTTPError(), 2);
-        // Normally, if onHTTPError is called, onError should not.
-        assertEquals(this.configuration.getCalledOnError(), 0);
-        // We should still be able to close the application
-        assertEquals(this.configuration.getCalledOnClose(), 3);
-
-        // Make sure the correct exception is given
-        assertTrue(this.configuration.getLastHTTPException() != null);
-        assertTrue(this.configuration.getLastHTTPException().getErrorCode() == MockServerConfigurationController.ERROR_CODE_303);
-        assertTrue(this.configuration.getLastHTTPException().getMessage() == MockServerConfigurationController.ERROR_MESSAGE_303);
-        assertTrue(this.configuration.getLastException() == null);
+        assertEquals(this.configuration.getCalledInit(), 1);
+        assertEquals(this.configuration.getCalledClose(), 2);
     }
 
 }

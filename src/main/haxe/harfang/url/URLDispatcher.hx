@@ -22,10 +22,11 @@ package harfang.url;
 import harfang.module.Module;
 import harfang.controller.Controller;
 import harfang.configuration.ServerConfiguration;
+import harfang.exception.HTTPException;
 import harfang.exception.NotFoundException;
-import harfang.exception.ServerErrorException;
 import harfang.server.event.ServerEventListener;
 import harfang.server.request.RequestInfo;
+import harfang.server.response.HTTPStatus;
 
 /**
  * This class handles the request made to your application. The dispatcher
@@ -139,7 +140,7 @@ class URLDispatcher {
             } else {
                 // Controller function was not found - this should not be
                 // happening. Throw an error!
-                throw new ServerErrorException();
+                throw new HTTPException("Controller method not found", HTTPStatus.SERVER_ERROR_INTERNAL_SERVER_ERROR);
             }
         }
 

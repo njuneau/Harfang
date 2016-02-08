@@ -20,8 +20,8 @@
 package harfang.exception;
 
 /**
- * An exception is thrown when an error occurs somewhere in the application and
- * the message is displayed.
+ * An exception is thrown when an error occurs somewhere in the application. It
+ * is used by the framework for error management.
  */
 class Exception {
 

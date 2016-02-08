@@ -52,6 +52,6 @@ interface ServerConfiguration {
     /**
      * Close event - called when the server closes
      */
-    public function onClose() : Void;
+    public function close() : Void;
 
 }

@@ -20,15 +20,25 @@
 package servereventlistener.mock;
 
 import harfang.configuration.AbstractServerConfiguration;
+import harfang.configuration.ServerConfiguration;
+
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
+
+import harfang.server.event.ServerEventListener;
+
 import harfang.url.URLMapping;
 
 /**
  * This is a mock server configuration to test the various functionnalities of
  * the framework. It is used in the URL dispatcher test.
  */
-class MockServerEventListenerUserConfiguration extends AbstractServerConfiguration {
+class MockServerEventListenerUserConfiguration extends AbstractServerConfiguration implements ServerEventListener {
+
+    public var onStartCalled(default, null) : Bool;
+    public var onStartConfiguration(default, null) : ServerConfiguration;
+    public var onCloseCalled(default, null) : Bool;
+    public var onCloseConfiguration(default, null) : ServerConfiguration;
 
     public var onDispatchCalled(default, null) : Bool;
     public var onDispatchMapping(default, null) : URLMapping;
@@ -55,7 +65,11 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
     public override function init() : Void {
         super.init();
         this.addModule(new MockServerEventListenerModule());
+        this.addServerEventListener(this);
 
+        this.onStartCalled = false;
+        this.onStartConfiguration = null;
+        this.onErrorCalled = false;
         this.onDispatchCalled = false;
         this.onDispatchInterruptedMapping = null;
         this.onDispatchInterruptedCalled = false;
@@ -64,55 +78,38 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
         this.onHTTPErrorException = null;
         this.onErrorCalled = false;
         this.onErrorException = null;
+        this.onCloseCalled = false;
+        this.onCloseConfiguration = null;
     }
 
-    /**
-     * Dispatch event - called when the queried URL corresponds to a controller
-     * (the URL has been dispatched). The event is only triggered when the
-     * controller's "handleRequest" returns true.
-     *
-     * @param urlMapping The URL mapping that was matched
-     */
-    public override function onDispatch(urlMapping : URLMapping) : Void {
+    public function onStart(configuration : ServerConfiguration) : Void {
+        this.onStartCalled = true;
+        this.onStartConfiguration = configuration;
+    }
+
+    public function onDispatch(urlMapping : URLMapping) : Void {
         this.onDispatchCalled = true;
         this.onDispatchMapping = urlMapping;
     }
 
-    /**
-     * Interrupted dispatch event - called when the URL dispatcher manages to
-     * find the controller and method to call but that the controller's
-     * handleRequest method returns false.
-     *
-     * @param urlMapping The URL mapping that was matched
-     */
-    public override function onDispatchInterrupted(urlMapping : URLMapping) : Void {
+    public function onDispatchInterrupted(urlMapping : URLMapping) : Void {
         this.onDispatchInterruptedCalled = true;
         this.onDispatchInterruptedMapping = urlMapping;
     }
 
-    /**
-     * HTTP Error event - called when the server encounters a HTTP error
-     * during URL dispatching or controller operations. Usually, these are
-     * 404 or 500 errors.
-     *
-     * @param exception The exception that was thrown
-     */
-    public override function onHTTPError(exception : HTTPException) : Void {
+    public function onHTTPError(exception : HTTPException) : Void {
         this.onHTTPErrorCalled = true;
         this.onHTTPErrorException = exception;
     }
 
-    /**
-     * Error event - called when the server encounters an error during URL
-     * dispatching or controller operations that are not covered by the 404
-     * and 500 errors. (Although the 500 error is pretty broad, the user could
-     * throw other types of exceptions that would lead to this event)
-     *
-     * @param exception The exception that was thrown
-     */
-    public override function onError(exception : Exception) : Void {
+    public function onError(exception : Exception) : Void {
         this.onErrorCalled = true;
         this.onErrorException = exception;
+    }
+
+    public function onClose(configuration : ServerConfiguration) : Void {
+        this.onCloseCalled = true;
+        this.onCloseConfiguration = configuration;
     }
 
 
