@@ -1,19 +1,20 @@
-release-0.5 (Unreleased)
-===============
+1.0.0 (Unreleased)
+==================
 
-* Added a createERegUrlMappingArray macro for MacroConfigurator to return an array of mappings
-* Changed URLMapping API to support request filtering
-* Added the possibility to change the class implementing ServerConfiguration at compile-time
-* Added the possibility to map custom URL mapping implementations using MacroConfigurator
-* Removed the MacroConfigurator class in favor of the URLMappingFactory
+* MacroConfigurator replaced by URLMappingFactory and ERegURLMappingFactory
+* URLMappingFactory now supports specifying a custom URLMapping implementation
+* Added request filtering to URLMapping API
+* ServerConfiguration implementation can now be set at compile time using
+* AbstractServerConfiguration no longer implements ServerEventListener
+* Changed HTTPException's errorCode to statusCode
 
-release-0.4.0 (2013-08-07)
-===============
+0.4.0 (2013-08-07)
+==================
 
 * Haxe 3 compatibility
 
-release-0.3 (2012-11-25)
-===============
+0.3 (2012-11-25)
+================
 
 * Package names are now always singular (for example : harfang.exceptions is now harfang.exception)
 * New server event listener mechanics
@@ -22,20 +23,22 @@ release-0.3 (2012-11-25)
 * Controller interface now has a "postRequest" method
 * Exceptions of types different from harfang.exception.Exception are now managed
 
-release-0.2 (2012-04-20)
-===============
+0.2 (2012-04-20)
+================
 
 * URL mapping macro/metadata configurator
 * Controller interface now has controller method's name in handleRequest parameters
 * Controllers are now instanciated only if Reflect can find the mapped method
 * Test suite
 
-release-0.1 (2011-08-22)
-===============
+0.1 (2011-08-22)
+================
 
 * Initial release
 * Default implementations of the framework interfaces
-  * EReg implementation of the URL mapping
-  * Default Controller implementation
-  * Default Configuration implementation
+
+    * EReg implementation of the URL mapping
+    * Default Controller implementation
+    * Default Configuration implementation
+
 * Server-side events detection
