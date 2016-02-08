@@ -5,6 +5,7 @@
   "tags" : ["php", "neko"],
   "description" : "Web development framework",
   "version" : "1.0.0-alpha.1",
+  "classPath" : "src/main/haxe",
   "releasenote" : "1.0.0 Alpha 1 release",
   "contributors" : ["njuneau"]
 }
