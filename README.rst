@@ -7,6 +7,20 @@ Description
 Harfang is a lightweight Web development framework written in Haxe
 (http://haxe.org), currently working for the PHP and Neko targets.
 
+Installing the framework
+------------------------
+
+Harfang can be obtained on Haxelib. You can either obtain the stable 0.4 version
+or the current Alpha release:
+
+.. code:: sh
+
+    haxelib install Harfang 0.4.0
+
+.. code:: sh
+
+    haxelib install Harfang 1.0.0-alpha.1
+
 Documentation
 -------------
 
@@ -39,5 +53,5 @@ For the PHP target:
 Enjoy!
 
 .. _Unit2: https://github.com/njuneau/Unit2
-.. _documentation: http://haxe.org/com/libs/harfang
-.. _tutorial: http://haxe.org/com/libs/harfang/tutorials/quickstart/0.3
+.. _documentation: https://github.com/njuneau/Harfang/wiki
+.. _tutorial: https://github.com/njuneau/Harfang/wiki/Your-first-Harfang-controller-1.0

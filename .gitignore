@@ -1,6 +1,7 @@
 doc/*
 out/*
 content/*
+release/
 index.html
 harfang.xml
 haxedoc.xml

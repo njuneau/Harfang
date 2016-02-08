@@ -1,0 +1,10 @@
+{
+  "name" : "Harfang",
+  "url" : "https://github.com/njuneau/Harfang",
+  "license" : "GPL",
+  "tags" : ["php", "neko"],
+  "description" : "Web development framework",
+  "version" : "1.0.0-alpha.1",
+  "releasenote" : "1.0.0 Alpha 1 release",
+  "contributors" : ["njuneau"]
+}

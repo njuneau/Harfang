@@ -1,4 +1,0 @@
-<IfModule mod_rewrite.c>
-	RewriteEngine on
-	RewriteRule  ^(?!medias|admin).*$ index.php [NC]
-</IfModule>
