@@ -240,7 +240,8 @@ class ERegURLMappingFactory extends URLMappingFactory {
                 url = StringTools.replace(url, prefixVar, prefix);
             }
 
-            params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
+            params.push({pos : pos, expr : EConst(CString(url))});
+            params.push({pos : pos, expr : EConst(CString(eregOptions))});
             params.push({pos : pos, expr : EConst(CIdent(cl.name))});
             params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
@@ -320,7 +321,8 @@ class ERegURLMappingFactory extends URLMappingFactory {
                 url = StringTools.replace(url, prefixVar, prefix);
             }
 
-            params.push({pos : pos, expr : EConst(CRegexp(url, eregOptions))});
+            params.push({pos : pos, expr : EConst(CString(url))});
+            params.push({pos : pos, expr : EConst(CString(eregOptions))});
             params.push({pos : pos, expr : EConst(CIdent(cl.name))});
             params.push({pos : pos, expr : EConst(CString(controllerMethod.name))});
 
@@ -332,7 +334,7 @@ class ERegURLMappingFactory extends URLMappingFactory {
                 pos : pos,
                 expr : ECall({
                     pos : pos,
-                    expr : EField(eThis, "addURLMapping")
+                    expr : EField(eThis, "addMapping")
                 }, params)
             }
         }

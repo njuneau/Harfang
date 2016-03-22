@@ -67,6 +67,7 @@ class ServerEventListenerTest extends TestCase {
 
         this.assertTrue(configuration.onDispatchCalled);
         this.assertEquals(configuration.onDispatchMapping.getControllerMethodName(), MockServerEventListenerModule.DISPATCH_SIMPLE_NAME);
+        this.assertEquals(configuration.onDispatchRequestInfo, rqInfo);
 
         this.assertTrue(this.configuration.onCloseCalled);
         this.assertTrue(this.configuration == this.configuration.onCloseConfiguration);
@@ -86,6 +87,7 @@ class ServerEventListenerTest extends TestCase {
         this.assertTrue(configuration.onDispatchInterruptedCalled);
         this.assertFalse(configuration.onDispatchCalled);
         this.assertEquals(configuration.onDispatchInterruptedMapping.getControllerMethodName(), MockServerEventListenerModule.DO_NOT_DISPATCH_SIMPLE_NAME);
+        this.assertEquals(configuration.onDispatchInterruptedRequestInfo, rqInfo);
 
         this.assertTrue(this.configuration.onCloseCalled);
         this.assertTrue(this.configuration == this.configuration.onCloseConfiguration);

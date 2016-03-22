@@ -30,33 +30,35 @@ import harfang.url.ERegURLMapping;
  */
 class AbstractModule implements Module {
 
-    private var urlMappings : List<URLMapping>;
+    private var mappings : List<URLMapping>;
 
     /**
      * Constructs a default implementation of a server module
      */
     public function new() {
-        this.urlMappings = new List<URLMapping>();
+        this.mappings = new List<URLMapping>();
     }
 
     /**
      * Returns all the URLs mapping that belongs to this module
      * @return A list of all the URL mappings contained in the module
      */
-    public function getURLMappings() : Iterable<URLMapping> {
-        return this.urlMappings;
+    public function getMappings() : Iterable<URLMapping> {
+        return this.mappings;
     }
 
     /**
      * Adds a mapping into the module's list of URL mappings
-     * @param urlReg The expression that matches the sent URL
-     * @param controller The controller to call
-     * @param controllerFunctionName The controller's function to call
-     * @param httpMethod Optional, the name of the HTTP method on which the
-     *        URL mapping is active
+     *
+     * @param pattern The regular expression to match against an URL
+     * @param patternOptions Theregular expression's options
+     * @param controllerClass The controller to call
+     * @param controllerFunctionName The name of the controller method to call
+     * @param httpMethod Optional, the HTTP method that the request must have for
+                         the mapping resolve the request
      */
-    private function addURLMapping(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) : Void {
-        this.urlMappings.add(new ERegURLMapping(urlReg, controllerClass, controllerFunctionName, httpMethod));
+    private function addMapping(pattern : String, patternOptions : String, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) : Void {
+        this.mappings.add(new ERegURLMapping(pattern, patternOptions, controllerClass, controllerFunctionName, httpMethod));
     }
 
 }

@@ -26,6 +26,7 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 
 import harfang.server.event.ServerEventListener;
+import harfang.server.request.RequestInfo;
 
 import harfang.url.URLMapping;
 
@@ -37,14 +38,17 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
 
     public var onStartCalled(default, null) : Bool;
     public var onStartConfiguration(default, null) : ServerConfiguration;
+
     public var onCloseCalled(default, null) : Bool;
     public var onCloseConfiguration(default, null) : ServerConfiguration;
 
     public var onDispatchCalled(default, null) : Bool;
     public var onDispatchMapping(default, null) : URLMapping;
+    public var onDispatchRequestInfo(default, null) : RequestInfo;
 
     public var onDispatchInterruptedCalled(default, null) : Bool;
     public var onDispatchInterruptedMapping(default, null) : URLMapping;
+    public var onDispatchInterruptedRequestInfo(default, null) : RequestInfo;
 
     public var onHTTPErrorCalled(default, null) : Bool;
     public var onHTTPErrorException(default, null) : HTTPException;
@@ -69,17 +73,23 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
 
         this.onStartCalled = false;
         this.onStartConfiguration = null;
-        this.onErrorCalled = false;
-        this.onDispatchCalled = false;
-        this.onDispatchInterruptedMapping = null;
-        this.onDispatchInterruptedCalled = false;
-        this.onDispatchInterruptedMapping = null;
-        this.onHTTPErrorCalled = true;
-        this.onHTTPErrorException = null;
-        this.onErrorCalled = false;
-        this.onErrorException = null;
+
         this.onCloseCalled = false;
         this.onCloseConfiguration = null;
+
+        this.onDispatchCalled = false;
+        this.onDispatchMapping = null;
+        this.onDispatchRequestInfo = null;
+
+        this.onDispatchInterruptedCalled = false;
+        this.onDispatchInterruptedMapping = null;
+        this.onDispatchInterruptedRequestInfo = null;
+
+        this.onHTTPErrorCalled = true;
+        this.onHTTPErrorException = null;
+
+        this.onErrorCalled = false;
+        this.onErrorException = null;
     }
 
     public function onStart(configuration : ServerConfiguration) : Void {
@@ -87,14 +97,16 @@ class MockServerEventListenerUserConfiguration extends AbstractServerConfigurati
         this.onStartConfiguration = configuration;
     }
 
-    public function onDispatch(urlMapping : URLMapping) : Void {
+    public function onDispatch(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
         this.onDispatchCalled = true;
         this.onDispatchMapping = urlMapping;
+        this.onDispatchRequestInfo = requestInfo;
     }
 
-    public function onDispatchInterrupted(urlMapping : URLMapping) : Void {
+    public function onDispatchInterrupted(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
         this.onDispatchInterruptedCalled = true;
         this.onDispatchInterruptedMapping = urlMapping;
+        this.onDispatchInterruptedRequestInfo = requestInfo;
     }
 
     public function onHTTPError(exception : HTTPException) : Void {

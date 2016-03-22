@@ -31,10 +31,10 @@ class MockURLDispatcherModule extends AbstractModule {
      */
     public function new() {
         super();
-        this.addURLMapping(~/^\/$/, MockURLDispatcherController, "dispatchSimple");
-        this.addURLMapping(~/^\/([a-zA-Z]+)\/$/, MockURLDispatcherController, "dispatchParam");
-        this.addURLMapping(~/^\/([a-zA-Z]+)\/([0-9]+)\/$/, MockURLDispatcherController, "dispatchMultipleParam");
-        this.addURLMapping(~/^\/_doNotDispatch\/$/, MockURLDispatcherController, "doNotDispatch");
+        this.addMapping("^/$", "", MockURLDispatcherController, "dispatchSimple");
+        this.addMapping("^/([a-zA-Z]+)/$", "", MockURLDispatcherController, "dispatchParam");
+        this.addMapping("^/([a-zA-Z]+)/([0-9]+)/$", "", MockURLDispatcherController, "dispatchMultipleParam");
+        this.addMapping("^/_doNotDispatch/$", "", MockURLDispatcherController, "doNotDispatch");
     }
 
 }

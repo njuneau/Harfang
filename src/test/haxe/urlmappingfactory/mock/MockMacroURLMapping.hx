@@ -19,9 +19,10 @@
 
 package urlmappingfactory.mock;
 
-import harfang.server.request.RequestInfo;
-import harfang.url.URLMapping;
 import harfang.controller.Controller;
+import harfang.server.request.RequestInfo;
+import harfang.url.ResolutionResult;
+import harfang.url.URLMapping;
 
 /**
  * URL mapping for use with the MacroConfiguratorTest's custom URL mapping test
@@ -47,16 +48,8 @@ class MockMacroURLMapping implements URLMapping {
         this.paramB = paramB;
     }
 
-    public function resolve(url : String) : Bool {
-        return true;
-    }
-
-    public function filter(requestInfo : RequestInfo) : Bool {
-        return true;
-    }
-
-    public function extractParameters(requestInfo : RequestInfo) : Array<String> {
-        return new Array<String>();
+    public function resolve(requestInfo : RequestInfo) : ResolutionResult {
+        return new ResolutionResult(true, new Array<String>());
     }
 
     public function getControllerClass() : Class<Controller> {

@@ -21,9 +21,10 @@ package harfang.server.event;
 
 import harfang.configuration.ServerConfiguration;
 import harfang.controller.Controller;
-import harfang.url.URLMapping;
 import harfang.exception.HTTPException;
 import harfang.exception.Exception;
+import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
  * A server event listener will receive signals from the framework regarding
@@ -53,8 +54,9 @@ interface ServerEventListener {
      * controller's "handleRequest" returns true.
      *
      * @param urlMapping The URL mapping that was matched
+     * @param requestInfo The request information
      */
-    public function onDispatch(urlMapping : URLMapping) : Void;
+    public function onDispatch(urlMapping : URLMapping, requestInfo : RequestInfo) : Void;
 
     /**
      * Interrupted dispatch event - called when the URL dispatcher manages to
@@ -62,8 +64,9 @@ interface ServerEventListener {
      * handleRequest method returns false.
      *
      * @param urlMapping The URL mapping that was matched
+     * @param requestInfo The request information
      */
-    public function onDispatchInterrupted(urlMapping : URLMapping) : Void;
+    public function onDispatchInterrupted(urlMapping : URLMapping, requestInfo : RequestInfo) : Void;
 
     /**
      * HTTP Error event - called when the server encounters a HTTP error

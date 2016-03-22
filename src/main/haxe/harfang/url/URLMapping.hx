@@ -23,56 +23,27 @@ import harfang.controller.Controller;
 import harfang.server.request.RequestInfo;
 
 /**
- * A URL mapping consists of a binding between a controller and a URL. Whenever
- * the user enters a URL, the dispatcher must know where to forward the request.
- * This is the job of the URL mapping: binding an URL pattern with a handler.
+ * A URL mapping consists of a binding between a controller and a request.
+ * Whenever the user sends a request, the dispatcher must know where to forward
+ * it. This is the job of the request mapping: binding a request with a handler.
  */
 interface URLMapping {
 
-
-    /**************************************************************************/
-    /*                                GETTERS                                 */
-    /**************************************************************************/
-
     /**
-     * Indicates if the URL can be resolved using this mapping
-     * @param url The URL to resolve
-     * @return True if the request can be resolved with this mapping, false
-     * otherwize.
-     */
-    public function resolve(url : String) : Bool;
-
-    /**
-     * Indicates if the URL dispatcher should proceed to dispatch the request
-     * given the provided request information.
+     * Indicates if the request can be resolved using this mapping
      *
-     * @param requestInfo Object containg the request's information.
-     * @return True if the dispatcher may disptach the request, false otherwize.
+     * @param requestInfo The request to resolve
+     * @return The request resolving results
      */
-    public function filter(requestInfo : RequestInfo) : Bool;
+    public function resolve(requestInfo : RequestInfo) : ResolutionResult;
 
     /**
-     * Extracts the parameters that would be sent to this mapping's
-     * controller function from the given request information.
-     * PRECONDITION : It's better to extract the parameters when you know
-     *                if that this mapping can resolve the given URL.
-     *                Use the "resolve" method on the same URL to know.
-     * @param requestInfo The erquest from which the parameters are extracted.
-     * It is the same object that is sent to the "resolve" method
-     * that is sent to the "resolve" method.
-     * @return An array containing all the extracted parameters
-     */
-    public function extractParameters(requestInfo : RequestInfo) : Array<String>;
-
-    /**
-     * Returns the controller contained in the mapping
-     * @return The controller contained in the mapping
+     * @return The controller to call if the request is resolved against this mapping
      */
     public function getControllerClass() : Class<Controller>;
 
     /**
-     * Returns the controller's method to call name
-     * @return The controller's method to call name
+     * @return The name of the controller method to call
      */
     public function getControllerMethodName() : String;
 }

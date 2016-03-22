@@ -24,6 +24,8 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 import harfang.module.Module;
+import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
  * This is the mock controller that is used for the server event listener test
@@ -35,14 +37,10 @@ class MockServerEventListenerController extends AbstractController {
     public static inline var HTTP_ERROR_MESSAGE : String = "MockServerEventListenerController_HTTP_ERROR";
     public static inline var HTTP_ERROR_CODE : Int = 404;
 
-    /**
-     * Handle a request (pre-method call)
-     * @param controllerMethodName The controller method what will be called
-     */
-    public override function handleRequest(controllerMethodName : String) : Bool {
+    public override function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         var dispatch : Bool = true;
 
-        if(controllerMethodName == "doNotDispatch") {
+        if(urlMapping.getControllerMethodName() == "doNotDispatch") {
             dispatch = false;
         }
 

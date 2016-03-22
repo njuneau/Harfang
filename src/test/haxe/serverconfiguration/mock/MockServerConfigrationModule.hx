@@ -31,9 +31,9 @@ class MockServerConfigrationModule extends AbstractModule {
      */
     public function new() {
         super();
-        this.addURLMapping(~/^\/$/, MockServerConfigurationController, "handleNormal");
-        this.addURLMapping(~/^\/error\/$/, MockServerConfigurationController, "handleServerError");
-        this.addURLMapping(~/^\/303\/$/, MockServerConfigurationController, "handleHTTPError");
+        this.addMapping("^/$", "", MockServerConfigurationController, "handleNormal");
+        this.addMapping("^/error/$", "", MockServerConfigurationController, "handleServerError");
+        this.addMapping("^/303/$", "", MockServerConfigurationController, "handleHTTPError");
     }
 
 }

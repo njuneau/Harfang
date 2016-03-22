@@ -21,6 +21,7 @@ package urldispatcher.mock;
 
 import harfang.controller.Controller;
 import harfang.server.request.RequestInfo;
+import harfang.url.ResolutionResult;
 import harfang.url.URLMapping;
 
 /**
@@ -51,54 +52,14 @@ class MockURLMapping implements URLMapping {
         this.filterValue = filter;
     }
 
-    /**
-     * Indicates if the URL can be resolved using this mapping
-     * @param url The URL to resolve
-     * @return True if the request can be resolved with this mapping, false
-     * otherwize.
-     */
-    public function resolve(url : String) : Bool {
-        return this.resolveValue;
+    public function resolve(requestInfo : RequestInfo) : ResolutionResult {
+        return new ResolutionResult(this.resolveValue && this.filterValue, new Array<String>());
     }
 
-    /**
-     * Indicates if the URL dispatcher should proceed to dispatch the request
-     * given the provided request information.
-     *
-     * @param requestInfo Object containg the request's information.
-     * @return True if the dispatcher may disptach the request, false otherwize.
-     */
-    public function filter(requestInfo : RequestInfo) : Bool {
-        return this.filterValue;
-    }
-
-    /**
-     * Extracts the parameters that would be sent to this mapping's
-     * controller function from the given request information.
-     * PRECONDITION : It's better to extract the parameters when you know
-     *                if that this mapping can resolve the given URL.
-     *                Use the "resolve" method on the same URL to know.
-     * @param requestInfo The erquest from which the parameters are extracted.
-     * It is the same object that is sent to the "resolve" method
-     * that is sent to the "resolve" method.
-     * @return An array containing all the extracted parameters
-     */
-    public function extractParameters(requestInfo : RequestInfo) : Array<String> {
-        return [];
-    }
-
-    /**
-     * Returns the controller contained in the mapping
-     * @return The controller contained in the mapping
-     */
     public function getControllerClass() : Class<Controller> {
         return this.controllerClass;
     }
 
-    /**
-     * Returns the controller's method to call name
-     * @return The controller's method to call name
-     */
     public function getControllerMethodName() : String {
         return this.methodName;
     }

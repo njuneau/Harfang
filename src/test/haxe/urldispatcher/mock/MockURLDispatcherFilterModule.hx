@@ -33,7 +33,7 @@ class MockURLDispatcherFilterModule extends AbstractModule {
      */
     public function new(resolve : Bool, filter : Bool) {
         super();
-        this.urlMappings.add(new MockURLMapping(MockURLDispatcherController, "dispatchSimple", resolve, filter));
+        this.mappings.add(new MockURLMapping(MockURLDispatcherController, "dispatchSimple", resolve, filter));
     }
 
 }

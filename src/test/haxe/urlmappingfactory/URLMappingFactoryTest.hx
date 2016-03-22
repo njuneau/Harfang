@@ -53,43 +53,36 @@ class URLMappingFactoryTest extends TestCase {
 
         var testRequestInfo : RequestInfo = null;
 
-        for(urlMapping in module.getURLMappings()) {
+        for(urlMapping in module.getMappings()) {
             assertEquals(urlMapping.getControllerClass(), MockMacroController);
             // On each mapping, make sure the URL can be correctly resolved
             switch(urlMapping.getControllerMethodName()) {
                 case "handleRequestA":
                     foundHandleRequestA = true;
                     testRequestInfo = new RequestInfo("/a/", httpMethod);
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertTrue(urlMapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestEregOptions":
                     handleRequestEregOptions = true;
                     testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertTrue(urlMapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestPrefix":
                     handleRequestPrefix = true;
                     testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertTrue(urlMapping.resolve(testRequestInfo).isResolved());
 
                     testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
-                    assertFalse(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertFalse(urlMapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestNoPrefix":
                     handleRequestNoPrefix = true;
                     testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertTrue(urlMapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestPostOnly":
                     handleRequestPostOnly = true;
                     testRequestInfo = new RequestInfo("/c/MYPREFIX/", httpMethod);
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertFalse(urlMapping.filter(testRequestInfo));
+                    assertFalse(urlMapping.resolve(testRequestInfo).isResolved());
 
                     testRequestInfo = new RequestInfo("/c/MYPREFIX/", "post");
-                    assertTrue(urlMapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(urlMapping.filter(testRequestInfo));
+                    assertTrue(urlMapping.resolve(testRequestInfo).isResolved());
                 case "doNotHandleA":
                     doNotHandle = true;
                 case "doNotHandleB":
@@ -106,7 +99,7 @@ class URLMappingFactoryTest extends TestCase {
         assertTrue(handleRequestPostOnly);
         assertFalse(doNotHandle);
 
-        module.getURLMappings();
+        module.getMappings();
     }
 
     /**
@@ -135,32 +128,25 @@ class URLMappingFactoryTest extends TestCase {
             switch(mapping.getControllerMethodName()) {
                 case "handleRequestA":
                     testRequestInfo = new RequestInfo("/a/", httpMethod);
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertTrue(mapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestEregOptions":
                     testRequestInfo = new RequestInfo("/b/aoisuasinoi/", httpMethod);
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertTrue(mapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestPrefix":
                     testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertTrue(mapping.resolve(testRequestInfo).isResolved());
 
                     testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
-                    assertFalse(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertFalse(mapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestNoPrefix":
                     testRequestInfo = new RequestInfo("/b/jkandahjsbh/", httpMethod);
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertTrue(mapping.resolve(testRequestInfo).isResolved());
                 case "handleRequestPostOnly":
                     testRequestInfo = new RequestInfo("/c/MYPREFIX/", httpMethod);
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertFalse(mapping.filter(testRequestInfo));
+                    assertFalse(mapping.resolve(testRequestInfo).isResolved());
 
                     testRequestInfo = new RequestInfo("/c/MYPREFIX/", "POST");
-                    assertTrue(mapping.resolve(testRequestInfo.getURI()));
-                    assertTrue(mapping.filter(testRequestInfo));
+                    assertTrue(mapping.resolve(testRequestInfo).isResolved());
                 default:
             }
         }
@@ -177,10 +163,10 @@ class URLMappingFactoryTest extends TestCase {
             switch(mapping.getControllerMethodName()) {
                 case "handleRequestPrefix":
                     testRequestInfo = new RequestInfo("/MYPREFIX/b/asodhuiahiuh/", httpMethod);
-                    assertFalse(mapping.resolve(testRequestInfo.getURI()));
+                    assertFalse(mapping.resolve(testRequestInfo).isResolved());
 
                     testRequestInfo = new RequestInfo("/$prefix/b/asodhuiahiuh/", httpMethod);
-                    assertFalse(mapping.resolve(testRequestInfo.getURI()));
+                    assertFalse(mapping.resolve(testRequestInfo).isResolved());
                 default:
             }
         }

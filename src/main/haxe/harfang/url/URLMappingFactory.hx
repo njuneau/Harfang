@@ -24,8 +24,7 @@ import haxe.macro.Expr;
 import haxe.macro.Type;
 
 /**
- * This class contains various macros to generate URL mappings using a class'
- * metadata.
+ * This class contains various macros to generate URL mappings using a class' metadata.
  */
 class URLMappingFactory {
 
@@ -49,7 +48,7 @@ class URLMappingFactory {
      *
      * @param mappingClExpr The class of the URLMapping implementation to use
      * @param clExpr The controller's class (must be an implementation of the
-     * Controller interface)
+     *               Controller interface)
      * @param metaTag The metadata tag that will be used to extract the URL
      * information from a controller method.
      *

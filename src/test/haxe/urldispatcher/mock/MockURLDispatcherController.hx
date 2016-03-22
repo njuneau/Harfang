@@ -21,6 +21,8 @@ package urldispatcher.mock;
 
 import harfang.controller.AbstractController;
 import harfang.module.Module;
+import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
  * This is the mock controller that is used for the URL dispatcher test case
@@ -43,24 +45,17 @@ class MockURLDispatcherController extends AbstractController {
     private static var calledPostRequest : Bool = false;
     private static var lastPostMethodName : String;
 
-    /**
-     * Init the module
-     */
     public override function init(module : Module) {
         super.init(module);
         MockURLDispatcherController.isInit = true;
     }
 
-    /**
-     * Handle a request (pre-method call)
-     * @param controllerMethodName The controller method what will be called
-     */
-    public override function handleRequest(controllerMethodName : String) : Bool {
-        MockURLDispatcherController.lastMethodName = controllerMethodName;
+    public override function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
+        MockURLDispatcherController.lastMethodName = urlMapping.getControllerMethodName();
 
         var dispatch : Bool = true;
 
-        if(controllerMethodName == "doNotDispatch") {
+        if(urlMapping.getControllerMethodName() == "doNotDispatch") {
             dispatch = false;
         }
 
@@ -70,9 +65,9 @@ class MockURLDispatcherController extends AbstractController {
     /**
      * Post-request call
      */
-    public override function handlePostRequest(controllerMethodName : String) : Void {
+    public override function handlePostRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
         MockURLDispatcherController.calledPostRequest = true;
-        MockURLDispatcherController.lastPostMethodName = controllerMethodName;
+        MockURLDispatcherController.lastPostMethodName = urlMapping.getControllerMethodName();
     }
 
     /**

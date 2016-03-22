@@ -23,13 +23,13 @@ import harfang.controller.Controller;
 import harfang.server.request.RequestInfo;
 
 /**
- * A URL mapping consists of a binding between a controller and a URL. Whenever
- * the user enters a URL, the dispatcher must know where to forward the request.
- * This is the job of the URL mapping: binding an URL pattern with a handler.
+ * This is the framework's default request mapping implementation. It resolves a
+ * request using a regular expression to match agains the request's URI and
+ * extracts the controller arguments from the URL using the pattern's groups.
  *
- * This is the framework's default URL mapping implementation. It resolves a URL
- * using a regular expression and extracts the parameters from the URL using
- * the pattern's groups.
+ * With the exception of the data provided in this mapping type's constructor,
+ * the class is stateless. Meaning that you can repeatedly call any of its
+ * method without affecting its initial state.
  */
 class ERegURLMapping implements URLMapping {
 
@@ -37,13 +37,10 @@ class ERegURLMapping implements URLMapping {
     /*                             PRIVATE FIELDS                             */
     /**************************************************************************/
 
-    // The regular expression that corresponds to the URL
-    private var urlReg : EReg;
-    // The name of the HTTP method
+    private var pattern : String;
+    private var patternOptions : String;
     private var httpMethod : String;
-    // The controller class to instanciate if the URL is matched
     private var controllerClass : Class<Controller>;
-    // The controller's function to call
     private var controllerFunctionName : String;
 
     /**************************************************************************/
@@ -53,87 +50,73 @@ class ERegURLMapping implements URLMapping {
     /**
      * Construct a new URL Mapping
      *
-     * @param urlReg The expression that matches the sent URL
-     * @param controller The controller to call
+     * @param pattern The regular expression that matches the sent URL
+     * @param patternOptions The given regular expression's options
+     * @param controllerClass The controller to call
      * @param controllerFunctionName The controller's function to call
      * @param httpMethod Optional, the name of the HTTP method to target. HTTP
      *        method will automatically be uppercased.
      */
-    public function new(urlReg : EReg, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) {
-        this.urlReg = urlReg;
+    public function new(pattern : String, patternOptions : String, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) {
+        this.pattern = pattern;
+        this.patternOptions = patternOptions;
+
         this.httpMethod = null;
         if(httpMethod != null) {
             this.httpMethod = httpMethod.toUpperCase();
         }
+
         this.controllerClass = controllerClass;
         this.controllerFunctionName = controllerFunctionName;
     }
 
-    /**************************************************************************/
-    /*                                GETTERS                                 */
-    /**************************************************************************/
-
     /**
-     * Indicates if the URL can be resolved using this mapping
-     * @param url The URL to resolve
-     * @return True if the URL can be resolved with this mapping, false otherwize
-     */
-    public function resolve(url : String) : Bool {
-        return this.urlReg.match(url);
-    }
-
-    /**
-     * Indicates if the URL dispatcher should proceed to dispatch the request
-     * given the provided request information.
+     * Indicates if the request can be resolved using this mapping
      *
-     * @param requestInfo Object containg the request's information.
-     * @return True if the dispatcher may disptach the request, false otherwize.
+     * @param requestInfo The HTTP request information
+     *
+     * @return The resolution results
      */
-    public function filter(requestInfo : RequestInfo) : Bool {
-        return (this.httpMethod == null || (this.httpMethod == requestInfo.getMethod()));
+    public function resolve(requestInfo : RequestInfo) : ResolutionResult {
+        var urlReg : EReg = new EReg(this.pattern, this.patternOptions);
+        var resolved : Bool = false;
+        var arguments : Array<String> = new Array<String>();
+
+        // Resolve agains the URL and HTTP method
+        resolved = (
+            urlReg.match(requestInfo.getURI()) &&
+            (this.httpMethod == null || this.httpMethod == requestInfo.getMethod())
+        );
+
+        // Extract method parameters only if the request is resolved
+        if(resolved) {
+            var i : Int = 1;
+            var argument : String = null;
+
+            do {
+                // On neko, an exception is thrown when a group is not found
+                try {
+                    argument = urlReg.matched(i);
+                    arguments.push(argument);
+                } catch (e : Dynamic) {
+                    argument = null;
+                }
+                i++;
+            } while(argument != null);
+        }
+
+        return new ResolutionResult(resolved, arguments);
     }
 
     /**
-     * Extracts the parameters that would be sent to this mapping's
-     * controller function from the given URL
-     * PRECONDITION : It's better to extract the parameters when you know
-     *                if that this mapping can resolve the given URL.
-     *                Use the "resolve" method on the same URL to know.
-     * @param requestInfo Object containg the request's information. It is the
-     * same object that is sent to the "filter" method.
-     * @return An array containing all the extracted parameters
-     */
-    public function extractParameters(requestInfo : RequestInfo) : Array<String> {
-        var parameters : Array<String> = new Array();
-        var counter : Int = 1;
-        var parameter : String = null;
-
-        // Get trough all the groups and fill the needed parameters
-        do {
-            // On neko, an exception is thrown when a group is not found
-            try {
-                parameter = this.urlReg.matched(counter);
-                parameters.push(parameter);
-            } catch (error : Dynamic) {
-                parameter = null;
-            }
-            counter++;
-        } while(parameter != null);
-
-        return parameters;
-    }
-
-    /**
-     * Returns the controller contained in the mapping
-     * @return The controller contained in the mapping
+     * @return The controller to call if the request is resolved against this mapping
      */
     public function getControllerClass() : Class<Controller> {
         return this.controllerClass;
     }
 
     /**
-     * Returns the controller's method to call name
-     * @return The controller's method to call name
+     * @return The name of the controller method to call
      */
     public function getControllerMethodName() : String {
         return this.controllerFunctionName;

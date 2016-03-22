@@ -3,10 +3,13 @@
 
 * MacroConfigurator replaced by URLMappingFactory and ERegURLMappingFactory
 * URLMappingFactory now supports specifying a custom URLMapping implementation
-* Added request filtering to URLMapping API
 * ServerConfiguration implementation can now be set at compile time using
 * AbstractServerConfiguration no longer implements ServerEventListener
 * Changed HTTPException's errorCode to statusCode
+* AbstractModule's "addURLMapping" now "addMapping"
+* URLMapping now takes the RequestInfo in its resolve method instead of the URL alone
+* URLMapping's "extractParameters" has been removed in favor of resolve's "ResolutionResult" object
+* ERegURLMapping's constructor no longer takes an EReg as an argument, but a pattern and its options
 
 0.4.0 (2013-08-07)
 ==================

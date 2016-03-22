@@ -28,8 +28,9 @@ import harfang.url.URLMapping;
 interface Module {
 
     /**
-     * Returns all the URLs mapping that belongs to this module
-     * @return A list of all the URL mappings contained in the module
+     * Returns all the request mapping that belongs to this module
+     *
+     * @return A list of all the request mappings contained in the module
      */
-    public function getURLMappings() : Iterable<URLMapping>;
+    public function getMappings() : Iterable<URLMapping>;
 }

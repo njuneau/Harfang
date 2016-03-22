@@ -20,6 +20,8 @@
 package harfang.controller;
 
 import harfang.module.Module;
+import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
  * A controller handles requests from the client. Instances of controllers are
@@ -49,31 +51,31 @@ interface Controller {
     public function init(module : Module) : Void;
 
     /**
-     * Handles the HTTP request - called just before the URL dipstacher
-     * calls the mapped controller function.
+     * Handles the HTTP request - called just before the request dipstacher
+     * calls the mapped controller method.
      *
      * You can use this method to do any pre-request processing, but in the end,
-     * you must always indicate if the URL dispatcher must call the controller
-     * method specified in the URL Mapping by returning true or false.
+     * you must always indicate if the request dispatcher must call the
+     * controller method specified in the request mapping by returning true or
+     * false.
      *
-     * This can be used, for example, to deny access to certain parts of a
-     * controller depending on a user's permissions.
+     * @param mapping The request mapping that lead to this controller
+     * @param requestInfo The HTTP request information
      *
-     * @param controllerMethodName The name of the method that will be called
-     * in the controller
-     * @return True if you want the dispatcher to call the given controller
-     * method. False if you want to prevent it to do so.
+     * @return True if the dispatcher must call the controller according to the
+     *         given request information. False to prevent the dispatcher from
+    *          calling the controller
      */
-    public function handleRequest(controllerMethodName : String) : Bool;
+    public function handleRequest(mapping : URLMapping, requestInfo : RequestInfo) : Bool;
 
     /**
      * This is called after the mapped controller method has been called.
      * Use this method to perform any post-request operations.
      *
-     * @param controllerMethodName The name of the method that was was called
-     * in the controller
+     * @param mapping Therequest mapping that lead to this contoller
+     * @param requestInfo The HTTP request information
      */
-    public function handlePostRequest(controllerMethodName : String) : Void;
+    public function handlePostRequest(mapping : URLMapping, requestInfo : RequestInfo) : Void;
 
 
 }

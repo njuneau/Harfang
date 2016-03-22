@@ -20,6 +20,8 @@
 package harfang.controller;
 
 import harfang.module.Module;
+import harfang.server.request.RequestInfo;
+import harfang.url.URLMapping;
 
 /**
  * Provides a default implementation for the Controller interface. In this
@@ -32,6 +34,7 @@ import harfang.module.Module;
 class AbstractController implements Controller {
 
     private var module : Module;
+    private var requestInfo : RequestInfo;
 
     /**
      * Called by the URL dispatcher, just after constructing the controller.
@@ -47,12 +50,13 @@ class AbstractController implements Controller {
      * Handles the HTTP request - called just before the URL dipstacher
      * calls the mapped controller function.
      *
-     * @param controllerMethodName The name of the method that will be called
-     * in the controller
+     * @param urlMapping The URL mapping that lead to this controller
+     * @param requestInfo The HTTP request information
+     *
      * @return This implementation of handleRequest will always return true,
-     * thus allowing access to all the mapped controller methods.
+     *         thus allowing access to all the mapped controller methods.
      */
-    public function handleRequest(controllerMethodName : String) : Bool {
+    public function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         return true;
     }
 
@@ -61,10 +65,10 @@ class AbstractController implements Controller {
      *
      * This particular implementation does nothing.
      *
-     * @param controllerMethodName The name of the method that was was called
-     * in the controller
+     * @param urlMapping The URL mapping that lead to this controller
+     * @param requestInfo The HTTP request information
      */
-    public function handlePostRequest(controllerMethodName : String) : Void {}
+    public function handlePostRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {}
 
     /**
      * Returns the module that owns this controller
