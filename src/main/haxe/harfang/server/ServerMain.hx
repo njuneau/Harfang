@@ -31,7 +31,6 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 
 import harfang.configuration.ServerConfiguration;
-import harfang.url.URLDispatcher;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
@@ -71,10 +70,10 @@ class ServerMain {
             listener.onStart(configuration);
         }
 
-        var urlDispatcher : URLDispatcher = new URLDispatcher(configuration);
+        var dispatcher : RequestDispatcher = new RequestDispatcher(configuration);
         try {
             // Dispatch the URL
-            urlDispatcher.dispatch(requestInfo);
+            dispatcher.dispatch(requestInfo);
         } catch(he : HTTPException) {
             // Send HTTP error event to all listeners
             for(listener in serverEventListeners) {

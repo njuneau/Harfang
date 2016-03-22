@@ -17,24 +17,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package urldispatcher.mock;
+package requestdispatcher.mock;
 
-import harfang.module.AbstractModule;
+import harfang.configuration.AbstractServerConfiguration;
 
 /**
- * Module that is used for the URL dispatcher test
+ * This is a mock server configuration to test the filtering and resolving
+ * functionnalities of the dispatcher
  */
-class MockURLDispatcherModule extends AbstractModule {
+class MockRequestDispatcherFilterConfiguration extends AbstractServerConfiguration {
+
+    private var filter : Bool;
+    private var resolve : Bool;
 
     /**
-     * Maps the module's controllers to URLs
+     * Create the new mock
      */
-    public function new() {
+    public function new(filter : Bool, resolve : Bool) {
         super();
-        this.addMapping("^/$", "", MockURLDispatcherController, "dispatchSimple");
-        this.addMapping("^/([a-zA-Z]+)/$", "", MockURLDispatcherController, "dispatchParam");
-        this.addMapping("^/([a-zA-Z]+)/([0-9]+)/$", "", MockURLDispatcherController, "dispatchMultipleParam");
-        this.addMapping("^/_doNotDispatch/$", "", MockURLDispatcherController, "doNotDispatch");
+
+        this.filter = filter;
+        this.resolve = resolve;
+    }
+
+    /**
+     * Add the modules in init
+     * @param resolve Result of the internal module's single mapping "resolve" method
+     * @param filter Result of the internal module's single mapping "filter" method
+     */
+    public override function init() {
+        super.init();
+        this.addModule(new MockRequestDispatcherFilterModule(this.filter, this.resolve));
     }
 
 }

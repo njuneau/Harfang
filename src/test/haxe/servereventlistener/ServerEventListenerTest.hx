@@ -30,7 +30,7 @@ import harfang.exception.WrappedException;
 import harfang.server.ServerMain;
 import harfang.server.request.RequestInfo;
 
-import harfang.url.URLDispatcher;
+import harfang.server.RequestDispatcher;
 
 import servereventlistener.mock.MockServerEventListenerUserConfiguration;
 import servereventlistener.mock.MockServerEventListenerModule;
@@ -42,7 +42,7 @@ import servereventlistener.mock.MockServerEventListenerController;
  */
 class ServerEventListenerTest extends TestCase {
 
-    private var dispatcher : URLDispatcher;
+    private var dispatcher : RequestDispatcher;
     private var configuration : MockServerEventListenerUserConfiguration;
 
     /**
@@ -51,7 +51,7 @@ class ServerEventListenerTest extends TestCase {
     @Before
     public function before() : Void {
         this.configuration = new MockServerEventListenerUserConfiguration();
-        this.dispatcher = new URLDispatcher(this.configuration);
+        this.dispatcher = new RequestDispatcher(this.configuration);
     }
 
     /**

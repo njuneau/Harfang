@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package urldispatcher.mock;
+package requestdispatcher.mock;
 
 import harfang.controller.AbstractController;
 import harfang.module.Module;
@@ -27,7 +27,7 @@ import harfang.url.URLMapping;
 /**
  * This is the mock controller that is used for the URL dispatcher test case
  */
-class MockURLDispatcherController extends AbstractController {
+class MockRequestDispatcherController extends AbstractController {
 
     private static var isInit : Bool = false;
     private static var dispatchedSimple : Bool = false;
@@ -47,11 +47,11 @@ class MockURLDispatcherController extends AbstractController {
 
     public override function init(module : Module) {
         super.init(module);
-        MockURLDispatcherController.isInit = true;
+        MockRequestDispatcherController.isInit = true;
     }
 
     public override function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
-        MockURLDispatcherController.lastMethodName = urlMapping.getControllerMethodName();
+        MockRequestDispatcherController.lastMethodName = urlMapping.getControllerMethodName();
 
         var dispatch : Bool = true;
 
@@ -66,32 +66,32 @@ class MockURLDispatcherController extends AbstractController {
      * Post-request call
      */
     public override function handlePostRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
-        MockURLDispatcherController.calledPostRequest = true;
-        MockURLDispatcherController.lastPostMethodName = urlMapping.getControllerMethodName();
+        MockRequestDispatcherController.calledPostRequest = true;
+        MockRequestDispatcherController.lastPostMethodName = urlMapping.getControllerMethodName();
     }
 
     /**
      * Dispatch a simple request
      */
     public function dispatchSimple() : Void {
-        MockURLDispatcherController.dispatchedSimple = true;
+        MockRequestDispatcherController.dispatchedSimple = true;
     }
 
     /**
      * Dispatch a request with a parameter
      */
     public function dispatchParam(param : String) : Void {
-        MockURLDispatcherController.dispatchedParam = true;
-        MockURLDispatcherController.dispatchParamParam = param;
+        MockRequestDispatcherController.dispatchedParam = true;
+        MockRequestDispatcherController.dispatchParamParam = param;
     }
 
     /**
      * Dispatch a request with multiple parameters
      */
     public function dispatchMultipleParam(paramA : String, paramB : String) {
-        MockURLDispatcherController.dispatchedMutlipleParam = true;
-        MockURLDispatcherController.dispatchMutlipleParamParamA = paramA;
-        MockURLDispatcherController.dispatchMutlipleParamParamB = paramB;
+        MockRequestDispatcherController.dispatchedMutlipleParam = true;
+        MockRequestDispatcherController.dispatchMutlipleParamParamA = paramA;
+        MockRequestDispatcherController.dispatchMutlipleParamParamB = paramB;
     }
 
     /**
@@ -99,7 +99,7 @@ class MockURLDispatcherController extends AbstractController {
      * called because we prevent so in the handleRequest method.
      */
     public function doNotDispatch() : Void {
-        MockURLDispatcherController.dispatchedDoNotDispatch = true;
+        MockRequestDispatcherController.dispatchedDoNotDispatch = true;
     }
 
     /**************************************************************************/
@@ -110,94 +110,94 @@ class MockURLDispatcherController extends AbstractController {
      * Indicates if the controller was call at initialisation
      */
     public static function getIsInit() : Bool {
-        return MockURLDispatcherController.isInit;
+        return MockRequestDispatcherController.isInit;
     }
 
     /**
      * Resets all test variables
      */
     public static function reset() : Void {
-        MockURLDispatcherController.dispatchedSimple = false;
-        MockURLDispatcherController.dispatchedParam = false;
-        MockURLDispatcherController.dispatchParamParam = null;
-        MockURLDispatcherController.dispatchedMutlipleParam = false;
-        MockURLDispatcherController.dispatchMutlipleParamParamA = null;
-        MockURLDispatcherController.dispatchMutlipleParamParamB = null;
-        MockURLDispatcherController.dispatchedDoNotDispatch = false;
-        MockURLDispatcherController.lastMethodName = null;
-        MockURLDispatcherController.lastPostMethodName = null;
-        MockURLDispatcherController.isInit = false;
-        MockURLDispatcherController.calledPostRequest = false;
+        MockRequestDispatcherController.dispatchedSimple = false;
+        MockRequestDispatcherController.dispatchedParam = false;
+        MockRequestDispatcherController.dispatchParamParam = null;
+        MockRequestDispatcherController.dispatchedMutlipleParam = false;
+        MockRequestDispatcherController.dispatchMutlipleParamParamA = null;
+        MockRequestDispatcherController.dispatchMutlipleParamParamB = null;
+        MockRequestDispatcherController.dispatchedDoNotDispatch = false;
+        MockRequestDispatcherController.lastMethodName = null;
+        MockRequestDispatcherController.lastPostMethodName = null;
+        MockRequestDispatcherController.isInit = false;
+        MockRequestDispatcherController.calledPostRequest = false;
     }
 
     /**
      * Indicates if "dispatchSimple" was called
      */
     public static function getDispatchedSimple() : Bool {
-        return MockURLDispatcherController.dispatchedSimple;
+        return MockRequestDispatcherController.dispatchedSimple;
     }
 
     /**
      * Indicates if "dispatchParam" was called
      */
     public static function getDispatchedParam() : Bool {
-        return MockURLDispatcherController.dispatchedParam;
+        return MockRequestDispatcherController.dispatchedParam;
     }
 
     /**
      * Returns the value of the parameter that was given to "dispatchParam"
      */
     public static function getDispatchParamParam() : String {
-        return MockURLDispatcherController.dispatchParamParam;
+        return MockRequestDispatcherController.dispatchParamParam;
     }
 
     /**
      * Indicates if "dispatchMultipleParam" was called
      */
     public static function getDispatchedMultipleParam() : Bool {
-        return MockURLDispatcherController.dispatchedMutlipleParam;
+        return MockRequestDispatcherController.dispatchedMutlipleParam;
     }
 
     /**
      * Returns the value of the first parameter that was given to "dispatchMutlipleParam"
      */
     public static function getDispatchMutlipleParamParamA() : String {
-        return MockURLDispatcherController.dispatchMutlipleParamParamA;
+        return MockRequestDispatcherController.dispatchMutlipleParamParamA;
     }
 
     /**
      * Returns the value of the second parameter that was given to "dispatchMutlipleParam"
      */
     public static function getDispatchMutlipleParamParamB() : String {
-        return MockURLDispatcherController.dispatchMutlipleParamParamB;
+        return MockRequestDispatcherController.dispatchMutlipleParamParamB;
     }
 
     /**
      * Indicates if the "doNotDispatch" method was called
      */
     public static function getDispatchedDoNotDispatch() : Bool {
-        return MockURLDispatcherController.dispatchedDoNotDispatch;
+        return MockRequestDispatcherController.dispatchedDoNotDispatch;
     }
 
     /**
      * Returns the last method name that was sent to handleRequest
      */
     public static function getLastMethodName() : String {
-        return MockURLDispatcherController.lastMethodName;
+        return MockRequestDispatcherController.lastMethodName;
     }
 
     /**
      * Indicates if the "postRequest" method was called
      */
     public static function getCalledPostRequest() : Bool  {
-        return MockURLDispatcherController.calledPostRequest;
+        return MockRequestDispatcherController.calledPostRequest;
     }
 
     /**
      * Returns the last method name that was sent to handlePostRequest
      */
     public static function getLastPostMethodName() : String {
-        return MockURLDispatcherController.lastPostMethodName;
+        return MockRequestDispatcherController.lastPostMethodName;
     }
 
 }

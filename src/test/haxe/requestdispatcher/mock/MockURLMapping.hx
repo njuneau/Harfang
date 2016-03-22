@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package urldispatcher.mock;
+package requestdispatcher.mock;
 
 import harfang.controller.Controller;
 import harfang.server.request.RequestInfo;

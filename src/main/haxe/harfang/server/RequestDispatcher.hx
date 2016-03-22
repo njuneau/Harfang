@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.url;
+package harfang.server;
 
 import harfang.controller.Controller;
 import harfang.configuration.ServerConfiguration;
@@ -28,6 +28,7 @@ import harfang.server.event.ServerEventListener;
 import harfang.server.request.RequestInfo;
 import harfang.server.response.HTTPStatus;
 import harfang.url.ResolutionResult;
+import harfang.url.URLMapping;
 
 /**
  * This class handles the request made to your application. The dispatcher
@@ -39,7 +40,7 @@ import harfang.url.ResolutionResult;
  * the Controller associated to the request in the mapping and asks it to handle
  * the request.
  */
-class URLDispatcher {
+class RequestDispatcher {
 
     /**************************************************************************/
     /*                             PRIVATE FIELDS                             */

@@ -34,8 +34,8 @@ import unit2.output.TextOutputWriter;
 import unit2.output.XHTMLOutputWriter;
 
 import urlmappingfactory.URLMappingFactoryTest;
-import urldispatcher.RequestInfoTest;
-import urldispatcher.URLDispatcherTest;
+import requestdispatcher.RequestInfoTest;
+import requestdispatcher.RequestDispatcherTest;
 import serverconfiguration.ServerConfigurationTest;
 import servereventlistener.ServerEventListenerTest;
 
@@ -52,7 +52,7 @@ class TestMain {
 
         testRunner.add(URLMappingFactoryTest);
         testRunner.add(RequestInfoTest);
-        testRunner.add(URLDispatcherTest);
+        testRunner.add(RequestDispatcherTest);
         testRunner.add(ServerConfigurationTest);
         testRunner.add(ServerEventListenerTest);
         testRunner.run();
