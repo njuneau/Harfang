@@ -334,7 +334,7 @@ class ERegURLMappingFactory extends URLMappingFactory {
                 pos : pos,
                 expr : ECall({
                     pos : pos,
-                    expr : EField(eThis, "addMapping")
+                    expr : EField(eThis, "addERegURLMapping")
                 }, params)
             }
         }

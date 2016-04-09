@@ -40,13 +40,13 @@ class MockServerEventListenerModule extends AbstractModule {
      */
     public function new() {
         super();
-        this.addMapping("^/$", "", MockServerEventListenerController, DISPATCH_SIMPLE_NAME);
-        this.addMapping("^/doNotDispatch/$", "", MockServerEventListenerController, DO_NOT_DISPATCH_SIMPLE_NAME);
-        this.addMapping("^/errorThrow/$", "", MockServerEventListenerController, ERROR_THROW_NAME);
-        this.addMapping("^/httpErrorThrow/$", "", MockServerEventListenerController, HTTP_ERROR_THROW_NAME);
-        this.addMapping("^/stringErrorThrow/$", "", MockServerEventListenerController, STRING_ERROR_THROW_NAME);
-        this.addMapping("^/unknownErrorThrow/$", "", MockServerEventListenerController, UNKNOWN_ERROR_THROW_NAME);
-        this.addMapping("^/unknownWrappedErrorThrow/$", "" , MockServerEventListenerController, UNKNOWN_WRAPPED_ERROR_THROW_NAME);
+        this.addERegURLMapping("^/$", "", MockServerEventListenerController, DISPATCH_SIMPLE_NAME);
+        this.addERegURLMapping("^/doNotDispatch/$", "", MockServerEventListenerController, DO_NOT_DISPATCH_SIMPLE_NAME);
+        this.addERegURLMapping("^/errorThrow/$", "", MockServerEventListenerController, ERROR_THROW_NAME);
+        this.addERegURLMapping("^/httpErrorThrow/$", "", MockServerEventListenerController, HTTP_ERROR_THROW_NAME);
+        this.addERegURLMapping("^/stringErrorThrow/$", "", MockServerEventListenerController, STRING_ERROR_THROW_NAME);
+        this.addERegURLMapping("^/unknownErrorThrow/$", "", MockServerEventListenerController, UNKNOWN_ERROR_THROW_NAME);
+        this.addERegURLMapping("^/unknownWrappedErrorThrow/$", "" , MockServerEventListenerController, UNKNOWN_WRAPPED_ERROR_THROW_NAME);
     }
 
 }

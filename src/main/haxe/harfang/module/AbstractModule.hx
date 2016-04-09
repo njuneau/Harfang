@@ -48,7 +48,16 @@ class AbstractModule implements Module {
     }
 
     /**
-     * Adds a mapping into the module's list of URL mappings
+     * Adds a URLMapping instance into the module's list of URL mappings
+     *
+     * @param urlMapping The URLMapping to add
+     */
+    private function addURLMapping(urlMapping : URLMapping) : Void {
+        this.mappings.add(urlMapping);
+    }
+
+    /**
+     * Adds a ERegURLMapping into the module's list of URL mappings
      *
      * @param pattern The regular expression to match against an URL
      * @param patternOptions Theregular expression's options
@@ -57,7 +66,7 @@ class AbstractModule implements Module {
      * @param httpMethod Optional, the HTTP method that the request must have for
                          the mapping resolve the request
      */
-    private function addMapping(pattern : String, patternOptions : String, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) : Void {
+    private function addERegURLMapping(pattern : String, patternOptions : String, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) : Void {
         this.mappings.add(new ERegURLMapping(pattern, patternOptions, controllerClass, controllerFunctionName, httpMethod));
     }
 
