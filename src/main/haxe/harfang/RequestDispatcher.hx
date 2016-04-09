@@ -120,13 +120,13 @@ class RequestDispatcher {
             // Make the call with the correct parameters
             if(Reflect.isFunction(controllerMethod)) {
                 controller.init(module);
-                if(controller.handleRequest(currentMapping, requestInfo)) {
+                if(controller.beforeRequest(currentMapping, requestInfo)) {
                     // Call the dispatch event on all listeners
                     for(listener in serverEventListeners) {
                         listener.onDispatch(currentMapping, requestInfo);
                     }
                     Reflect.callMethod(controller, controllerMethod, resolutionResult.getArguments());
-                    controller.handlePostRequest(currentMapping, requestInfo);
+                    controller.afterRequest(currentMapping, requestInfo);
                 } else {
                     // Dispatching interrupted, notify listeners
                     for(listener in serverEventListeners) {

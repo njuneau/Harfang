@@ -50,7 +50,7 @@ class MockRequestDispatcherController extends AbstractController {
         MockRequestDispatcherController.isInit = true;
     }
 
-    public override function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
+    public override function beforeRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         MockRequestDispatcherController.lastMethodName = urlMapping.getControllerMethodName();
 
         var dispatch : Bool = true;
@@ -65,7 +65,7 @@ class MockRequestDispatcherController extends AbstractController {
     /**
      * Post-request call
      */
-    public override function handlePostRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
+    public override function afterRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {
         MockRequestDispatcherController.calledPostRequest = true;
         MockRequestDispatcherController.lastPostMethodName = urlMapping.getControllerMethodName();
     }

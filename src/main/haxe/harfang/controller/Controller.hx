@@ -66,7 +66,7 @@ interface Controller {
      *         given request information. False to prevent the dispatcher from
     *          calling the controller
      */
-    public function handleRequest(mapping : URLMapping, requestInfo : RequestInfo) : Bool;
+    public function beforeRequest(mapping : URLMapping, requestInfo : RequestInfo) : Bool;
 
     /**
      * This is called after the mapped controller method has been called.
@@ -75,7 +75,7 @@ interface Controller {
      * @param mapping Therequest mapping that lead to this contoller
      * @param requestInfo The HTTP request information
      */
-    public function handlePostRequest(mapping : URLMapping, requestInfo : RequestInfo) : Void;
+    public function afterRequest(mapping : URLMapping, requestInfo : RequestInfo) : Void;
 
 
 }

@@ -20,7 +20,7 @@
 package harfang.url;
 
 /**
- * Contains the information about the HTTP request resolution agains a request
+ * Contains the information about the HTTP request resolution against a URL
  * mapping
  */
 class ResolutionResult {

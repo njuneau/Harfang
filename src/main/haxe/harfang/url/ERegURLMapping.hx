@@ -23,7 +23,7 @@ import harfang.controller.Controller;
 import harfang.request.RequestInfo;
 
 /**
- * This is the framework's default request mapping implementation. It resolves a
+ * This is the framework's default URL mapping implementation. It resolves a
  * request using a regular expression to match agains the request's URI and
  * extracts the controller arguments from the URL using the pattern's groups.
  *

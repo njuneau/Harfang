@@ -37,7 +37,7 @@ class MockServerEventListenerController extends AbstractController {
     public static inline var HTTP_ERROR_MESSAGE : String = "MockServerEventListenerController_HTTP_ERROR";
     public static inline var HTTP_ERROR_CODE : Int = 404;
 
-    public override function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
+    public override function beforeRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         var dispatch : Bool = true;
 
         if(urlMapping.getControllerMethodName() == "doNotDispatch") {

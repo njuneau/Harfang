@@ -11,6 +11,7 @@
 * URLMapping's "extractParameters" has been removed in favor of resolve's "ResolutionResult" object
 * ERegURLMapping's constructor no longer takes an EReg as an argument, but a pattern and its options
 * Package harfang.server.* has been moved to harfang.*
+* Controller's "handleRequest" and "handlePostRequest" now "beforeRequest" and "afterRequest"
 
 0.4.0 (2013-08-07)
 ==================

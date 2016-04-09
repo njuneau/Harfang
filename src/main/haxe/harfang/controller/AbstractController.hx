@@ -56,7 +56,7 @@ class AbstractController implements Controller {
      * @return This implementation of handleRequest will always return true,
      *         thus allowing access to all the mapped controller methods.
      */
-    public function handleRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
+    public function beforeRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         return true;
     }
 
@@ -68,7 +68,7 @@ class AbstractController implements Controller {
      * @param urlMapping The URL mapping that lead to this controller
      * @param requestInfo The HTTP request information
      */
-    public function handlePostRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {}
+    public function afterRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {}
 
     /**
      * Returns the module that owns this controller
