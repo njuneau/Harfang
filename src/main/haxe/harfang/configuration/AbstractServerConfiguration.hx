@@ -19,11 +19,11 @@
 
 package harfang.configuration;
 
-import harfang.url.URLMapping;
+import harfang.event.ServerEventListener;
+import harfang.module.Module;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
-import harfang.module.Module;
-import harfang.server.event.ServerEventListener;
+import harfang.url.URLMapping;
 
 /**
  * Provides a default implementation for the ServerConfiguration interface,

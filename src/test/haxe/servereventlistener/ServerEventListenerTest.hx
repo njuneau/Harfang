@@ -27,10 +27,10 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 
-import harfang.server.ServerMain;
-import harfang.server.request.RequestInfo;
+import harfang.ServerMain;
+import harfang.RequestDispatcher;
+import harfang.request.RequestInfo;
 
-import harfang.server.RequestDispatcher;
 
 import servereventlistener.mock.MockServerEventListenerUserConfiguration;
 import servereventlistener.mock.MockServerEventListenerModule;

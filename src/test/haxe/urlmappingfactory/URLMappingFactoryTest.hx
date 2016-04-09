@@ -21,9 +21,9 @@ package urlmappingfactory;
 
 import unit2.TestCase;
 
+import harfang.request.RequestInfo;
 import harfang.url.ERegURLMappingFactory;
 import harfang.url.URLMappingFactory;
-import harfang.server.request.RequestInfo;
 import harfang.url.ERegURLMapping;
 
 import urlmappingfactory.mock.MockMacroModule;

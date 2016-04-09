@@ -20,7 +20,7 @@
 package harfang.controller;
 
 import harfang.module.Module;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 import harfang.url.URLMapping;
 
 /**

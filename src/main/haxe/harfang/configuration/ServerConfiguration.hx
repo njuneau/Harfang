@@ -19,12 +19,11 @@
 
 package harfang.configuration;
 
+import harfang.event.ServerEventListener;
 import harfang.module.Module;
 import harfang.url.URLMapping;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
-import harfang.server.event.ServerEventListener;
-
 
 /**
  * The configuration specifies pretty much everything that the framework needs

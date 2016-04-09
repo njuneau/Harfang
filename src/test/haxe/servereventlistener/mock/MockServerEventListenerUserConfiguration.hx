@@ -25,8 +25,8 @@ import harfang.configuration.ServerConfiguration;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 
-import harfang.server.event.ServerEventListener;
-import harfang.server.request.RequestInfo;
+import harfang.event.ServerEventListener;
+import harfang.request.RequestInfo;
 
 import harfang.url.URLMapping;
 

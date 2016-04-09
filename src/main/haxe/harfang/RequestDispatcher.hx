@@ -17,16 +17,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.server;
+package harfang;
 
-import harfang.controller.Controller;
 import harfang.configuration.ServerConfiguration;
+import harfang.controller.Controller;
+import harfang.event.ServerEventListener;
 import harfang.exception.HTTPException;
 import harfang.exception.NotFoundException;
 import harfang.module.Module;
-import harfang.server.event.ServerEventListener;
-import harfang.server.request.RequestInfo;
-import harfang.server.response.HTTPStatus;
+import harfang.request.RequestInfo;
+import harfang.response.HTTPStatus;
 import harfang.url.ResolutionResult;
 import harfang.url.URLMapping;
 

@@ -10,6 +10,7 @@
 * URLMapping now takes the RequestInfo in its resolve method instead of the URL alone
 * URLMapping's "extractParameters" has been removed in favor of resolve's "ResolutionResult" object
 * ERegURLMapping's constructor no longer takes an EReg as an argument, but a pattern and its options
+* Package harfang.server.* has been moved to harfang.*
 
 0.4.0 (2013-08-07)
 ==================

@@ -21,7 +21,7 @@ package requestdispatcher.mock;
 
 import harfang.controller.AbstractController;
 import harfang.module.Module;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 import harfang.url.URLMapping;
 
 /**

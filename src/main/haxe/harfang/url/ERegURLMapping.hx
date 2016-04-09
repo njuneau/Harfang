@@ -20,7 +20,7 @@
 package harfang.url;
 
 import harfang.controller.Controller;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 
 /**
  * This is the framework's default request mapping implementation. It resolves a

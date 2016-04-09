@@ -20,7 +20,7 @@
 package harfang.exception;
 
 import harfang.exception.HTTPException;
-import harfang.server.response.HTTPStatus;
+import harfang.response.HTTPStatus;
 
 /**
  * The 404 exception is thrown whenever something is not found, server-side.

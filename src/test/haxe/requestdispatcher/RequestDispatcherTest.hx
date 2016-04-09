@@ -24,8 +24,8 @@ import unit2.TestCase;
 import harfang.exception.Exception;
 import harfang.exception.NotFoundException;
 
-import harfang.server.RequestDispatcher;
-import harfang.server.request.RequestInfo;
+import harfang.RequestDispatcher;
+import harfang.request.RequestInfo;
 
 import requestdispatcher.mock.MockRequestDispatcherUserConfiguration;
 import requestdispatcher.mock.MockRequestDispatcherFilterConfiguration;

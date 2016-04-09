@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.server.response;
+package harfang.response;
 
 /**
  * This is a list of various HTTP status codes. This is based on a list found

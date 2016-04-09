@@ -21,8 +21,8 @@ package serverconfiguration;
 
 import unit2.TestCase;
 
-import harfang.server.ServerMain;
-import harfang.server.request.RequestInfo;
+import harfang.ServerMain;
+import harfang.request.RequestInfo;
 
 import serverconfiguration.mock.MockServerConfiguration;
 import serverconfiguration.mock.MockServerConfigurationController;

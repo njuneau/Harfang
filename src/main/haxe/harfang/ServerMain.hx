@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Harfang.  If not, see <http://www.gnu.org/licenses/>.
 
-package harfang.server;
+package harfang;
 
 #if php
 import php.Web;
@@ -31,11 +31,11 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 
 import harfang.configuration.ServerConfiguration;
+import harfang.event.ServerEventListener;
 import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
-import harfang.server.event.ServerEventListener;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 
 /**
  * Program entry point. This is where the frameworks gets initialized.

@@ -21,7 +21,7 @@ package requestdispatcher;
 
 import unit2.TestCase;
 
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 
 /**
  * Tests the request info model class

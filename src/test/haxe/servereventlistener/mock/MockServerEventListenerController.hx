@@ -24,7 +24,7 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 import harfang.exception.WrappedException;
 import harfang.module.Module;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 import harfang.url.URLMapping;
 
 /**

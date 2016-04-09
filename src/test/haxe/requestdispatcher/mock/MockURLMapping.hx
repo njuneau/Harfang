@@ -20,7 +20,7 @@
 package requestdispatcher.mock;
 
 import harfang.controller.Controller;
-import harfang.server.request.RequestInfo;
+import harfang.request.RequestInfo;
 import harfang.url.ResolutionResult;
 import harfang.url.URLMapping;
 
