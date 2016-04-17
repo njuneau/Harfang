@@ -19,7 +19,7 @@ or the current Alpha release:
 
 .. code:: sh
 
-    haxelib install Harfang 1.0.0-alpha.1
+    haxelib install Harfang 1.0.0-alpha.2
 
 Documentation
 -------------

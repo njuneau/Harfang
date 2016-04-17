@@ -4,8 +4,8 @@
   "license" : "GPL",
   "tags" : ["php", "neko"],
   "description" : "Web development framework",
-  "version" : "1.0.0-alpha.1",
+  "version" : "1.0.0-alpha.2",
   "classPath" : "src/main/haxe",
-  "releasenote" : "1.0.0 Alpha 1 release",
+  "releasenote" : "1.0.0 Alpha 2 release",
   "contributors" : ["njuneau"]
 }
