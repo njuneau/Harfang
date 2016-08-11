@@ -22,15 +22,20 @@ package harfang.module;
 import harfang.url.URLMapping;
 
 /**
- * A module consist af a set of models, views and controllers. Modules are the
- * core of your Web site.
+ * A module consists of a list of URL mappings. Modules are the core of the
+ * application. Typically, this is where models, views and controllers are
+ * contained.
+ *
+ * Note that the framework does not perform collision checks on mappings. When
+ * adding mappings, you have to be careful not to specify URL patterns that
+ * collide to each other.
  */
 interface Module {
 
     /**
-     * Returns all the request mapping that belongs to this module
+     * Returns all the request mappings that belong to this module
      *
-     * @return A list of all the request mappings contained in the module
+     * @return The request mappings that belong to this module
      */
     public function getMappings() : Iterable<URLMapping>;
 }

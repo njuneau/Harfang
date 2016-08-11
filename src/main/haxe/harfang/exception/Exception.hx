@@ -28,7 +28,6 @@ class Exception {
     private var message : String;
 
     /**
-     * Creates a new exception
      * @param message The error message
      */
     public function new(message : String) {
@@ -36,7 +35,6 @@ class Exception {
     }
 
     /**
-     * Sets the error message
      * @param message The error message
      */
     private function setMessage(message : String) : Void {
@@ -44,8 +42,7 @@ class Exception {
     }
 
     /**
-     * Returns the Exception's message
-     * @return the Exception's message
+     * @return The error message
      */
     public function getMessage() : String {
         return this.message;

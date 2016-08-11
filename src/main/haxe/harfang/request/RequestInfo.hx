@@ -22,8 +22,7 @@ package harfang.request;
 import StringTools;
 
 /**
- * This class contains information about the HTTP request that has been made to
- * the server.
+ * Contains information about the HTTP request that has been made to the server.
  */
 class RequestInfo {
 
@@ -35,8 +34,8 @@ class RequestInfo {
     /**
      * Default constructor
      *
-     * @param uri The request URI. A slash will automatically be appended to it.
-     * @param method The request HTTP method. It will be automatically uppercased.
+     * @param uri The request's URI. A slash will automatically be appended to it.
+     * @param method The request's HTTP method. It will be automatically uppercased.
      */
     public function new(uri : String, method : String) {
         this.uri = this.appendSlash(uri);
@@ -44,16 +43,14 @@ class RequestInfo {
     }
 
     /**
-     * Returns the request's URI
-     * @return The request's URI
+     * @return The request's URI, always with a trailing slash
      */
     public function getURI() : String {
         return this.uri;
     }
 
     /**
-     * Returns the request's method
-     * @return The request's method
+     * @return The request's method, always uppercased
      */
     public function getMethod() : String {
         return this.method;

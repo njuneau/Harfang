@@ -23,15 +23,14 @@ import harfang.exception.HTTPException;
 import harfang.response.HTTPStatus;
 
 /**
- * The 404 exception is thrown whenever something is not found, server-side.
+ * Thrown whenever something is not found, server-side.
  */
 class NotFoundException extends HTTPException {
 
     private static var MESSAGE : String = "The requested resource could not be found";
 
     /**
-     * Creates a new 404 not found HTTP error
-     * @param message The message you want to show to the user (optional)
+     * @param message The error message (optional)
      */
     public function new(? message : String) {
         super(MESSAGE, HTTPStatus.CLIENT_ERROR_NOT_FOUND);

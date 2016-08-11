@@ -26,8 +26,8 @@ import harfang.url.URLMapping;
 /**
  * Provides a default implementation for the Controller interface. In this
  * implementation, the init method memorises the controller's belonging module,
- * handleRequest always return true (always providing access to mapped
- * controller methods) and handlePostRequest does nothing.
+ * beforeRequest always return true (always providing access to mapped
+ * controller methods) and afterRequest does nothing.
  *
  * Refer to the Controller interface for more details.
  */
@@ -36,38 +36,14 @@ class AbstractController implements Controller {
     private var module : Module;
     private var requestInfo : RequestInfo;
 
-    /**
-     * Called by the URL dispatcher, just after constructing the controller.
-     * Use this method to permorm initialisation mechanics.
-     *
-     * @param module The module that owns that controller
-     */
     public function init(module : Module) : Void {
         this.module = module;
     }
 
-    /**
-     * Handles the HTTP request - called just before the URL dipstacher
-     * calls the mapped controller function.
-     *
-     * @param urlMapping The URL mapping that lead to this controller
-     * @param requestInfo The HTTP request information
-     *
-     * @return This implementation of handleRequest will always return true,
-     *         thus allowing access to all the mapped controller methods.
-     */
     public function beforeRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Bool {
         return true;
     }
 
-    /**
-     * This is called after the mapped controller method has been called.
-     *
-     * This particular implementation does nothing.
-     *
-     * @param urlMapping The URL mapping that lead to this controller
-     * @param requestInfo The HTTP request information
-     */
     public function afterRequest(urlMapping : URLMapping, requestInfo : RequestInfo) : Void {}
 
     /**

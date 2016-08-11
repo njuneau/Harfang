@@ -38,7 +38,7 @@ import harfang.exception.WrappedException;
 import harfang.request.RequestInfo;
 
 /**
- * Program entry point. This is where the frameworks gets initialized.
+ * Program entry point. This is where the framework is initialized.
  */
 class ServerMain {
 
@@ -46,8 +46,8 @@ class ServerMain {
     private static var SERVER_CONFIGURATION_CLASS_NAME : String = "server.UserConfiguration";
 
     /**
-     * Harfang's entry point - creates the user's configuration and launches the
-     * server with it.
+     * Harfang's entry point - creates the server's configuration and launches
+     * the server with it.
      */
     public static function main() : Void {
         // Load the configuration and start the application
@@ -111,8 +111,8 @@ class ServerMain {
     /**************************************************************************/
 
     /**
-     * This method sets the server configuration class that will be used at
-     * launch of the framework
+     * Sets the server configuration class that will be used at launch of the
+     * framework
      *
      * @param serverConfigurationClassName The full name of the class, including
      * its package. For example : 'server.UserConfiguration'
@@ -122,8 +122,6 @@ class ServerMain {
     }
 
     /**
-     * Returns a call to the server configuration's constructor
-     *
      * @return A call to the server configuration's constructor
      * (by default, calls 'new server.UserConfiguration()')
      */

@@ -24,26 +24,25 @@ import harfang.request.RequestInfo;
 import harfang.url.URLMapping;
 
 /**
- * A controller handles requests from the client. Instances of controllers are
- * by the URL dispatcher to handle requests from the client.
+ * Instances of controllers are created by the URL dispatcher to handle requests
+ * from the client.
  *
- * Methods from a controller may be mapped to an URL by the user in a module
- * either by adding the maps manually into the module or by annotating
- * controller methods (see the MacroConfigurator class in harfang.configuration
- * for more details)
+ * Methods from a controller may be mapped to an URL in a module either by
+ * adding the maps manually into the module or by annotating controller methods
+ * and using URLMapping factory macros.
  *
- * When a controller method is found to match a certain URL, the URL dispatcher
- * will call the following, in order : init, handleRequest, the mapped method
- * and handlePostRequest.
+ * When a URL mapping matches a request, the dispatcher will call the following
+ * on the mapped controller, in order : init, beforeRequest, the mapped method
+ * and afterRequest.
  *
  * Throughout the documentation of this interface, the "mapped method" refers
- * to a controller method that has been mapped and succesfully matched to an URL
- * by the URL dispatcher.
+ * to a controller method that has been mapped and succesfully matched to a
+ * request by the dispatcher.
  */
 interface Controller {
 
     /**
-     * Called by the URL dispatcher, just after constructing the controller.
+     * Called by the URL dispatcher after instanciating the controller.
      * Use this method to permorm initialisation mechanics.
      *
      * @param module The module that owns that controller
@@ -51,15 +50,13 @@ interface Controller {
     public function init(module : Module) : Void;
 
     /**
-     * Handles the HTTP request - called just before the request dipstacher
-     * calls the mapped controller method.
+     * Called before the request dipstacher calls the mapped controller method.
      *
-     * You can use this method to do any pre-request processing, but in the end,
-     * you must always indicate if the request dispatcher must call the
-     * controller method specified in the request mapping by returning true or
-     * false.
+     * You can use this method to do any pre-request processing. You must
+     * indicate if the dispatcher must call the controller method specified in
+     * the mapping by returning true or false.
      *
-     * @param mapping The request mapping that lead to this controller
+     * @param mapping The mapping that lead to this controller
      * @param requestInfo The HTTP request information
      *
      * @return True if the dispatcher must call the controller according to the
@@ -72,10 +69,12 @@ interface Controller {
      * This is called after the mapped controller method has been called.
      * Use this method to perform any post-request operations.
      *
-     * @param mapping Therequest mapping that lead to this contoller
+     * This method is only called when beforeRequest returns true and the
+     * mapped controller method execution isn't interrupted.
+     *
+     * @param mapping The mapping that lead to this contoller
      * @param requestInfo The HTTP request information
      */
     public function afterRequest(mapping : URLMapping, requestInfo : RequestInfo) : Void;
-
 
 }

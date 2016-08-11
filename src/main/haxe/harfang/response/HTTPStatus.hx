@@ -22,7 +22,7 @@ package harfang.response;
 /**
  * This is a list of various HTTP status codes. This is based on a list found
  * on Wikipedia here : https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
- * Reference consulted on 2016-02-07.
+ * Reference read on 2016-02-07.
  */
 class HTTPStatus {
     public static inline var INFORMAL_CONTINUE : Int =                              100;

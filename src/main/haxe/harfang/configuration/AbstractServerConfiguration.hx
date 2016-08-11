@@ -68,10 +68,6 @@ class AbstractServerConfiguration implements ServerConfiguration {
     /*                                GETTERS                                 */
     /**************************************************************************/
 
-    /**
-     * Returns the modules contained in the application
-     * @return The modules contained in the application
-     */
     public function getModules():Iterable<Module> {
         return this.modules;
     }

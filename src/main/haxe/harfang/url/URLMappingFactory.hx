@@ -32,10 +32,9 @@ class URLMappingFactory {
      * This will map a controller's methods to URLs using the given meta tag
      * name.
      *
-     * This mehod scans a controller for method metadata. It will use the
-     * metadata of a controller's method to map it to a URL. This method
-     * shouldn't have any dependency regarding the object it's called from, but
-     * it is most often used from a Module instance.
+     * This macro scans a controller for method metadata in order to generate
+     * mappings. This macro shouldn't have any dependency regarding the object
+     * it's called from, but it is most often used from a Module instance.
      *
      * To use this macro, annotate a controller's method like this:
      * @URL("/")
@@ -43,8 +42,8 @@ class URLMappingFactory {
      * The macro will generate calls to the given URL mapping implementation's
      * constructor. The first parameter given to the constructor will be the
      * controller class to map. The second parameter will be the method
-     * (as a string) on which the metadata is applied. Finally, in the case of
-     * the example above, the last parameter will be the string "/".
+     * (as a string) on which the controller metadata is applied. Finally, in
+     * the case of the example above, the last parameter will be the string "/".
      *
      * @param mappingClExpr The class of the URLMapping implementation to use
      * @param clExpr The controller's class (must be an implementation of the
@@ -96,8 +95,8 @@ class URLMappingFactory {
     }
 
     /**
-     * This method creates a block of call to an object's  constructor using
-     * the information of a class' metadata
+     * Creates a block of call to an object's  constructor using the information
+     * of a class' metadata
      *
      * @param mappingType The type (class) of the URLMapping implementation
      * @param targetType The type (class) in which to scan for metadata

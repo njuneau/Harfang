@@ -25,7 +25,7 @@ import harfang.request.RequestInfo;
 /**
  * A URL mapping consists of a binding between a controller and a request.
  * Whenever the user sends a request, the dispatcher must know where to forward
- * it. This is the job of the request mapping: binding a request with a handler.
+ * it. This is the job of the request mapping.
  */
 interface URLMapping {
 

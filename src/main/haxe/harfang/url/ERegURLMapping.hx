@@ -24,7 +24,7 @@ import harfang.request.RequestInfo;
 
 /**
  * This is the framework's default URL mapping implementation. It resolves a
- * request using a regular expression to match agains the request's URI and
+ * request using a regular expression to match against the request's URI and
  * extracts the controller arguments from the URL using the pattern's groups.
  *
  * With the exception of the data provided in this mapping type's constructor,
@@ -54,8 +54,8 @@ class ERegURLMapping implements URLMapping {
      * @param patternOptions The given regular expression's options
      * @param controllerClass The controller to call
      * @param controllerFunctionName The controller's function to call
-     * @param httpMethod Optional, the name of the HTTP method to target. HTTP
-     *        method will automatically be uppercased.
+     * @param httpMethod Optional, the name of the HTTP method to target. It
+     *                   will automatically be uppercased.
      */
     public function new(pattern : String, patternOptions : String, controllerClass : Class<Controller>, controllerFunctionName : String, ? httpMethod : String) {
         this.pattern = pattern;
@@ -74,7 +74,6 @@ class ERegURLMapping implements URLMapping {
      * Indicates if the request can be resolved using this mapping
      *
      * @param requestInfo The HTTP request information
-     *
      * @return The resolution results
      */
     public function resolve(requestInfo : RequestInfo) : ResolutionResult {

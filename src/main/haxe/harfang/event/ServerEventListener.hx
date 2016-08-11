@@ -27,13 +27,13 @@ import harfang.request.RequestInfo;
 import harfang.url.URLMapping;
 
 /**
- * A server event listener will receive signals from the framework regarding
- * server status. Namely, request status.
+ * A server event listener receive signals from the framework at various moments
+ * in the application lifecycle.
  */
 interface ServerEventListener {
 
     /**
-     * Application start event. Called after the UserConfiguration object is
+     * Application start event. Called after the ServerConfiguration is
      * initialized.
      *
      * @param configuration The configuration that is used to start the application
@@ -41,7 +41,7 @@ interface ServerEventListener {
     public function onStart(configuration : ServerConfiguration) : Void;
 
     /**
-     * Application close event. Called before the UserConfiguration object is
+     * Application close event. Called before the ServerConfiguration object is
      * closed.
      *
      * @param configuration The configuration that has been used throughout the application
@@ -49,29 +49,29 @@ interface ServerEventListener {
     public function onClose(configuration : ServerConfiguration): Void;
 
     /**
-     * Dispatch event - called when the queried URL corresponds to a controller
+     * Dispatch event. Called when the queried URL corresponds to a controller
      * (the URL has been dispatched). The event is only triggered when the
      * controller's "handleRequest" returns true.
      *
-     * @param urlMapping The URL mapping that was matched
+     * @param urlMapping The mapping that was matched
      * @param requestInfo The request information
      */
     public function onDispatch(urlMapping : URLMapping, requestInfo : RequestInfo) : Void;
 
     /**
-     * Interrupted dispatch event - called when the URL dispatcher manages to
-     * find the controller and method to call but that the controller's
-     * handleRequest method returns false.
+     * Interrupted dispatch event. Called when the URL dispatcher manages to
+     * find the controller to call, but the controller's handleRequest method
+     * returns false.
      *
-     * @param urlMapping The URL mapping that was matched
+     * @param urlMapping The mapping that was matched
      * @param requestInfo The request information
      */
     public function onDispatchInterrupted(urlMapping : URLMapping, requestInfo : RequestInfo) : Void;
 
     /**
-     * HTTP Error event - called when the server encounters a HTTP error
-     * during URL dispatching or controller operations. Usually, these are
-     * 404 or 500 errors.
+     * HTTP Error event. Called when the server encounters a HTTP error
+     * during dispatching or controller operations. Usually, these are 404 or
+     * 500 errors.
      *
      * @param exception The exception that was thrown
      */

@@ -24,9 +24,9 @@ import harfang.url.URLMapping;
 import harfang.url.ERegURLMapping;
 
 /**
- * Provides a default implementation for the Module interface - it provides
+ * Provides a default implementation for the Module interface. It provides
  * helper functions to manage the URL mappings without having you to worry
- * about how it's stored.
+ * about how they are stored.
  */
 class AbstractModule implements Module {
 
@@ -39,10 +39,6 @@ class AbstractModule implements Module {
         this.mappings = new List<URLMapping>();
     }
 
-    /**
-     * Returns all the URLs mapping that belongs to this module
-     * @return A list of all the URL mappings contained in the module
-     */
     public function getMappings() : Iterable<URLMapping> {
         return this.mappings;
     }
@@ -60,7 +56,7 @@ class AbstractModule implements Module {
      * Adds a ERegURLMapping into the module's list of URL mappings
      *
      * @param pattern The regular expression to match against an URL
-     * @param patternOptions Theregular expression's options
+     * @param patternOptions The regular expression's options
      * @param controllerClass The controller to call
      * @param controllerFunctionName The name of the controller method to call
      * @param httpMethod Optional, the HTTP method that the request must have for

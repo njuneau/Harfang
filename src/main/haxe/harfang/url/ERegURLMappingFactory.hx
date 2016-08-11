@@ -35,11 +35,13 @@ class ERegURLMappingFactory extends URLMappingFactory {
      * This will map a controller's methods to URLs using the given meta tag
      * name. Use this macro inside an AbstractModule instance.
      *
-     * This mehod scans a controller for method metadata. It will use the
-     * metadata of a controller's method to map it to a URL. This method depends
-     * on AbstractModule's addURLMapping method. Thus, it can only be used with
-     * AbstractModule or a Module implementation that supports the same
-     * addURLMapping method.
+     * This macro scans a controller for method metadata in order to generate
+     * mappings. This macro depends on AbstractModule's addURLMapping method.
+     * Thus, it can only be used with AbstractModule or a Module implementation
+     * that supports the same addURLMapping method signature.
+     *
+     * To use this macro, annotate a controller's method like this:
+     * @URL("/")
      *
      * @param eThis The module instance (must be a subclass of AbstractModule)
      *
@@ -47,14 +49,16 @@ class ERegURLMappingFactory extends URLMappingFactory {
      * Controller interface)
      *
      * @param urlMetaTag The metadata tag that will be used to extract the URL
-     * regular expression from a controller method.
+     * regular expression from a controller method. The URL meta tag must have
+     * at least one parameter : the URL pattern. A second parameter may be used
+     * for regular expression options.
      *
      * @param httpMethodMetaTag Optional, the metadata tag that will be used to
      * specify the HTTP method on which the URL mapping will be valid
      *
      * @param prefix Optional parameter that defines a string to prefix all of
      * the controller's URL. In order for this to work, the URL meta tag must
-     * have 3 parameters : the URL regular expression, the regular expression's
+     * have 3 parameters : the URL pattern, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
@@ -75,23 +79,27 @@ class ERegURLMappingFactory extends URLMappingFactory {
      * This will map a controller's methods to URLs using the given meta tag
      * name. Use this macro inside a Module instance.
      *
-     * This mehod scans a controller for method metadata. It will use the
-     * metadata of a controller's method to map it to a URL. This method
-     * shouldn't have any dependency regarding the object it's called from, but
-     * it is most often used from a Module instance.
+     * This macro scans a controller for method metadata in order to generate
+     * mappings. This macro shouldn't have any dependency regarding the object
+     * it's called from, but it is most often used from a Module instance.
+     *
+     * To use this macro, annotate a controller's method like this:
+     * @URL("/")
      *
      * @param clExpr The controller's class (must be an implementation of the
      * Controller interface)
      *
      * @param urlMetaTag The metadata tag that will be used to extract the URL
-     * regular expression from a controller method.
+     * regular expression from a controller method. The URL meta tag must have
+     * at least one parameter : the URL pattern. A second parameter may be used
+     * for regular expression options.
      *
      * @param httpMethodMetaTag Optional, the metadata tag that will be used to
      * specify the HTTP method on which the URL mapping will be valid
      *
      * @param prefix Optional, defines a string to prefix all of the
      * controller's URL. In order for this to work, the URL meta tag must have
-     * 3 parameters : the URL regular expression, the regular expression's
+     * 3 parameters : the URL pattern, the regular expression's
      * options and the string in your regular expression that will be replaced
      * with the given prefix.
      *
@@ -109,8 +117,8 @@ class ERegURLMappingFactory extends URLMappingFactory {
     }
 
     /**
-     * This method creates a block of calls to the ERegURLMapping's constructor
-     * using the information of a class' metadata.
+     * Creates a block of calls to the ERegURLMapping's constructor using the
+     * information of a class' metadata.
      *
      * @param type The type (class) in which to scan for metadata
      * @param urlMetaTag The metadata tag's name that contains the URL
@@ -150,8 +158,8 @@ class ERegURLMappingFactory extends URLMappingFactory {
     }
 
     /**
-     * This method creates a block of calls to the "addURLMapping" method of the
-     * given module instance.
+     * Creates a block of calls to the "addURLMapping" method of the given
+     * module instance.
      *
      * @param eThis The module instance in ehich the block will be inserted
      * @param type The type (class) in which to scan for metadata

@@ -25,8 +25,11 @@ import harfang.exception.Exception;
  * Exceptions of this type are used when the error type is unknown. Harfang
  * looks for an "Exception" instance or a String instance when catching errors.
  * However, an error with a type not covered in the previous cases may be
- * thrown. In the case the type is unknown, the framework wraps the error in a
- * WrappedException. The developer shoulnd't have to directly use this class.
+ * thrown. When the type is unknown, the framework wraps the error in a
+ * WrappedException.
+ *
+ * Do not directly use this class. Use standard Exceptions instead. This is
+ * only used by the framework to wrap any unknown error types into an Exception.
  */
 class WrappedException extends Exception {
 
@@ -35,7 +38,6 @@ class WrappedException extends Exception {
     private var error : Dynamic;
 
     /**
-     * Creates a new WrappedException with the given error instance
      * @param The error to wrap
      */
     public function new(error : Dynamic) {
@@ -44,7 +46,6 @@ class WrappedException extends Exception {
     }
 
     /**
-     * Returns the underlying error that is wrapped in this exception
      * @return The underlying error that is wrapped in this exception
      */
     public function getError() : Dynamic {

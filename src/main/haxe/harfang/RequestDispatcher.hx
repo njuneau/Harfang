@@ -31,14 +31,12 @@ import harfang.url.ResolutionResult;
 import harfang.url.URLMapping;
 
 /**
- * This class handles the request made to your application. The dispatcher
- * scans for a controller method that may be matched to the request it has been
- * told to dispatch. It does so by asking each of the mappings it has if they
- * can resolve the given request.
+ * This class handles the requests made to your application. It searchs for a
+ * controller amongs its mappings.
  *
- * Once a mapping reports that it resolves a request, the dispatcher constructs
- * the Controller associated to the request in the mapping and asks it to handle
- * the request.
+ * Once a mapping matches a request, the dispatcher instanciates the Controller
+ * associated to it. Once the controller in instanciated, the request is
+ * dispatched to the controller.
  */
 class RequestDispatcher {
 

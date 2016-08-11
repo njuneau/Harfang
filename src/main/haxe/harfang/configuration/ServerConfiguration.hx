@@ -26,8 +26,9 @@ import harfang.exception.Exception;
 import harfang.exception.HTTPException;
 
 /**
- * The configuration specifies pretty much everything that the framework needs
- * to work.
+ * The configuration is responsible for providing the basic application
+ * components such as modules and event listeners. It can be seen as the
+ * developer's entry point into the framework.
  */
 interface ServerConfiguration {
 
@@ -37,13 +38,11 @@ interface ServerConfiguration {
     public function init() : Void;
 
     /**
-     * Returns the modules contained in the application
      * @return The modules contained in the application
      */
     public function getModules() : Iterable<Module>;
 
     /**
-     * Returns the components that listens to server events
      * @return The components that listens to server events
      */
     public function getServerEventListeners() : Iterable<ServerEventListener>;
