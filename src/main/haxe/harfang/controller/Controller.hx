@@ -61,7 +61,7 @@ interface Controller {
      *
      * @return True if the dispatcher must call the controller according to the
      *         given request information. False to prevent the dispatcher from
-    *          calling the controller
+     *         calling the controller
      */
     public function beforeRequest(mapping : URLMapping, requestInfo : RequestInfo) : Bool;
 

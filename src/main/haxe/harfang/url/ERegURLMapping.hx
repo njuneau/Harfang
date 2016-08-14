@@ -27,8 +27,7 @@ import harfang.request.RequestInfo;
  * request using a regular expression to match against the request's URI and
  * extracts the controller arguments from the URL using the pattern's groups.
  *
- * With the exception of the data provided in this mapping type's constructor,
- * the class is stateless. Meaning that you can repeatedly call any of its
+ * The class is stateless. Meaning that you can repeatedly call any of its
  * method without affecting its initial state.
  */
 class ERegURLMapping implements URLMapping {
@@ -71,7 +70,12 @@ class ERegURLMapping implements URLMapping {
     }
 
     /**
-     * Indicates if the request can be resolved using this mapping
+     * Indicates if the request can be resolved using this mapping.
+     *
+     * This implementation validates two things:
+     *
+     * * The request URI matches the mapping's regular expression
+     * * The request method matches the mapping's method, if provided
      *
      * @param requestInfo The HTTP request information
      * @return The resolution results
@@ -107,16 +111,10 @@ class ERegURLMapping implements URLMapping {
         return new ResolutionResult(resolved, arguments);
     }
 
-    /**
-     * @return The controller to call if the request is resolved against this mapping
-     */
     public function getControllerClass() : Class<Controller> {
         return this.controllerClass;
     }
 
-    /**
-     * @return The name of the controller method to call
-     */
     public function getControllerMethodName() : String {
         return this.controllerFunctionName;
     }

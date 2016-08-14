@@ -51,17 +51,11 @@ class AbstractServerConfiguration implements ServerConfiguration {
      */
     public function new() {}
 
-    /**
-     * Init event - called when the server starts
-     */
     public function init() {
         this.modules = new List<Module>();
         this.serverEventListeners = new List<ServerEventListener>();
     }
 
-    /**
-     * Close event - called when the server closes
-     */
     public function close() : Void {}
 
     /**************************************************************************/
