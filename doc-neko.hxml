@@ -1,0 +1,9 @@
+-cp src/main/haxe
+-D doc-gen
+--no-output
+--macro include('harfang', true, ['harfang.ServerMain'])
+--each
+
+--next
+-xml out/haxedoc.xml
+-neko out/doc.n
