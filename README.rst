@@ -10,16 +10,11 @@ Harfang is a lightweight Web development framework written in Haxe
 Installing the framework
 ------------------------
 
-Harfang can be obtained on Haxelib. You can either obtain the stable 0.4 version
-or the current Alpha release:
+Harfang can be obtained on Haxelib.
 
 .. code:: sh
 
-    haxelib install Harfang 0.4.0
-
-.. code:: sh
-
-    haxelib install Harfang 1.0.0-alpha.2
+    haxelib install Harfang
 
 Documentation
 -------------
